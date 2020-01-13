@@ -13,7 +13,8 @@ Ready to contribute? Here's how to set up `step` for local development.
 $ git clone --recurse-submodules git@github.com:{your_name_here}/step.git
 ```
 
-* Install the project in editable mode. (It is also recommended to work in a virtualenv or anaconda environment):
+* Install the project in editable mode. (It is also recommended to work in a
+virtualenv or anaconda environment):
 
 ```
 $ cd step/
@@ -28,8 +29,8 @@ $ git checkout -b {your_development_type}/short-description
 Ex: feature/read-tiff-files or bugfix/handle-file-not-found<br>
 Now you can make your changes locally.<br>
 
-* When you're done making changes, check that your changes pass linting and tests, including testing other Python
-versions with make:
+* When you're done making changes, check that your changes pass linting and
+tests, including testing other Python versions with make:
 
 ```
 $ make build
@@ -57,4 +58,5 @@ $ git push
 $ git push --tags
 ```
 
-Make and merge a PR to branch `stable` and GitHub will then deploy to PyPI once merged.
+Make and merge a PR to branch `stable` and GitHub will then deploy to PyPI once
+merged.

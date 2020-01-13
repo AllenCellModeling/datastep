@@ -54,6 +54,6 @@ gen-docs: ## generate Sphinx HTML documentation, including API docs
 	sphinx-apidoc -o docs/ step **/tests/
 	$(MAKE) -C docs html
 
-docs: ## generate Sphinx HTML documentation, including API docs, and serve to browser
+docs: ## generate Sphinx HTML documentation and serve to browser
 	make gen-docs
 	$(BROWSER) docs/_build/html/index.html

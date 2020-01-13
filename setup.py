@@ -71,7 +71,7 @@ setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
     ],
-    description="A base class and utility functions for creating pure functions steps for DAGs.",
+    description="A base class and utilities for creating steps in DAGs.",
     entry_points={
         "console_scripts": [
             "my_example=step.bin.my_example:main"
