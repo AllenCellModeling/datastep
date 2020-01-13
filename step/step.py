@@ -1,25 +1,76 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import json
+import os
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import List, Optional, Union
+from typing import Dict, List, Optional, Union
 
-import pandas as pd
+from . import file_utils
 
 ###############################################################################
 
 
 class Step(ABC):
 
+    def _unpack_config(
+        self,
+        config: Optional[Union[str, Path, Dict[str, str]]] = None
+    ):
+        # Easy case is a path to config was provided
+        if config is not None:
+            pass
+
+        # Check environment
+        elif "STEP_CONFIG" in os.environ:
+            config = os.environ["STEP_CONFIG"]
+
+        else:
+            # Check current working directory
+            cwd = Path().resolve()
+            cwd_files = [str(f.name) for f in cwd.iterdir()]
+
+            if "step_config.json" in cwd_files:
+                config = cwd / "step_config.json"
+            else:
+                raise FileNotFoundError()
+
+        # Check path like
+        if isinstance(config, (str, Path)):
+            # Resolve path
+            config = file_utils.resolve_filepath(config)
+
+            # Read
+            with open(config, "r") as read_in:
+                config = json.load(read_in)
+
+        # Config should now either have been provided as a dict or parsed
+        if isinstance(config, dict):
+            self._storage_bucket = config.get(
+                "quilt_storage_bucket",
+                "s3://allencell-internal-quilt"
+            )
+            self._local_storage = config.get(
+                "local_temp_outputs",
+                file_utils.resolve_directory(
+                    Path().resolve() / "temp" / f"{__name__}",
+                    make=True
+                )
+            )
+
+        # Config wasn't a valid type
+        else:
+            raise TypeError(
+                f"Step config should be JSON formated file or Dictionary. "
+                f"Received: {type(config)}: {str(config)}"
+            )
+
     def __init__(self, direct_upstream_tasks: Optional[List[str]] = None):
         # Catch none
         if direct_upstream_tasks is None:
             self._upstream_tasks = []
         else:
-            # TODO:
-            # check that upstream tasks is a list of strings that match already
-            # existing module names
             self._upstream_tasks = direct_upstream_tasks
 
     @abstractmethod
@@ -27,78 +78,49 @@ class Step(ABC):
         # Your code here
         pass
 
-    @staticmethod
-    def _pull_from_local(
-        package_name: str,
-        save_dir: Path,
-        data_version: str,
-        bucket: str = "/allen/aics/modeling/local-quilt"
-    ):
-        # Pull a package from local quilt
-        pass
-
-    @staticmethod
-    def _pull_from_remote(
-        package_name: str,
-        save_dir: Path,
-        data_version: str,
-        bucket: str = "s3://allencell-internal-quilt"
-    ):
-        # Pull a package from remote quilt
-        pass
-
-    @staticmethod
-    def _push_to_local(
-        package_name: str,
-        files: Union[str, Path, List[str, Path], pd.DataFrame],
-        bucket: str = "/allen/aics/modeling/local-quilt"
-    ):
-        # Push a package to local quilt
-        pass
-
-    @staticmethod
-    def _push_to_remote(
-        package_name: str,
-        files: Union[str, Path, List[str, Path], pd.DataFrame],
-        bucket: str = "s3://allencell-internal-quilt"
-    ):
-        # Push a package to remote quilt
-        pass
-
     def pull(
         self,
         save_dir: Union[str, Path] = "",
-        local: bool = False,
-        data_version: Optional[str] = None
+        data_version: Optional[str] = None,
+        bucket: Optional[str] = None,
     ):
-        # Route to correct pull function
-        if local:
-            pull_func = Step._pull_from_local
-        else:
-            pull_func = Step._pull_from_remote
+        # Resolve None bucket
+        if bucket is None:
+            bucket = self._storage_bucket
 
-        # Convert save_dir to Path and resolve
+        # Resolve save_dir
+        save_dir = file_utils.resolve_directory(save_dir, make=True)
 
         # Run pull for each upstream
         for upstream_task in self._upstream_tasks:
-            pull_func(
-                # package_name=f"{__PACKAGE_NAME__}{__MODULE_NAME__}"
-                # save_dir=Path()
-            )
+            pass
 
     def checkout(
         self,
         save_dir: Union[str, Path] = "",
-        local: bool = False,
-        data_version: Optional[str] = None
+        data_version: Optional[str] = None,
+        bucket: Optional[str] = None
     ):
-        # Get module name and pull
+        # Resolve None bucket
+        if bucket is None:
+            bucket = self._storage_bucket
+
+        # Resolve save_dir
+        save_dir = file_utils.resolve_directory(save_dir, make=True)
+
         pass
 
     def push(
         self,
-        files: Union[str, Path, List[str, Path], pd.DataFrame] = "",
-        local: bool = False
+        push_dir: Union[str, Path] = "",
+        bucket: Optional[str] = None,
     ):
+        # Resolve None bucket
+        if bucket is None:
+            bucket = self._storage_bucket
+
+        # Resolve push_dir
+        push_dir = file_utils.resolve_directory(push_dir)
+
         # Get module name and push
         pass
