@@ -2,17 +2,25 @@
 # -*- coding: utf-8 -*-
 
 import json
+import logging
 import os
 from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import Dict, List, Optional, Union
 
-from . import file_utils
+from . import constants, file_utils
+
+###############################################################################
+
+log = logging.getLogger(__name__)
 
 ###############################################################################
 
 
 class Step(ABC):
+
+    def _step_name(self) -> str:
+        return
 
     def _unpack_config(
         self,
@@ -23,18 +31,29 @@ class Step(ABC):
             pass
 
         # Check environment
-        elif "STEP_CONFIG" in os.environ:
-            config = os.environ["STEP_CONFIG"]
+        elif constants.CONFIG_ENV_VAR_NAME in os.environ:
+            config = os.environ[constants.CONFIG_ENV_VAR_NAME]
 
         else:
             # Check current working directory
             cwd = Path().resolve()
             cwd_files = [str(f.name) for f in cwd.iterdir()]
 
-            if "step_config.json" in cwd_files:
-                config = cwd / "step_config.json"
+            # Attach config file name to cwd path
+            if constants.CWD_CONFIG_FILE_NAME in cwd_files:
+                config = cwd / constants.CWD_CONFIG_FILE_NAME
+
+            # Set defaults
             else:
-                raise FileNotFoundError()
+                log.debug(f"Using default configuration.")
+                self._storage_bucket = constants.DEFAULT_QUILT_STORAGE
+                self._local_storage = file_utils.resolve_directory(
+                    constants.DEFAULT_LOCAL_TEMP_OUTPUTS.format(
+                        cwd=".",
+                        module_name=self._step_name
+                    ),
+                    make=True
+                )
 
         # Check path like
         if isinstance(config, (str, Path)):
@@ -47,31 +66,40 @@ class Step(ABC):
 
         # Config should now either have been provided as a dict or parsed
         if isinstance(config, dict):
+            # Get or default
             self._storage_bucket = config.get(
                 "quilt_storage_bucket",
-                "s3://allencell-internal-quilt"
+                constants.DEFAULT_QUILT_STORAGE
             )
+
+            # Get or default
             self._local_storage = config.get(
                 "local_temp_outputs",
                 file_utils.resolve_directory(
-                    Path().resolve() / "temp" / f"{__name__}",
+                    constants.DEFAULT_LOCAL_TEMP_OUTPUTS.format(
+                        cwd=".",
+                        module_name=self._step_name
+                    ),
                     make=True
                 )
             )
 
-        # Config wasn't a valid type
-        else:
-            raise TypeError(
-                f"Step config should be JSON formated file or Dictionary. "
-                f"Received: {type(config)}: {str(config)}"
-            )
+    def __init__(
+        self,
+        direct_upstream_tasks: Optional[List[str]] = None,
+        config: Optional[Union[str, Path, Dict[str, str]]] = None
+    ):
+        # Set step name
+        self._step_name = self.__class__.__name__.lower()
 
-    def __init__(self, direct_upstream_tasks: Optional[List[str]] = None):
         # Catch none
         if direct_upstream_tasks is None:
             self._upstream_tasks = []
         else:
             self._upstream_tasks = direct_upstream_tasks
+
+        # Unpack config
+        self._unpack_config(config)
 
     @abstractmethod
     def run(self, **kwargs):
@@ -124,3 +152,13 @@ class Step(ABC):
 
         # Get module name and push
         pass
+
+    def __str__(self):
+        return (
+            f"<{self.__class__.__name__} "
+            f"[local_temp_outputs: '{self._local_storage}', "
+            f"storage_bucket: '{self._storage_bucket}']>"
+        )
+
+    def __repr__(self):
+        return str(self)
