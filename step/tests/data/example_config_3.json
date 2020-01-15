@@ -1,0 +1,4 @@
+{
+    "quilt_storage_bucket": "s3://example_config_3",
+    "local_temp_outputs": "example/config/3"
+}
