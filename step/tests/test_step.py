@@ -161,6 +161,17 @@ class Test(Step):
                 constants.DEFAULT_LOCAL_TEMP_OUTPUTS.format(cwd=".", module_name="test")
             ),
         ),
+        # Checking when config doesn't exist
+        pytest.param(
+            "config_does_not_exist.json",
+            None,
+            None,
+            None,
+            [],
+            None,
+            None,
+            marks=pytest.mark.raises(exceptions=FileNotFoundError),
+        ),
     ],
 )
 def test_init(
@@ -192,6 +203,9 @@ def test_init(
 
     # Run init
     t = Test(direct_upstream_tasks=direct_upstream_tasks, config=config_var)
+
+    # Not required but may as well run it
+    t.run()
 
     # Check init
     assert t._step_name == "test"
