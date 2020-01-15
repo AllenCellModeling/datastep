@@ -18,58 +18,40 @@ log = logging.getLogger(__name__)
 
 
 class Step(ABC):
-
-    def _step_name(self) -> str:
-        return
-
-    def _unpack_config(
-        self,
-        config: Optional[Union[str, Path, Dict[str, str]]] = None
-    ):
-        # Easy case is a path to config was provided
+    def _unpack_config(self, config: Optional[Union[str, Path, Dict[str, str]]] = None):
+        # Handle config provided as variable
         if config is not None:
             pass
 
-        # Check environment
-        elif constants.CONFIG_ENV_VAR_NAME in os.environ:
-            config = os.environ[constants.CONFIG_ENV_VAR_NAME]
-
+        # Check other places config info could live
         else:
-            # Check current working directory
-            cwd = Path().resolve()
-            cwd_files = [str(f.name) for f in cwd.iterdir()]
+            # Check environment
+            if constants.CONFIG_ENV_VAR_NAME in os.environ:
+                config = os.environ[constants.CONFIG_ENV_VAR_NAME]
 
-            # Attach config file name to cwd path
-            if constants.CWD_CONFIG_FILE_NAME in cwd_files:
-                config = cwd / constants.CWD_CONFIG_FILE_NAME
-
-            # Set defaults
             else:
-                log.debug(f"Using default configuration.")
-                self._storage_bucket = constants.DEFAULT_QUILT_STORAGE
-                self._local_storage = file_utils.resolve_directory(
-                    constants.DEFAULT_LOCAL_TEMP_OUTPUTS.format(
-                        cwd=".",
-                        module_name=self._step_name
-                    ),
-                    make=True
-                )
+                # Check current working directory
+                cwd = Path().resolve()
+                cwd_files = [str(f.name) for f in cwd.iterdir()]
 
-        # Check path like
+                # Attach config file name to cwd path
+                if constants.CWD_CONFIG_FILE_NAME in cwd_files:
+                    config = cwd / constants.CWD_CONFIG_FILE_NAME
+
+        # Config should now either be path to JSON, Dict, or None
         if isinstance(config, (str, Path)):
             # Resolve path
             config = file_utils.resolve_filepath(config)
 
-            # Read
+            # Read config
             with open(config, "r") as read_in:
                 config = json.load(read_in)
 
-        # Config should now either have been provided as a dict or parsed
+        # Config should now either have been provided as a dict, parsed, or None
         if isinstance(config, dict):
             # Get or default
             self._storage_bucket = config.get(
-                "quilt_storage_bucket",
-                constants.DEFAULT_QUILT_STORAGE
+                "quilt_storage_bucket", constants.DEFAULT_QUILT_STORAGE
             )
 
             # Get or default
@@ -77,17 +59,26 @@ class Step(ABC):
                 "local_temp_outputs",
                 file_utils.resolve_directory(
                     constants.DEFAULT_LOCAL_TEMP_OUTPUTS.format(
-                        cwd=".",
-                        module_name=self._step_name
+                        cwd=".", module_name=self._step_name
                     ),
-                    make=True
-                )
+                    make=True,
+                ),
+            )
+
+        else:
+            log.debug(f"Using default configuration.")
+            self._storage_bucket = constants.DEFAULT_QUILT_STORAGE
+            self._local_storage = file_utils.resolve_directory(
+                constants.DEFAULT_LOCAL_TEMP_OUTPUTS.format(
+                    cwd=".", module_name=self._step_name
+                ),
+                make=True,
             )
 
     def __init__(
         self,
         direct_upstream_tasks: Optional[List[str]] = None,
-        config: Optional[Union[str, Path, Dict[str, str]]] = None
+        config: Optional[Union[str, Path, Dict[str, str]]] = None,
     ):
         # Set step name
         self._step_name = self.__class__.__name__.lower()
@@ -127,7 +118,7 @@ class Step(ABC):
         self,
         save_dir: Union[str, Path] = "",
         data_version: Optional[str] = None,
-        bucket: Optional[str] = None
+        bucket: Optional[str] = None,
     ):
         # Resolve None bucket
         if bucket is None:
@@ -139,9 +130,7 @@ class Step(ABC):
         pass
 
     def push(
-        self,
-        push_dir: Union[str, Path] = "",
-        bucket: Optional[str] = None,
+        self, push_dir: Union[str, Path] = "", bucket: Optional[str] = None,
     ):
         # Resolve None bucket
         if bucket is None:
