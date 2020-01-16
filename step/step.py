@@ -55,14 +55,14 @@ class Step(ABC):
             )
 
             # Get or default
-            self._local_storage = config.get(
-                "local_temp_outputs",
-                file_utils.resolve_directory(
+            self._local_storage = file_utils.resolve_directory(
+                config.get(
+                    "local_temp_outputs",
                     constants.DEFAULT_LOCAL_TEMP_OUTPUTS.format(
                         cwd=".", module_name=self._step_name
-                    ),
-                    make=True,
+                    )
                 ),
+                make=True,
             )
 
         else:
