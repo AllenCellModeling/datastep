@@ -44,7 +44,9 @@ interactive_requirements = [
     "matplotlib",
 ]
 
-requirements = []
+requirements = [
+    "jinja2>=2.10.3",
+]
 
 extra_requirements = {
     "test": test_requirements,
@@ -74,7 +76,7 @@ setup(
     description="A base class and utilities for creating steps in DAGs.",
     entry_points={
         "console_scripts": [
-            "my_example=step.bin.my_example:main"
+            "make_new_step=step.bin.make_new_step:main"
         ],
     },
     install_requires=requirements,
