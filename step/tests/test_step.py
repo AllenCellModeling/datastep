@@ -6,6 +6,7 @@ import shutil
 from pathlib import Path
 
 import pytest
+
 from step import Step, constants, file_utils
 
 ###############################################################################
@@ -30,7 +31,8 @@ class Test(Step):
     "direct_upstream_tasks, "
     "expected_direct_upstream_tasks, "
     "expected_storage_bucket, "
-    "expected_local_storage",
+    "expected_project_local_staging_dir, "
+    "expected_step_local_staging_dir",
     [
         # Provided none, use defaults
         (
@@ -41,7 +43,12 @@ class Test(Step):
             [],
             constants.DEFAULT_QUILT_STORAGE,
             file_utils.resolve_directory(
-                constants.DEFAULT_LOCAL_TEMP_OUTPUTS.format(cwd=".", module_name="test")
+                constants.DEFAULT_PROJECT_LOCAL_STAGING_DIR.format(cwd=".")
+            ),
+            file_utils.resolve_directory(
+                constants.DEFAULT_STEP_LOCAL_STAGING_DIR.format(
+                    cwd=".", module_name="test"
+                )
             ),
         ),
         # Provided only config var, use it
@@ -53,6 +60,7 @@ class Test(Step):
             [],
             "s3://example_config_1",
             "example/config/1",
+            "example/config/1/test",
         ),
         # Provided config var and env exists, use config var
         (
@@ -63,6 +71,7 @@ class Test(Step):
             [],
             "s3://example_config_1",
             "example/config/1",
+            "example/config/1/test",
         ),
         # Provided all options, use config var
         (
@@ -73,6 +82,7 @@ class Test(Step):
             [],
             "s3://example_config_1",
             "example/config/1",
+            "example/config/1/test",
         ),
         # Provided config var and current working directory, use config var
         (
@@ -83,6 +93,7 @@ class Test(Step):
             [],
             "s3://example_config_1",
             "example/config/1",
+            "example/config/1/test",
         ),
         # Provided env and current working directory, use env
         (
@@ -93,6 +104,7 @@ class Test(Step):
             [],
             "s3://example_config_2",
             "example/config/2",
+            "example/config/2/test",
         ),
         # Provided env, use env
         (
@@ -103,6 +115,7 @@ class Test(Step):
             [],
             "s3://example_config_2",
             "example/config/2",
+            "example/config/2/test",
         ),
         # Provided current working directory, use current working directory
         (
@@ -113,6 +126,7 @@ class Test(Step):
             [],
             "s3://example_config_3",
             "example/config/3",
+            "example/config/3/test",
         ),
         # Missing bucket value from config
         (
@@ -123,6 +137,7 @@ class Test(Step):
             [],
             constants.DEFAULT_QUILT_STORAGE,
             "example/config/4",
+            "example/config/4/test",
         ),
         # Missing local storage value from config
         (
@@ -133,7 +148,12 @@ class Test(Step):
             [],
             "s3://example_config_5",
             file_utils.resolve_directory(
-                constants.DEFAULT_LOCAL_TEMP_OUTPUTS.format(cwd=".", module_name="test")
+                constants.DEFAULT_PROJECT_LOCAL_STAGING_DIR.format(cwd=".")
+            ),
+            file_utils.resolve_directory(
+                constants.DEFAULT_STEP_LOCAL_STAGING_DIR.format(
+                    cwd=".", module_name="test"
+                )
             ),
         ),
         # Missing both values from config
@@ -146,8 +166,35 @@ class Test(Step):
             [],
             constants.DEFAULT_QUILT_STORAGE,
             file_utils.resolve_directory(
-                constants.DEFAULT_LOCAL_TEMP_OUTPUTS.format(cwd=".", module_name="test")
+                constants.DEFAULT_PROJECT_LOCAL_STAGING_DIR.format(cwd=".")
             ),
+            file_utils.resolve_directory(
+                constants.DEFAULT_STEP_LOCAL_STAGING_DIR.format(
+                    cwd=".", module_name="test"
+                )
+            ),
+        ),
+        # Specific output directory for step available
+        (
+            "example_config_7.json",
+            None,
+            None,
+            None,
+            [],
+            "s3://example_config_7",
+            "example/config/7",
+            "example/step/local/staging/7",
+        ),
+        # Step has key in config but no specific output directory listed
+        (
+            "example_config_8.json",
+            None,
+            None,
+            None,
+            [],
+            "s3://example_config_8",
+            "example/config/8",
+            "example/config/8/test",
         ),
         # Checking upstream tasks
         (
@@ -158,7 +205,12 @@ class Test(Step):
             ["raw", "qc", "norm"],
             constants.DEFAULT_QUILT_STORAGE,
             file_utils.resolve_directory(
-                constants.DEFAULT_LOCAL_TEMP_OUTPUTS.format(cwd=".", module_name="test")
+                constants.DEFAULT_PROJECT_LOCAL_STAGING_DIR.format(cwd=".")
+            ),
+            file_utils.resolve_directory(
+                constants.DEFAULT_STEP_LOCAL_STAGING_DIR.format(
+                    cwd=".", module_name="test"
+                )
             ),
         ),
         # Checking when config doesn't exist
@@ -168,6 +220,7 @@ class Test(Step):
             None,
             None,
             [],
+            None,
             None,
             None,
             marks=pytest.mark.raises(exceptions=FileNotFoundError),
@@ -183,7 +236,8 @@ def test_init(
     direct_upstream_tasks,
     expected_direct_upstream_tasks,
     expected_storage_bucket,
-    expected_local_storage,
+    expected_project_local_staging_dir,
+    expected_step_local_staging_dir,
 ):
     # Set up init configuration with config var
     if isinstance(config_var, str):
@@ -208,10 +262,11 @@ def test_init(
     t.run()
 
     # Check init
-    assert t._step_name == "test"
-    assert t._upstream_tasks == expected_direct_upstream_tasks
-    assert t._storage_bucket == expected_storage_bucket
-    assert t._local_storage == expected_local_storage
+    assert t.step_name == "test"
+    assert t.upstream_tasks == expected_direct_upstream_tasks
+    assert t.storage_bucket == expected_storage_bucket
+    assert str(expected_project_local_staging_dir) in str(t.project_local_staging_dir)
+    assert str(expected_step_local_staging_dir) in str(t.step_local_staging_dir)
 
     # Clear env
     os.environ.pop(constants.CONFIG_ENV_VAR_NAME, None)

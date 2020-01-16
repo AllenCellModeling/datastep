@@ -1,0 +1,7 @@
+{
+    "quilt_storage_bucket": "s3://example_config_7",
+    "project_local_staging_dir": "example/config/7",
+    "test": {
+        "step_local_staging_dir": "example/step/local/staging/7"
+    }
+}
