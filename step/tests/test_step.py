@@ -43,12 +43,13 @@ class Test(Step):
             [],
             constants.DEFAULT_QUILT_STORAGE,
             file_utils.resolve_directory(
-                constants.DEFAULT_PROJECT_LOCAL_STAGING_DIR.format(cwd=".")
+                constants.DEFAULT_PROJECT_LOCAL_STAGING_DIR.format(cwd="."), make=True
             ),
             file_utils.resolve_directory(
                 constants.DEFAULT_STEP_LOCAL_STAGING_DIR.format(
                     cwd=".", module_name="test"
-                )
+                ),
+                make=True,
             ),
         ),
         # Provided only config var, use it
@@ -148,12 +149,13 @@ class Test(Step):
             [],
             "s3://example_config_5",
             file_utils.resolve_directory(
-                constants.DEFAULT_PROJECT_LOCAL_STAGING_DIR.format(cwd=".")
+                constants.DEFAULT_PROJECT_LOCAL_STAGING_DIR.format(cwd="."), make=True
             ),
             file_utils.resolve_directory(
                 constants.DEFAULT_STEP_LOCAL_STAGING_DIR.format(
                     cwd=".", module_name="test"
-                )
+                ),
+                make=True,
             ),
         ),
         # Missing both values from config
@@ -166,12 +168,13 @@ class Test(Step):
             [],
             constants.DEFAULT_QUILT_STORAGE,
             file_utils.resolve_directory(
-                constants.DEFAULT_PROJECT_LOCAL_STAGING_DIR.format(cwd=".")
+                constants.DEFAULT_PROJECT_LOCAL_STAGING_DIR.format(cwd="."), make=True
             ),
             file_utils.resolve_directory(
                 constants.DEFAULT_STEP_LOCAL_STAGING_DIR.format(
                     cwd=".", module_name="test"
-                )
+                ),
+                make=True,
             ),
         ),
         # Specific output directory for step available
@@ -205,12 +208,13 @@ class Test(Step):
             ["raw", "qc", "norm"],
             constants.DEFAULT_QUILT_STORAGE,
             file_utils.resolve_directory(
-                constants.DEFAULT_PROJECT_LOCAL_STAGING_DIR.format(cwd=".")
+                constants.DEFAULT_PROJECT_LOCAL_STAGING_DIR.format(cwd="."), make=True
             ),
             file_utils.resolve_directory(
                 constants.DEFAULT_STEP_LOCAL_STAGING_DIR.format(
                     cwd=".", module_name="test"
-                )
+                ),
+                make=True,
             ),
         ),
         # Checking when config doesn't exist
