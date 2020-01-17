@@ -191,30 +191,26 @@ class Step(ABC):
         # Resolve save_dir
         save_dir = file_utils.resolve_directory(save_dir, make=True)
 
-        # checkout this step's output from quilt.
-        # check for files on this branch and default to master
+        # Checkout this step's output from quilt
+        # Check for files on this branch and default to master
 
         # Resolve the project and branch for use in quilt paths
         repo = git.Repo(Path(".").expanduser().resolve())
         current_branch = repo.active_branch.name
         package_name = self.__module__.split(".")[0]
 
-        # paths to the data we want on quilt, for this branch and master
-        quilt_target_branch = f"{package_name}/{current_branch}/{self.step_name}"
-        quilt_target_master = f"{package_name}/master/{self.step_name}"
-
-        # browse top level project package
+        # Browse top level project package
         p = quilt3.Package.browse(package_name, bucket)
 
-        # check to see if step data exists on this branch in quilt
+        # Check to see if step data exists on this branch in quilt
         try:
-            quilt_loc = p[checkout_target_branch]
+            quilt_loc = p[f"{package_name}/{current_branch}/{self.step_name}"]
 
-        # if not, use the version on master
+        # If not, use the version on master
         except KeyError:
-            quilt_loc = p[checkout_target_master]
+            quilt_loc = p[f"{package_name}/master/{self.step_name}"]
 
-        # fetch the data and save it to the local staging dir
+        # Fetch the data and save it to the local staging dir
         p[quilt_loc].fetch(self.step_local_staging_dir)
 
 
