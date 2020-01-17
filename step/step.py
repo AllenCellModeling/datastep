@@ -7,6 +7,7 @@ import os
 from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import Dict, List, Optional, Union
+import importlib
 
 import quilt3
 import git
@@ -158,9 +159,20 @@ class Step(ABC):
         # Resolve save_dir
         save_dir = file_utils.resolve_directory(save_dir, make=True)
 
+        # Resolve the project and branch for use in quilt paths
+        repo = git.Repo(Path(".").expanduser().resolve())
+        current_branch = repo.active_branch.name
+        package_name = self.__module__.split(".")[0]
+
+        # Load this module
+        mymodule = importlib.import_module(package_name)
+        from mymodule import steps
+
         # Run checkout for each upstream
         for upstream_task in self.upstream_tasks:
-            pass
+            parent_step = steps.getattr(upstream_task)
+            parent_step.checkout()
+            # this won't work bcx dirs are lowercase and clases are uppercase
 
     def checkout(
         self,
