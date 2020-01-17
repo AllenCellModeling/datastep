@@ -4,3 +4,7 @@
 
 class DirectoryNotFoundError(Exception):
     pass
+
+
+class InvalidGitStatus(Exception):
+    pass

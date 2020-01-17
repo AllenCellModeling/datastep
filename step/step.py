@@ -8,7 +8,9 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import Dict, List, Optional, Union
 
-from . import constants, file_utils
+import git
+
+from . import constants, exceptions, file_utils
 
 ###############################################################################
 
@@ -175,16 +177,44 @@ class Step(ABC):
         pass
 
     def push(
-        self, push_dir: Union[str, Path] = "", bucket: Optional[str] = None,
+        self, push_dir: Optional[Union[str, Path]] = None, bucket: Optional[str] = None,
     ):
+        # Resolve None push_dir
+        if push_dir is None:
+            push_dir = self.step_local_staging_dir
+
         # Resolve None bucket
         if bucket is None:
-            bucket = self._storage_bucket
+            bucket = self.storage_bucket
 
         # Resolve push_dir
         push_dir = file_utils.resolve_directory(push_dir)
 
-        # Get module name and push
+        # This will throw an error if the current working directory is not a git repo
+        repo = git.Repo(Path(".").expanduser().resolve())
+
+        # Resolve push target
+        current_branch = repo.active_branch.name
+        package_name = self.__module__.split(".")[0]
+        push_target = f"{package_name}/{current_branch}/{self.step_name}"
+
+        # Check current git status
+        if repo.is_dirty() or len(repo.untracked_files) > 0:
+            dirty_files = [f.b_path for f in repo.index.diff(None)]
+            all_changed_files = repo.untracked_files + dirty_files
+            raise exceptions.InvalidGitStatus(
+                f"Push to '{push_target}' was rejected because the current git "
+                f"status of this branch ({current_branch}) is not clean. "
+                f"Check files: {all_changed_files}."
+            )
+
+        # Construct the package
+
+        # TODO:
+        # how to handle or not handle merges
+        # Should we just always push just this step local staging and not care about
+        # master or current branch?
+
         pass
 
     def __str__(self):
