@@ -124,9 +124,23 @@ class Step(ABC):
         return self._step_local_staging_dir
 
     @abstractmethod
-    def run(self, **kwargs):
+    def _run(self, **kwargs):
         # Your code here
         pass
+
+    def run(self, **kwargs):
+        # Pass through run
+        self._run(**kwargs)
+
+        # Get and clean parameters that ran
+        params = locals()
+        params.pop("self")
+
+        # Store parameters
+        parameter_store = self.step_local_staging_dir / "parameters.json"
+        with open(parameter_store, "w") as write_out:
+            json.dump(params, write_out)
+            log.debug(f"Stored params for run at: {parameter_store}")
 
     def pull(
         self,

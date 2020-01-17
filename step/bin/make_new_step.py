@@ -59,7 +59,6 @@ import logging
 from pathlib import Path
 from typing import Dict, List, Optional, Union
 
-from prefect import task
 from step import Step
 
 ###############################################################################
@@ -77,8 +76,7 @@ class {{ truecase_step_name }}(Step):
     ):
         super().__init__(direct_upstream_tasks, config)
 
-    @task
-    def run(self):
+    def _run(self, **kwargs):
         # your code here
         # store your outputs in the directory: self.step_local_staging_dir
         pass
