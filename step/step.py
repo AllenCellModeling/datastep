@@ -192,19 +192,10 @@ class Step(ABC):
 
         pass
 
-    def push(
-        self, push_dir: Optional[Union[str, Path]] = None, bucket: Optional[str] = None,
-    ):
-        # Resolve None push_dir
-        if push_dir is None:
-            push_dir = self.step_local_staging_dir
-
+    def push(self, bucket: Optional[str] = None):
         # Resolve None bucket
         if bucket is None:
             bucket = self.storage_bucket
-
-        # Resolve push_dir
-        push_dir = file_utils.resolve_directory(push_dir)
 
         # This will throw an error if the current working directory is not a git repo
         repo = git.Repo(Path(".").expanduser().resolve())
@@ -227,9 +218,8 @@ class Step(ABC):
         # Construct the package
 
         # TODO:
-        # how to handle or not handle merges
-        # Should we just always push just this step local staging and not care about
-        # master or current branch?
+        # always check current branch for existing and merge from it
+        # else make new branch
 
         pass
 
