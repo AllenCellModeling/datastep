@@ -113,8 +113,8 @@ class Step(ABC):
 
         # figure out what branch we're on and what package we're a part of
         repo = git.Repo(Path(".").expanduser().resolve())
-        self.current_branch = repo.active_branch.name
-        self.package_name = self.__module__.split(".")[0]
+        self._current_branch = repo.active_branch.name
+        self._package_name = self.__module__.split(".")[0]
 
 
     @property
@@ -136,6 +136,15 @@ class Step(ABC):
     @property
     def step_local_staging_dir(self) -> Path:
         return self._step_local_staging_dir
+
+    @property
+    def current_branch(self) -> str:
+        return self._current_branch
+
+    @property
+    def package_name(self) -> str:
+        return self._package_name
+
 
     @abstractmethod
     def _run(self, **kwargs):
