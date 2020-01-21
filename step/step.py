@@ -107,6 +107,11 @@ class Step(ABC):
         # Unpack config
         self._unpack_config(config)
 
+        # Set defaults
+        self.manifest = None
+        self.filepath_columns = ["filepath"]
+        self.metadata_columns = []
+
     @property
     def step_name(self) -> str:
         return self._step_name
@@ -130,6 +135,17 @@ class Step(ABC):
     @abstractmethod
     def _run(self, **kwargs):
         # Your code here
+        #
+        # The `self.step_local_staging_dir` is exposed to save files in
+        #
+        # The user should set `self.manifest` to a dataframe of relative paths that
+        # point to the created files and each files metadata
+        #
+        # By default, `self.filepath_columns` is ["filepath"], but should be edited
+        # if there are more than a single column of filepaths
+        #
+        # By default, `self.metadata_columns` is [], but should be edited to include
+        # any columns that should be parsed for metadata and attached to objects
         pass
 
     def run(self, **kwargs):
@@ -211,19 +227,10 @@ class Step(ABC):
 
 
 
-    def push(
-        self, push_dir: Optional[Union[str, Path]] = None, bucket: Optional[str] = None,
-    ):
-        # Resolve None push_dir
-        if push_dir is None:
-            push_dir = self.step_local_staging_dir
-
+    def push(self, bucket: Optional[str] = None):
         # Resolve None bucket
         if bucket is None:
             bucket = self.storage_bucket
-
-        # Resolve push_dir
-        push_dir = file_utils.resolve_directory(push_dir)
 
         # This will throw an error if the current working directory is not a git repo
         repo = git.Repo(Path(".").expanduser().resolve())
@@ -246,9 +253,8 @@ class Step(ABC):
         # Construct the package
 
         # TODO:
-        # how to handle or not handle merges
-        # Should we just always push just this step local staging and not care about
-        # master or current branch?
+        # always check current branch for existing and merge from it
+        # else make new branch
 
         pass
 
