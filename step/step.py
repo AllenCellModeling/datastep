@@ -92,7 +92,7 @@ class Step(ABC):
 
     def __init__(
         self,
-        direct_upstream_tasks: Optional[List[str]] = None,
+        direct_upstream_tasks: Optional[List[Step]] = None,
         config: Optional[Union[str, Path, Dict[str, str]]] = None,
     ):
         # Set step name
@@ -164,7 +164,6 @@ class Step(ABC):
 
     def pull(
         self,
-        save_dir: Union[str, Path] = "",
         data_version: Optional[str] = None,
         bucket: Optional[str] = None,
     ):
@@ -192,7 +191,6 @@ class Step(ABC):
 
     def checkout(
         self,
-        save_dir: Union[str, Path] = "",
         data_version: Optional[str] = None,
         bucket: Optional[str] = None,
     ):
