@@ -169,7 +169,7 @@ class Step(ABC):
     ):
         # Resolve None bucket
         if bucket is None:
-            bucket = self._storage_bucket
+            bucket = self.storage_bucket
 
         # Resolve save_dir
         save_dir = file_utils.resolve_directory(save_dir, make=True)
@@ -196,7 +196,7 @@ class Step(ABC):
     ):
         # Resolve None bucket
         if bucket is None:
-            bucket = self._storage_bucket
+            bucket = self.storage_bucket
 
         # Resolve save_dir
         save_dir = file_utils.resolve_directory(save_dir, make=True)
