@@ -179,15 +179,9 @@ class Step(ABC):
         current_branch = repo.active_branch.name
         package_name = self.__module__.split(".")[0]
 
-        # Load this module
-        mymodule = importlib.import_module(package_name)
-        from mymodule import steps
-
         # Run checkout for each upstream
         for upstream_task in self.upstream_tasks:
-            parent_step = steps.getattr(upstream_task)
-            parent_step.checkout()
-            # this won't work bcx dirs are lowercase and clases are uppercase
+            upstream_task.checkout(data_version=data_version, bucket=bucket)
 
     def checkout(
         self,
@@ -222,8 +216,6 @@ class Step(ABC):
 
         # Fetch the data and save it to the local staging dir
         p[quilt_loc].fetch(self.step_local_staging_dir)
-
-
 
     def push(self, bucket: Optional[str] = None):
         # Resolve None bucket
