@@ -92,7 +92,7 @@ class Step(ABC):
 
     def __init__(
         self,
-        direct_upstream_tasks: Optional[List[Step]] = None,
+        direct_upstream_tasks: Optional[List["Step"]] = None,
         config: Optional[Union[str, Path, Dict[str, str]]] = None,
     ):
         # Set step name
