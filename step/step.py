@@ -171,9 +171,6 @@ class Step(ABC):
         if bucket is None:
             bucket = self.storage_bucket
 
-        # Resolve save_dir
-        save_dir = file_utils.resolve_directory(save_dir, make=True)
-
         # Resolve the project and branch for use in quilt paths
         repo = git.Repo(Path(".").expanduser().resolve())
         current_branch = repo.active_branch.name
@@ -191,9 +188,6 @@ class Step(ABC):
         # Resolve None bucket
         if bucket is None:
             bucket = self.storage_bucket
-
-        # Resolve save_dir
-        save_dir = file_utils.resolve_directory(save_dir, make=True)
 
         # Checkout this step's output from quilt
         # Check for files on this branch and default to master
