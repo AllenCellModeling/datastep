@@ -111,6 +111,12 @@ class Step(ABC):
         self.filepath_columns = ["filepath"]
         self.metadata_columns = []
 
+        # figure out what branch we're on and what package we're a part of
+        repo = git.Repo(Path(".").expanduser().resolve())
+        self.current_branch = repo.active_branch.name
+        self.package_name = self.__module__.split(".")[0]
+
+
     @property
     def step_name(self) -> str:
         return self._step_name
@@ -170,11 +176,6 @@ class Step(ABC):
         if bucket is None:
             bucket = self.storage_bucket
 
-        # Resolve the project and branch for use in quilt paths
-        repo = git.Repo(Path(".").expanduser().resolve())
-        current_branch = repo.active_branch.name
-        package_name = self.__module__.split(".")[0]
-
         # Run checkout for each upstream
         for upstream_task in self.upstream_tasks:
             upstream_task.checkout(data_version=data_version, bucket=bucket)
@@ -191,21 +192,16 @@ class Step(ABC):
         # Checkout this step's output from quilt
         # Check for files on this branch and default to master
 
-        # Resolve the project and branch for use in quilt paths
-        repo = git.Repo(Path(".").expanduser().resolve())
-        current_branch = repo.active_branch.name
-        package_name = self.__module__.split(".")[0]
-
         # Browse top level project package
-        p = quilt3.Package.browse(package_name, bucket, top_hash=data_version)
+        p = quilt3.Package.browse(self.package_name, bucket, top_hash=data_version)
 
         # Check to see if step data exists on this branch in quilt
         try:
-            quilt_loc = p[f"{package_name}/{current_branch}/{self.step_name}"]
+            quilt_loc = p[f"{self.package_name}/{self.current_branch}/{self.step_name}"]
 
         # If not, use the version on master
         except KeyError:
-            quilt_loc = p[f"{package_name}/master/{self.step_name}"]
+            quilt_loc = p[f"{self.package_name}/master/{self.step_name}"]
 
         # Fetch the data and save it to the local staging dir
         p[quilt_loc].fetch(self.step_local_staging_dir)
@@ -219,9 +215,7 @@ class Step(ABC):
         repo = git.Repo(Path(".").expanduser().resolve())
 
         # Resolve push target
-        current_branch = repo.active_branch.name
-        package_name = self.__module__.split(".")[0]
-        push_target = f"{package_name}/{current_branch}/{self.step_name}"
+        push_target = f"{self.package_name}/{self.current_branch}/{self.step_name}"
 
         # Check current git status
         if repo.is_dirty() or len(repo.untracked_files) > 0:
@@ -229,7 +223,7 @@ class Step(ABC):
             all_changed_files = repo.untracked_files + dirty_files
             raise exceptions.InvalidGitStatus(
                 f"Push to '{push_target}' was rejected because the current git "
-                f"status of this branch ({current_branch}) is not clean. "
+                f"status of this branch ({self.current_branch}) is not clean. "
                 f"Check files: {all_changed_files}."
             )
 
