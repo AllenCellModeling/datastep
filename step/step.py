@@ -210,7 +210,7 @@ class Step(ABC):
         package_name = self.__module__.split(".")[0]
 
         # Browse top level project package
-        p = quilt3.Package.browse(package_name, bucket)
+        p = quilt3.Package.browse(package_name, bucket, top_hash=data_version)
 
         # Check to see if step data exists on this branch in quilt
         try:
