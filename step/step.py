@@ -7,6 +7,7 @@ import os
 from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import Dict, List, Optional, Union
+from functools import wraps
 
 import quilt3
 import git
@@ -18,6 +19,21 @@ from . import constants, exceptions, file_utils
 log = logging.getLogger(__name__)
 
 ###############################################################################
+
+# decorator for run (or anything else) that logs args and kwargs to file
+def log_params(func):
+    @wraps(func)
+    def _log_params(self, *args, **kwargs):
+        params = locals()
+        params.pop("self")
+        params.pop("func")
+        parameter_store = self.step_local_staging_dir / "parameters.json"
+        with open(parameter_store, "w") as write_out:
+            # serialize as a string if object is not serializable
+            json.dump(params, write_out, default=str)
+            log.debug(f"Stored params for run at: {parameter_store}")
+        func(self, *args, **kwargs)
+    return _log_params
 
 
 class Step(ABC):
@@ -145,9 +161,8 @@ class Step(ABC):
     def package_name(self) -> str:
         return self._package_name
 
-
     @abstractmethod
-    def _run(self, **kwargs):
+    def run(self, **kwargs):
         # Your code here
         #
         # The `self.step_local_staging_dir` is exposed to save files in
@@ -161,20 +176,6 @@ class Step(ABC):
         # By default, `self.metadata_columns` is [], but should be edited to include
         # any columns that should be parsed for metadata and attached to objects
         pass
-
-    def run(self, **kwargs):
-        # Pass through run
-        self._run(**kwargs)
-
-        # Get and clean parameters that ran
-        params = locals()
-        params.pop("self")
-
-        # Store parameters
-        parameter_store = self.step_local_staging_dir / "parameters.json"
-        with open(parameter_store, "w") as write_out:
-            json.dump(params, write_out)
-            log.debug(f"Stored params for run at: {parameter_store}")
 
     def pull(
         self,

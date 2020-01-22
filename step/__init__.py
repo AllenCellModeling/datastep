@@ -13,4 +13,4 @@ def get_module_version():
     return __version__
 
 
-from .step import Step  # noqa: F401
+from .step import Step, log_params  # noqa: F401

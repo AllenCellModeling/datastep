@@ -59,7 +59,7 @@ import logging
 from pathlib import Path
 from typing import Dict, List, Optional, Union
 
-from step import Step
+from step import Step, log_params
 
 ###############################################################################
 
@@ -71,12 +71,13 @@ log = logging.getLogger(__name__)
 class {{ truecase_step_name }}(Step):
     def __init__(
         self,
-        direct_upstream_tasks: Optional[List[str]] = None,
+        direct_upstream_tasks: Optional[List["Step"]] = None,
         config: Optional[Union[str, Path, Dict[str, str]]] = None,
     ):
         super().__init__(direct_upstream_tasks, config)
 
-    def _run(self, **kwargs):
+    @log_params
+    def run(self, **kwargs):
         # Your code here
         #
         # The `self.step_local_staging_dir` is exposed to save files in
