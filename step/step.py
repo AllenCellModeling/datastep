@@ -22,18 +22,17 @@ log = logging.getLogger(__name__)
 ###############################################################################
 
 
-# decorator for run that logs args and kwargs to file
+# decorator for run that logs non default args and kwargs to file
 def log_run_params(func):
     @wraps(func)
     def wrapper(self, *args, **kwargs):
         params = inspect.signature(func).bind(self, *args, **kwargs).arguments
         params.pop("self")
-        parameter_store = self.step_local_staging_dir / "parameters.json"
+        parameter_store = self.step_local_staging_dir / "non_default_parameters.json"
         with open(parameter_store, "w") as write_out:
             json.dump(params, write_out, default=str)
             log.debug(f"Stored params for run at: {parameter_store}")
         return func(self, *args, **kwargs)
-
     return wrapper
 
 
@@ -111,6 +110,11 @@ class Step(ABC):
         direct_upstream_tasks: Optional[List["Step"]] = None,
         config: Optional[Union[str, Path, Dict[str, str]]] = None,
     ):
+
+        # grab args/kwarg to write out at end of init
+        params = locals()
+        params.pop("self")
+
         # Set step name
         self._step_name = self.__class__.__name__.lower()
 
@@ -122,6 +126,12 @@ class Step(ABC):
 
         # Unpack config
         self._unpack_config(config)
+
+        # write out args/kwargs now that we know where
+        parameter_store = self.step_local_staging_dir / "init_parameters.json"
+        with open(parameter_store, "w") as write_out:
+            json.dump(params, write_out, default=str)
+            log.debug(f"Stored params for run at: {parameter_store}")
 
         # Set defaults
         self.manifest = None
