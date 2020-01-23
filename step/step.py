@@ -8,6 +8,7 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import Dict, List, Optional, Union
 from functools import wraps
+import inspect
 
 import quilt3
 import git
@@ -20,21 +21,19 @@ log = logging.getLogger(__name__)
 
 ###############################################################################
 
-# decorator for run (or anything else) that logs args and kwargs to file
-def log_params(func):
+
+# decorator for run that logs args and kwargs to file
+def log_run_params(func):
     @wraps(func)
-    def _log_params(self, *args, **kwargs):
-        params = locals()
+    def wrapper(self, *args, **kwargs):
+        params = inspect.signature(func).bind(self, *args, **kwargs).arguments
         params.pop("self")
-        params.pop("func")
         parameter_store = self.step_local_staging_dir / "parameters.json"
         with open(parameter_store, "w") as write_out:
-            # serialize as a string if object is not serializable
             json.dump(params, write_out, default=str)
             log.debug(f"Stored params for run at: {parameter_store}")
-        func(self, *args, **kwargs)
-    return _log_params
-
+        return func(self, *args, **kwargs)
+    return wrapper
 
 class Step(ABC):
     def _unpack_config(self, config: Optional[Union[str, Path, Dict[str, str]]] = None):
