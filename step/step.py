@@ -33,7 +33,9 @@ def log_run_params(func):
             json.dump(params, write_out, default=str)
             log.debug(f"Stored params for run at: {parameter_store}")
         return func(self, *args, **kwargs)
+
     return wrapper
+
 
 class Step(ABC):
     def _unpack_config(self, config: Optional[Union[str, Path, Dict[str, str]]] = None):
@@ -131,7 +133,6 @@ class Step(ABC):
         self._current_branch = repo.active_branch.name
         self._package_name = self.__module__.split(".")[0]
 
-
     @property
     def step_name(self) -> str:
         return self._step_name
@@ -177,9 +178,7 @@ class Step(ABC):
         pass
 
     def pull(
-        self,
-        data_version: Optional[str] = None,
-        bucket: Optional[str] = None,
+        self, data_version: Optional[str] = None, bucket: Optional[str] = None,
     ):
         # Resolve None bucket
         if bucket is None:
@@ -190,9 +189,7 @@ class Step(ABC):
             upstream_task.checkout(data_version=data_version, bucket=bucket)
 
     def checkout(
-        self,
-        data_version: Optional[str] = None,
-        bucket: Optional[str] = None,
+        self, data_version: Optional[str] = None, bucket: Optional[str] = None,
     ):
         # Resolve None bucket
         if bucket is None:
