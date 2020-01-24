@@ -1,8 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import hashlib
+import json
+import logging
 from pathlib import Path
-from typing import Union
+from typing import Any, Dict, List, Optional, Union
+
+###############################################################################
+
+log = logging.getLogger(__name__)
 
 ###############################################################################
 
@@ -34,3 +41,30 @@ def resolve_directory(d: Union[str, Path], make: bool = False) -> Path:
     d = d.resolve(strict=True)
 
     return d
+
+
+def create_unique_logical_key(physical_key: Union[str, Path]) -> str:
+    # Fully resolve the phyiscal key
+    pk = Path(physical_key).expanduser().resolve(strict=True)
+
+    # Creat short hash from fully resolved physical key
+    short_hash = hashlib.sha256(str(pk).encode("utf-8")).hexdigest()[:8]
+
+    # Return the unique logical key
+    return f"{short_hash}_{pk.name}"
+
+
+def make_json_serializable(
+    value: Any,
+    context: Optional[str] = None
+) -> Union[bool, float, int, str, List, Dict]:
+    # Try dumping to JSON string
+    try:
+        json.dumps(value)
+        return value
+    # It isn't explicitly JSON serializable, convert to string
+    except TypeError:
+        if context is None:
+            context = ""
+        log.debug(f"Casting {value} to string to make JSON serializable. {context}")
+        return str(value)
