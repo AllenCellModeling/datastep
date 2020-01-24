@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import pytest
+
 from step import file_utils
 
 ###############################################################################
@@ -30,7 +31,7 @@ def test_resolve_filepath(data_dir, f):
 @pytest.mark.parametrize(
     "f",
     [
-        ("example_directory"),
+        (None),
         pytest.param(
             "example_config_1.json",
             marks=pytest.mark.raises(exceptions=FileExistsError),
@@ -38,8 +39,11 @@ def test_resolve_filepath(data_dir, f):
     ],
 )
 def test_resolve_directory(data_dir, f):
-    # Route to data dir
-    f = data_dir / f
+    if f is None:
+        f = data_dir
+    else:
+        # Route to data dir
+        f = data_dir / f
 
     # Run
     file_utils.resolve_directory(f)

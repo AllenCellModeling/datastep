@@ -6,6 +6,7 @@ import logging
 import os
 from abc import ABC, abstractmethod
 from pathlib import Path
+from tempfile import TemporaryDirectory
 from typing import Dict, List, Optional, Union
 from functools import wraps
 import inspect
@@ -13,7 +14,7 @@ import inspect
 import quilt3
 import git
 
-from . import constants, exceptions, file_utils
+from . import constants, exceptions, file_utils, quilt_utils
 
 ###############################################################################
 
@@ -143,6 +144,7 @@ class Step(ABC):
         self._current_branch = repo.active_branch.name
         self._package_name = self.__module__.split(".")[0]
 
+
     @property
     def step_name(self) -> str:
         return self._step_name
@@ -171,6 +173,7 @@ class Step(ABC):
     def package_name(self) -> str:
         return self._package_name
 
+
     @abstractmethod
     def run(self, **kwargs):
         # Your code here
@@ -188,7 +191,9 @@ class Step(ABC):
         pass
 
     def pull(
-        self, data_version: Optional[str] = None, bucket: Optional[str] = None,
+        self,
+        data_version: Optional[str] = None,
+        bucket: Optional[str] = None,
     ):
         # Resolve None bucket
         if bucket is None:
@@ -199,7 +204,9 @@ class Step(ABC):
             upstream_task.checkout(data_version=data_version, bucket=bucket)
 
     def checkout(
-        self, data_version: Optional[str] = None, bucket: Optional[str] = None,
+        self,
+        data_version: Optional[str] = None,
+        bucket: Optional[str] = None,
     ):
         # Resolve None bucket
         if bucket is None:
@@ -244,12 +251,22 @@ class Step(ABC):
             )
 
         # Construct the package
+        pkg = quilt_utils.create_package(
+            manifest=self.manifest,
+            filepath_columns=self.filepath_columns,
+            metadata_columns=self.metadata_columns
+        )
+
+        # Add the manifest to the package and push
+        with TemporaryDirectory() as tempdir:
+            manifest_path = Path(tempdir, "manifest.csv")
+            self.manifest.to_csv(manifest_path, index=False)
+            pkg.set("manifest.csv", manifest_path)
 
         # TODO:
         # always check current branch for existing and merge from it
         # else make new branch
-
-        pass
+        pkg.push(push_target, self.storage_bucket)
 
     def __str__(self):
         return (
