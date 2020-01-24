@@ -6,7 +6,6 @@ import logging
 import os
 from abc import ABC, abstractmethod
 from pathlib import Path
-from tempfile import TemporaryDirectory
 from typing import Dict, List, Optional, Union
 from functools import wraps
 import inspect
@@ -251,10 +250,9 @@ class Step(ABC):
         )
 
         # Add the manifest to the package and push
-        with TemporaryDirectory() as tempdir:
-            manifest_path = Path(tempdir, "manifest.csv")
-            self.manifest.to_csv(manifest_path, index=False)
-            pkg.set("manifest.csv", manifest_path)
+        manifest_path = self.step_local_staging_dir / "manifest.csv"
+        self.manifest.to_csv(manifest_path, index=False)
+        pkg.set("manifest.csv", manifest_path)
 
         # TODO:
         # always check current branch for existing and merge from it
