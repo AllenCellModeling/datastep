@@ -55,8 +55,7 @@ def create_unique_logical_key(physical_key: Union[str, Path]) -> str:
 
 
 def make_json_serializable(
-    value: Any,
-    context: Optional[str] = None
+    value: Any, context: Optional[str] = None
 ) -> Union[bool, float, int, str, List, Dict]:
     # Try dumping to JSON string
     try:

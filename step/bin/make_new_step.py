@@ -19,14 +19,14 @@ from step import exceptions, file_utils, get_module_version
 ###############################################################################
 
 log = logging.getLogger()
-logging.basicConfig(level=logging.INFO,
-                    format='[%(levelname)4s:%(lineno)4s %(asctime)s] %(message)s')
+logging.basicConfig(
+    level=logging.INFO, format="[%(levelname)4s:%(lineno)4s %(asctime)s] %(message)s"
+)
 
 ###############################################################################
 
 
 class Args(argparse.Namespace):
-
     def __init__(self):
         # Arguments that could be passed in through the command line
         self.debug = False
@@ -34,25 +34,34 @@ class Args(argparse.Namespace):
         self.__parse()
 
     def __parse(self):
-        p = argparse.ArgumentParser(prog='make_new_step',
-                                    description='Generate new step and directory.')
-        p.add_argument('-v', '--version', action='version',
-                       version='%(prog)s ' + get_module_version())
-        p.add_argument('step_name', help='The name of the step.')
-        p.add_argument('--debug', action='store_true', dest='debug',
-                       help=argparse.SUPPRESS)
+        p = argparse.ArgumentParser(
+            prog="make_new_step", description="Generate new step and directory."
+        )
+        p.add_argument(
+            "-v",
+            "--version",
+            action="version",
+            version="%(prog)s " + get_module_version(),
+        )
+        p.add_argument("step_name", help="The name of the step.")
+        p.add_argument(
+            "--debug", action="store_true", dest="debug", help=argparse.SUPPRESS
+        )
         p.parse_args(namespace=self)
 
 
 ###############################################################################
 
-INIT_TEMPLATE = Template("""# -*- coding: utf-8 -*-
+INIT_TEMPLATE = Template(
+    """# -*- coding: utf-8 -*-
 
 from .{{ step_name }} import {{ truecase_step_name }}  # noqa: F401
 
-""")
+"""
+)
 
-STEP_TEMPLATE = Template("""#!/usr/bin/env python
+STEP_TEMPLATE = Template(
+    """#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import logging
@@ -92,7 +101,8 @@ class {{ truecase_step_name }}(Step):
         # any columns that should be parsed for metadata and attached to objects
         pass
 
-""")
+"""
+)
 
 
 ###############################################################################
@@ -116,7 +126,7 @@ def main():
                 "directory."
             )
         # Catch multiple found
-        elif(len(steps_dir_finds) > 1):
+        elif len(steps_dir_finds) > 1:
             raise exceptions.DirectoryNotFoundError(
                 f"Found multiple subdirectories named 'steps' in the current working "
                 f"directory. Found: {steps_dir_finds}"
@@ -161,5 +171,5 @@ def main():
 ###############################################################################
 # Allow caller to directly run this module (usually in development scenarios)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

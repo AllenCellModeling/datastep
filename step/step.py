@@ -34,6 +34,7 @@ def log_run_params(func):
             json.dump(params, write_out, default=str)
             log.debug(f"Stored params for run at: {parameter_store}")
         return func(self, *args, **kwargs)
+
     return wrapper
 
 
@@ -90,14 +91,14 @@ class Step(ABC):
                 )
             else:
                 self._step_local_staging_dir = file_utils.resolve_directory(
-                    f"{self.project_local_staging_dir / self.step_name}", make=True,
+                    f"{self.project_local_staging_dir / self.step_name}", make=True
                 )
 
         else:
             log.debug(f"Using default project and step configuration.")
             self._storage_bucket = constants.DEFAULT_QUILT_STORAGE
             self._project_local_staging_dir = file_utils.resolve_directory(
-                constants.DEFAULT_PROJECT_LOCAL_STAGING_DIR.format(cwd="."), make=True,
+                constants.DEFAULT_PROJECT_LOCAL_STAGING_DIR.format(cwd="."), make=True
             )
             self._step_local_staging_dir = file_utils.resolve_directory(
                 constants.DEFAULT_STEP_LOCAL_STAGING_DIR.format(
@@ -144,7 +145,6 @@ class Step(ABC):
         self._current_branch = repo.active_branch.name
         self._package_name = self.__module__.split(".")[0]
 
-
     @property
     def step_name(self) -> str:
         return self._step_name
@@ -173,7 +173,6 @@ class Step(ABC):
     def package_name(self) -> str:
         return self._package_name
 
-
     @abstractmethod
     def run(self, **kwargs):
         # Your code here
@@ -190,11 +189,7 @@ class Step(ABC):
         # any columns that should be parsed for metadata and attached to objects
         pass
 
-    def pull(
-        self,
-        data_version: Optional[str] = None,
-        bucket: Optional[str] = None,
-    ):
+    def pull(self, data_version: Optional[str] = None, bucket: Optional[str] = None):
         # Resolve None bucket
         if bucket is None:
             bucket = self.storage_bucket
@@ -204,9 +199,7 @@ class Step(ABC):
             upstream_task.checkout(data_version=data_version, bucket=bucket)
 
     def checkout(
-        self,
-        data_version: Optional[str] = None,
-        bucket: Optional[str] = None,
+        self, data_version: Optional[str] = None, bucket: Optional[str] = None
     ):
         # Resolve None bucket
         if bucket is None:
@@ -254,7 +247,7 @@ class Step(ABC):
         pkg = quilt_utils.create_package(
             manifest=self.manifest,
             filepath_columns=self.filepath_columns,
-            metadata_columns=self.metadata_columns
+            metadata_columns=self.metadata_columns,
         )
 
         # Add the manifest to the package and push

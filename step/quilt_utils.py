@@ -29,7 +29,7 @@ def validate_filepath(details: ValidationDetails) -> ValidationDetails:
             value=file_utils.resolve_filepath(details.value),
             index=details.index,
             origin_column=details.origin_column,
-            details_type=details.details_type
+            details_type=details.details_type,
         )
     except FileNotFoundError:
         raise FileNotFoundError(
@@ -55,14 +55,12 @@ def clean_metadata(details: ValidationDetails) -> ValidationDetails:
             value=str(details.value),
             index=details.index,
             origin_column=details.origin_column,
-            details_type=details.details_type
+            details_type=details.details_type,
         )
 
 
 def route_validator(
-    details: ValidationDetails,
-    manifest: pd.DataFrame,
-    progress_bar
+    details: ValidationDetails, manifest: pd.DataFrame, progress_bar
 ) -> ValidationDetails:
     if details.details_type == "path":
         result = validate_filepath(details)
@@ -82,10 +80,9 @@ def route_validator(
 
 # VALIDATION
 
+
 def validate_manifest(
-    manifest: pd.DataFrame,
-    filepath_columns: List[str],
-    metadata_columns: List[str]
+    manifest: pd.DataFrame, filepath_columns: List[str], metadata_columns: List[str]
 ):
     # Check filepath columns exist in manifest
     for col in filepath_columns:
@@ -109,22 +106,20 @@ def validate_manifest(
     # Create filepath validation details objects
     for col in filepath_columns:
         for i, row in manifest.iterrows():
-            details_to_validate_or_clean.append(ValidationDetails(
-                value=row[col],
-                index=i,
-                origin_column=col,
-                details_type="path"
-            ))
+            details_to_validate_or_clean.append(
+                ValidationDetails(
+                    value=row[col], index=i, origin_column=col, details_type="path"
+                )
+            )
 
     # Create metadata cleaning details objects
     for col in metadata_columns:
         for i, row in manifest.iterrows():
-            details_to_validate_or_clean.append(ValidationDetails(
-                value=row[col],
-                index=i,
-                origin_column=col,
-                details_type="metadata"
-            ))
+            details_to_validate_or_clean.append(
+                ValidationDetails(
+                    value=row[col], index=i, origin_column=col, details_type="metadata"
+                )
+            )
 
     # Create progress bar
     with tqdm(total=len(details_to_validate_or_clean), desc="Validating") as pbar:
@@ -145,6 +140,7 @@ def validate_manifest(
 ###############################################################################
 
 # PACKAGING
+
 
 def _recursive_clean(pkg: Package, metadata_reduction_map: Dict[str, bool]):
     # For all keys in current package level
@@ -193,7 +189,7 @@ def _recursive_clean(pkg: Package, metadata_reduction_map: Dict[str, bool]):
 def create_package(
     manifest: pd.DataFrame,
     filepath_columns: List[str] = ["filepath"],
-    metadata_columns: List[str] = []
+    metadata_columns: List[str] = [],
 ) -> Package:
     # Create empty package
     pkg = Package()
@@ -233,8 +229,7 @@ def create_package(
 
     # Set all files
     with tqdm(
-        total=len(filepath_columns) * len(manifest),
-        desc="Constructing package"
+        total=len(filepath_columns) * len(manifest), desc="Constructing package"
     ) as pbar:
         for col in filepath_columns:
             # Update values to the logical key as they are set
@@ -276,8 +271,7 @@ def create_package(
 
                         # Cast to JSON serializable type
                         v = file_utils.make_json_serializable(
-                            v,
-                            f"Value from column: {meta_col}, index: {i}"
+                            v, f"Value from column: {meta_col}, index: {i}"
                         )
 
                         # Update metadata with value
@@ -313,9 +307,11 @@ def create_package(
                                 # length of the entire list of values".
                                 # This runs quickly for small lists as seen here:
                                 # https://stackoverflow.com/questions/3844801/check-if-all-elements-in-a-list-are-identical
-                                metadata_reduction_map[meta_col] = (
-                                    joined_values.count(joined_values[0]) == len(joined_values)  # noqa F501
-                                )
+                                metadata_reduction_map[meta_col] = joined_values.count(
+                                    joined_values[0]
+                                ) == len(
+                                    joined_values
+                                )  # noqa F501
 
                             # Attached the joined values to the joined metadata
                             joined_meta[meta_col] = joined_values
@@ -344,8 +340,7 @@ def create_package(
 
         # Attach associates
         for i, associate_mapping in tqdm(
-            enumerate(associates),
-            desc="Creating associate metadata blocks"
+            enumerate(associates), desc="Creating associate metadata blocks"
         ):
             for col, lk in associate_mapping.items():
                 # Having dictionary expansion in this order means that associates will
