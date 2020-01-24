@@ -243,7 +243,7 @@ class Step(ABC):
             )
 
         # Construct the package
-        pkg = quilt_utils.create_package(
+        step_pkg = quilt_utils.create_package(
             manifest=self.manifest,
             filepath_columns=self.filepath_columns,
             metadata_columns=self.metadata_columns,
@@ -252,12 +252,32 @@ class Step(ABC):
         # Add the manifest to the package and push
         manifest_path = self.step_local_staging_dir / "manifest.csv"
         self.manifest.to_csv(manifest_path, index=False)
-        pkg.set("manifest.csv", manifest_path)
+        step_pkg.set("manifest.csv", manifest_path)
 
         # TODO:
+        # check quilt for top level package at current branch
+
+        # Browse top level project package
+        p = quilt3.Package.browse(self.package_name, self.storage_bucket)
+
+        # Check to see if step data exists on this branch in quilt
+        try:
+            quilt_loc = p[push_target]  # noqa: F841
+            # if it does, merge into it
+            for (logical_key, physical_key) in p.walk():
+                p.set(str(Path(self.step_name) / logical_key), physical_key)
+
+        # If it doesn't exist, create it
+        except KeyError:
+            pass
         # always check current branch for existing and merge from it
         # else make new branch
-        pkg.push(push_target, self.storage_bucket)
+
+        step_pkg.push(
+            push_target,
+            self.storage_bucket,
+            message=f"data created from code at git commit {repo.head.object.hexsha}",
+        )
 
     def __str__(self):
         return (
