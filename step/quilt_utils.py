@@ -8,9 +8,8 @@ from pathlib import Path
 from typing import Dict, List, NamedTuple, Union
 
 import pandas as pd
+from quilt3.packages import Package, PackageEntry
 from tqdm import tqdm
-
-from quilt.packages import Package, PackageEntry
 
 from . import file_utils
 
