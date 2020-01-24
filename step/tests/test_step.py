@@ -17,7 +17,7 @@ class Test(Step):
     def __init__(self, direct_upstream_tasks=None, config=None):
         super().__init__(direct_upstream_tasks, config)
 
-    def run(self, a=1):
+    def _run(self, a=1):
         print(a)
 
 
