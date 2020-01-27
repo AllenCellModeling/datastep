@@ -210,7 +210,8 @@ class Step(ABC):
             bucket = self.storage_bucket
 
         # Run checkout for each upstream
-        for upstream_task in self.upstream_tasks:
+        for UpstreamTask in self.upstream_tasks:
+            upstream_task = UpstreamTask()
             upstream_task.checkout(data_version=data_version, bucket=bucket)
 
     def checkout(
@@ -229,14 +230,16 @@ class Step(ABC):
 
         # Check to see if step data exists on this branch in quilt
         try:
-            quilt_loc = p[f"{quilt_loc}/{self.current_branch}/{self.step_name}"]
+            quilt_branch_step = f"{self.current_branch}/{self.step_name}"
+            p[quilt_branch_step]
 
         # If not, use the version on master
         except KeyError:
-            quilt_loc = p[f"{quilt_loc}/master/{self.step_name}"]
+            quilt_branch_step = f"master/{self.step_name}"
+            p[quilt_branch_step]
 
         # Fetch the data and save it to the local staging dir
-        p[quilt_loc].fetch(self.step_local_staging_dir)
+        p[quilt_branch_step].fetch(self.step_local_staging_dir)
 
     def push(self, bucket: Optional[str] = None):
         # Resolve None bucket
@@ -262,7 +265,7 @@ class Step(ABC):
 
         # Construct the package
         step_pkg = quilt_utils.create_package(
-            orig_manifest=self.manifest,
+            manifest=self.manifest,
             filepath_columns=self.filepath_columns,
             metadata_columns=self.metadata_columns,
         )
