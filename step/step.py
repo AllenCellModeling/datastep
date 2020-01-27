@@ -141,6 +141,7 @@ class Step(ABC):
             log.debug(f"Stored params for run at: {parameter_store}")
 
         # Set defaults
+        # TODO log manifest find or not
         manifest_path = Path(self.step_local_staging_dir / "manifest.csv")
         if manifest_path.is_file():
             self.manifest = pd.read_csv(manifest_path)
@@ -149,6 +150,7 @@ class Step(ABC):
         self.filepath_columns = ["filepath"]
         self.metadata_columns = []
 
+        # TODO move to functions
         # figure out what branch we're on and what package we're a part of
         repo = git.Repo(Path(".").expanduser().resolve())
         self._current_branch = repo.active_branch.name
@@ -266,6 +268,7 @@ class Step(ABC):
         )
 
         # Add the manifest to the package
+        # TODO error on None manifest
         manifest_path = self.step_local_staging_dir / "manifest.csv"
         self.manifest.to_csv(manifest_path, index=False)
         step_pkg.set("manifest.csv", manifest_path)
@@ -273,11 +276,11 @@ class Step(ABC):
         # Browse top level project package and add / overwrite to it in step dir
         project_pkg = quilt3.Package.browse(quilt_loc, self.storage_bucket)
         for (logical_key, pkg_entry) in step_pkg.walk():
-            project_pkg.set(str(Path(self.step_name) / logical_key), pkg_entry)
+            project_pkg.set(f"{self.step_name}/{logical_key}", pkg_entry)
 
         # push updated top level project data package to quilt
         project_pkg.push(
-            push_target,
+            quilt_loc,
             self.storage_bucket,
             message=f"data created from code at git commit {repo.head.object.hexsha}",
         )
