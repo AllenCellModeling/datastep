@@ -249,29 +249,15 @@ class Step(ABC):
             metadata_columns=self.metadata_columns,
         )
 
-        # Add the manifest to the package and push
+        # Add the manifest to the package
         manifest_path = self.step_local_staging_dir / "manifest.csv"
         self.manifest.to_csv(manifest_path, index=False)
         step_pkg.set("manifest.csv", manifest_path)
 
-        # TODO:
-        # check quilt for top level package at current branch
-
-        # Browse top level project package
-        p = quilt3.Package.browse(self.package_name, self.storage_bucket)
-
-        # Check to see if step data exists on this branch in quilt
-        try:
-            quilt_loc = p[push_target]  # noqa: F841
-            # if it does, merge into it
-            for (logical_key, physical_key) in p.walk():
-                p.set(str(Path(self.step_name) / logical_key), physical_key)
-
-        # If it doesn't exist, create it
-        except KeyError:
-            pass
-        # always check current branch for existing and merge from it
-        # else make new branch
+        # Browse top level project package and add / overwrite to it in step dir
+        project_pkg = quilt3.Package.browse(self.package_name, self.storage_bucket)
+        for (logical_key, pkg_entry) in step_pkg.walk():
+            project_pkg.set(str(Path(self.step_name) / logical_key), pkg_entry)
 
         step_pkg.push(
             push_target,
