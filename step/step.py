@@ -262,7 +262,7 @@ class Step(ABC):
 
         # Construct the package
         step_pkg = quilt_utils.create_package(
-            manifest=self.manifest,
+            orig_manifest=self.manifest,
             filepath_columns=self.filepath_columns,
             metadata_columns=self.metadata_columns,
         )
@@ -276,14 +276,13 @@ class Step(ABC):
         # Browse top level project package and add / overwrite to it in step dir
         project_pkg = quilt3.Package.browse(quilt_loc, self.storage_bucket)
         for (logical_key, pkg_entry) in step_pkg.walk():
-            project_pkg.set(f"{self.step_name}/{logical_key}", pkg_entry)
+            project_pkg.set(
+                f"{self.current_branch}/{self.step_name}/{logical_key}", pkg_entry
+            )
 
         # push updated top level project data package to quilt
-        project_pkg.push(
-            quilt_loc,
-            self.storage_bucket,
-            message=f"data created from code at git commit {repo.head.object.hexsha}",
-        )
+        message = f"data created from code repo {repo.remotes.origin.url} on branch {self.current_branch} at commit {repo.head.object.hexsha}"  # noqa: E501
+        project_pkg.push(quilt_loc, self.storage_bucket, message=message)
 
     def __str__(self):
         return (
