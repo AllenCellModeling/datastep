@@ -10,6 +10,7 @@ from typing import Dict, List, Optional, Union
 from functools import wraps
 import inspect
 
+import pandas as pd
 import quilt3
 import git
 
@@ -69,6 +70,10 @@ class Step(ABC):
             self._storage_bucket = config.get(
                 "quilt_storage_bucket", constants.DEFAULT_QUILT_STORAGE
             )
+            # Get or default
+            self._quilt_package_owner = config.get(
+                "quilt_package_owner", constants.DEFAULT_QUILT_PACKAGE_OWNER
+            )
 
             # Get or default project local staging
             self._project_local_staging_dir = file_utils.resolve_directory(
@@ -96,6 +101,7 @@ class Step(ABC):
         else:
             log.debug(f"Using default project and step configuration.")
             self._storage_bucket = constants.DEFAULT_QUILT_STORAGE
+            self._quilt_package_owner = constants.DEFAULT_QUILT_PACKAGE_OWNER
             self._project_local_staging_dir = file_utils.resolve_directory(
                 constants.DEFAULT_PROJECT_LOCAL_STAGING_DIR.format(cwd="."), make=True
             )
@@ -135,7 +141,11 @@ class Step(ABC):
             log.debug(f"Stored params for run at: {parameter_store}")
 
         # Set defaults
-        self.manifest = None
+        manifest_path = Path(self.step_local_staging_dir / "manifest.csv")
+        if manifest_path.is_file():
+            self.manifest = pd.read_csv(manifest_path)
+        else:
+            self.manifest = None
         self.filepath_columns = ["filepath"]
         self.metadata_columns = []
 
@@ -171,6 +181,10 @@ class Step(ABC):
     @property
     def package_name(self) -> str:
         return self._package_name
+
+    @property
+    def quilt_package_owner(self) -> str:
+        return self._quilt_package_owner
 
     @abstractmethod
     def run(self, **kwargs):
@@ -208,15 +222,16 @@ class Step(ABC):
         # Check for files on this branch and default to master
 
         # Browse top level project package
-        p = quilt3.Package.browse(self.package_name, bucket, top_hash=data_version)
+        quilt_loc = f"{self.quilt_package_owner}/{self.package_name}"
+        p = quilt3.Package.browse(quilt_loc, bucket, top_hash=data_version)
 
         # Check to see if step data exists on this branch in quilt
         try:
-            quilt_loc = p[f"{self.package_name}/{self.current_branch}/{self.step_name}"]
+            quilt_loc = p[f"{quilt_loc}/{self.current_branch}/{self.step_name}"]
 
         # If not, use the version on master
         except KeyError:
-            quilt_loc = p[f"{self.package_name}/master/{self.step_name}"]
+            quilt_loc = p[f"{quilt_loc}/master/{self.step_name}"]
 
         # Fetch the data and save it to the local staging dir
         p[quilt_loc].fetch(self.step_local_staging_dir)
@@ -230,7 +245,8 @@ class Step(ABC):
         repo = git.Repo(Path(".").expanduser().resolve())
 
         # Resolve push target
-        push_target = f"{self.package_name}/{self.current_branch}/{self.step_name}"
+        quilt_loc = f"{self.quilt_package_owner}/{self.package_name}"
+        push_target = f"{quilt_loc}/{self.current_branch}/{self.step_name}"
 
         # Check current git status
         if repo.is_dirty() or len(repo.untracked_files) > 0:
@@ -255,11 +271,12 @@ class Step(ABC):
         step_pkg.set("manifest.csv", manifest_path)
 
         # Browse top level project package and add / overwrite to it in step dir
-        project_pkg = quilt3.Package.browse(self.package_name, self.storage_bucket)
+        project_pkg = quilt3.Package.browse(quilt_loc, self.storage_bucket)
         for (logical_key, pkg_entry) in step_pkg.walk():
             project_pkg.set(str(Path(self.step_name) / logical_key), pkg_entry)
 
-        step_pkg.push(
+        # push updated top level project data package to quilt
+        project_pkg.push(
             push_target,
             self.storage_bucket,
             message=f"data created from code at git commit {repo.head.object.hexsha}",
