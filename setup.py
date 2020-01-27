@@ -17,9 +17,7 @@ test_requirements = [
     "pytest-raises",
 ]
 
-setup_requirements = [
-    "pytest-runner",
-]
+setup_requirements = ["pytest-runner"]
 
 dev_requirements = [
     "bumpversion>=0.5.3",
@@ -38,18 +36,15 @@ dev_requirements = [
     "wheel>=0.33.1",
 ]
 
-interactive_requirements = [
-    "altair",
-    "jupyterlab",
-    "matplotlib",
-]
+interactive_requirements = ["altair", "jupyterlab", "matplotlib"]
 
 requirements = [
+    "boto3>=1.11.9",
     "gitpython>=3.0.5",
     "jinja2>=2.10.3",
     "pandas",
     "python-dateutil<=2.8.0",
-    "quilt3>=3.1.7",
+    "quilt3>=3.1.10",
     "tqdm",
 ]
 
@@ -63,8 +58,8 @@ extra_requirements = {
         *test_requirements,
         *setup_requirements,
         *dev_requirements,
-        *interactive_requirements
-    ]
+        *interactive_requirements,
+    ],
 }
 
 setup(
@@ -79,11 +74,7 @@ setup(
         "Programming Language :: Python :: 3.7",
     ],
     description="A base class and utilities for creating steps in DAGs.",
-    entry_points={
-        "console_scripts": [
-            "make_new_step=step.bin.make_new_step:main"
-        ],
-    },
+    entry_points={"console_scripts": ["make_new_step=step.bin.make_new_step:main"]},
     install_requires=requirements,
     license="Allen Institute Software License",
     long_description=readme,
