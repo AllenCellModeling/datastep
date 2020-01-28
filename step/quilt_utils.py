@@ -188,6 +188,7 @@ def _recursive_clean(pkg: Package, metadata_reduction_map: Dict[str, bool]):
 
 def create_package(
     manifest: pd.DataFrame,
+    step_pkg_root: Path,
     filepath_columns: List[str] = ["filepath"],
     metadata_columns: List[str] = [],
 ) -> Package:
@@ -249,8 +250,8 @@ def create_package(
                 # and b/0.tiff, and, a/1.tiff and b/1.tiff being grouped together. To
                 # solve this we can prepend a the first couple of characters from a
                 # hash of the fully resolved path to the logical key.
-                unique_file_name = file_utils.create_unique_logical_key(physical_key)
-                logical_key = f"{col}/{unique_file_name}"
+
+                logical_key = str(physical_key.relative_to(step_pkg_root.resolve()))
                 if physical_key.is_file():
                     manifest[col].values[i] = logical_key
 

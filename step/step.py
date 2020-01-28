@@ -266,6 +266,7 @@ class Step(ABC):
         # Construct the package
         step_pkg = quilt_utils.create_package(
             manifest=self.manifest,
+            step_pkg_root = self.step_local_staging_dir,
             filepath_columns=self.filepath_columns,
             metadata_columns=self.metadata_columns,
         )
