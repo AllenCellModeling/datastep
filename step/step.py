@@ -29,7 +29,7 @@ def log_run_params(func):
     def wrapper(self, *args, **kwargs):
         params = inspect.signature(func).bind(self, *args, **kwargs).arguments
         params.pop("self")
-        parameter_store = self.step_local_staging_dir / "non_default_parameters.json"
+        parameter_store = self.step_local_staging_dir / "run_parameters.json"
         with open(parameter_store, "w") as write_out:
             json.dump(params, write_out, default=str)
             log.debug(f"Stored params for run at: {parameter_store}")
@@ -266,7 +266,7 @@ class Step(ABC):
         # Construct the package
         step_pkg = quilt_utils.create_package(
             manifest=self.manifest,
-            step_pkg_root = self.step_local_staging_dir,
+            step_pkg_root=self.step_local_staging_dir,
             filepath_columns=self.filepath_columns,
             metadata_columns=self.metadata_columns,
         )
@@ -276,6 +276,11 @@ class Step(ABC):
         manifest_path = self.step_local_staging_dir / "manifest.csv"
         self.manifest.to_csv(manifest_path, index=False)
         step_pkg.set("manifest.csv", manifest_path)
+
+        # Add the params files to the package
+        for param_file in ["run_parameters.json", "init_parameters.json"]:
+            param_file_path = self.step_local_staging_dir / param_file
+            step_pkg.set(param_file, param_file_path)
 
         # Browse top level project package and add / overwrite to it in step dir
         project_pkg = quilt3.Package.browse(quilt_loc, self.storage_bucket)
