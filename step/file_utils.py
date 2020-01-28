@@ -67,3 +67,27 @@ def make_json_serializable(
             context = ""
         log.debug(f"Casting {value} to string to make JSON serializable. {context}")
         return str(value)
+
+
+def _filepath_rel2abs(filepath: Path, prefixpath: Path = Path(".")) -> Path:
+    return (prefixpath / filepath).resolve()
+
+
+def _filepath_abs2rel(filepath: Path, otherpath: Path = Path(".")) -> Path:
+    return filepath.resolve().relative_to(otherpath.resolve())
+
+
+def manifest_filepaths_rel2abs(mystep):
+    for col in mystep.filepath_columns:
+        mystep.manifest[col] = mystep.manifest[col].apply(
+            lambda x: str(
+                _filepath_rel2abs(Path(x), prefixpath=mystep.step_local_staging_dir)
+            )
+        )
+
+
+def manifest_filepaths_abs2rel(mystep):
+    for col in mystep.filepath_columns:
+        mystep.manifest[col] = mystep.manifest[col].apply(
+            lambda x: str(_filepath_abs2rel(Path(x), mystep.step_local_staging_dir))
+        )
