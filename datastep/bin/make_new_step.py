@@ -14,7 +14,7 @@ from pathlib import Path
 
 from jinja2 import Template
 
-from step import exceptions, file_utils, get_module_version
+from datastep import exceptions, file_utils, get_module_version
 
 ###############################################################################
 
@@ -68,7 +68,7 @@ import logging
 from pathlib import Path
 from typing import Dict, List, Optional, Union
 
-from step import Step, log_run_params
+from datastep import Step, log_params
 
 ###############################################################################
 

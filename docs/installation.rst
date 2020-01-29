@@ -8,13 +8,13 @@ Installation
 Stable release
 --------------
 
-To install step, run this command in your terminal:
+To install datastep, run this command in your terminal:
 
 .. code-block:: console
 
-    $ pip install step
+    $ pip install datastep
 
-This is the preferred method to install step, as it will always install the most recent stable release.
+This is the preferred method to install datastep, as it will always install the most recent stable release.
 
 If you don't have `pip`_ installed, this `Python installation guide`_ can guide
 you through the process.
@@ -26,19 +26,19 @@ you through the process.
 From sources
 ------------
 
-The sources for step can be downloaded from the `Github repo`_.
+The sources for datastep can be downloaded from the `Github repo`_.
 
 You can either clone the public repository:
 
 .. code-block:: console
 
-    $ git clone git://github.com/AllenCellModeling/step
+    $ git clone git://github.com/AllenCellModeling/datastep
 
 Or download the `tarball`_:
 
 .. code-block:: console
 
-    $ curl  -OL https://github.com/AllenCellModeling/step/tarball/master
+    $ curl  -OL https://github.com/AllenCellModeling/datastep/tarball/master
 
 Once you have a copy of the source, you can install it with:
 
@@ -47,5 +47,5 @@ Once you have a copy of the source, you can install it with:
     $ python setup.py install
 
 
-.. _Github repo: https://github.com/AllenCellModeling/step
-.. _tarball: https://github.com/AllenCellModeling/step/tarball/master
+.. _Github repo: https://github.com/AllenCellModeling/datastep
+.. _tarball: https://github.com/AllenCellModeling/datastep/tarball/master

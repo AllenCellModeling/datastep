@@ -3,7 +3,7 @@
 
 import pytest
 
-from step import file_utils
+from datastep import file_utils
 
 ###############################################################################
 

@@ -49,9 +49,9 @@ build: ## run tox / run tests and lint
 	tox
 
 gen-docs: ## generate Sphinx HTML documentation, including API docs
-	rm -f docs/step*.rst
+	rm -f docs/datastep*.rst
 	rm -f docs/modules.rst
-	sphinx-apidoc -o docs/ step **/tests/
+	sphinx-apidoc -o docs/ datastep **/tests/
 	$(MAKE) -C docs html
 
 docs: ## generate Sphinx HTML documentation and serve to browser
