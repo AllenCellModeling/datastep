@@ -68,7 +68,7 @@ import logging
 from pathlib import Path
 from typing import Dict, List, Optional, Union
 
-from step import Step, log_params
+from step import Step, log_run_params
 
 ###############################################################################
 
@@ -85,20 +85,21 @@ class {{ truecase_step_name }}(Step):
     ):
         super().__init__(direct_upstream_tasks, config)
 
-    @log_params
+    @log_run_params
     def run(self, **kwargs):
         # Your code here
         #
-        # The `self.step_local_staging_dir` is exposed to save files in
+        # The `self.step_local_staging_dir` is exposed for you to save files in
         #
-        # The user should set `self.manifest` to a dataframe of relative paths that
-        # point to the created files and each files metadata
+        # You should set `self.manifest` to a dataframe of relative paths that
+        # point to the created files and each file's metadata
         #
         # By default, `self.filepath_columns` is ["filepath"], but should be edited
-        # if there are more than a single column of filepaths
+        # if there are more than a single column of filepaths in your manifest.
         #
         # By default, `self.metadata_columns` is [], but should be edited to include
         # any columns that should be parsed for metadata and attached to objects
+
         pass
 
 """
