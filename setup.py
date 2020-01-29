@@ -66,7 +66,7 @@ setup(
     author="Jackson Maxfield Brown",
     author_email="jacksonb@alleninstitute.org",
     classifiers=[
-        "Development Status :: 2 - Pre-Alpha",
+        "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
         "License :: Free for non-commercial use",
         "Natural Language :: English",
