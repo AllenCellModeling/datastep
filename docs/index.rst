@@ -1,4 +1,4 @@
-Welcome to step's documentation!
+Welcome to datastep's documentation!
 ======================================
 
 .. toctree::

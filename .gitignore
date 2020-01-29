@@ -67,7 +67,7 @@ instance/
 
 # Sphinx documentation
 docs/_build/
-docs/step.*rst
+docs/datastep.*rst
 
 # PyBuilder
 target/

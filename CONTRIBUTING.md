@@ -4,20 +4,20 @@ Contributions are welcome, and they are greatly appreciated! Every little bit
 helps, and credit will always be given.
 
 ## Get Started!
-Ready to contribute? Here's how to set up `step` for local development.
+Ready to contribute? Here's how to set up `datastep` for local development.
 
-* Fork the `step` repo on GitHub.
+* Fork the `datastep` repo on GitHub.
 * Clone your fork locally:
 
 ```
-$ git clone --recurse-submodules git@github.com:{your_name_here}/step.git
+$ git clone --recurse-submodules git@github.com:{your_name_here}/datastep.git
 ```
 
 * Install the project in editable mode. (It is also recommended to work in a
 virtualenv or anaconda environment):
 
 ```
-$ cd step/
+$ cd datastep/
 $ pip install -e .[dev]
 ```
 

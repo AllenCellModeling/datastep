@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-"""Top-level package for step."""
+"""Top-level package for datastep."""
 
 __author__ = "Jackson Maxfield Brown"
 __email__ = "jacksonb@alleninstitute.org"

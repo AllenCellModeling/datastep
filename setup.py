@@ -73,22 +73,25 @@ setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
     ],
-    description="A base class and utilities for creating steps in DAGs.",
-    entry_points={"console_scripts": ["make_new_step=step.bin.make_new_step:main"]},
+    description="A base class and utilities for creating steps in DAGs that are tied "
+    "to large amounts of data.",
+    entry_points={"console_scripts": [
+        "make_new_step=datastep.bin.make_new_datastep:main"
+    ]},
     install_requires=requirements,
     license="Allen Institute Software License",
     long_description=readme,
     long_description_content_type="text/markdown",
     include_package_data=True,
-    keywords="step",
-    name="step",
+    keywords="datastep, DAG, data, stepwise",
+    name="datastep",
     packages=find_packages(exclude=["tests", "*.tests", "*.tests.*"]),
     python_requires=">=3.6",
     setup_requires=setup_requirements,
-    test_suite="step/tests",
+    test_suite="datastep/tests",
     tests_require=test_requirements,
     extras_require=extra_requirements,
-    url="https://github.com/AllenCellModeling/step",
+    url="https://github.com/AllenCellModeling/datastep",
     # Do not edit this string manually, always use bumpversion
     # Details in CONTRIBUTING.rst
     version="0.1.0",

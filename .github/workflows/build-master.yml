@@ -31,7 +31,7 @@ jobs:
         pip install .[test]
     - name: Test with pytest
       run: |
-        pytest --cov-report xml --cov=step step/tests/
+        pytest --cov-report xml --cov=datastep datastep/tests/
         codecov -t ${{ secrets.CODECOV_TOKEN }}
 
   lint:
@@ -49,4 +49,4 @@ jobs:
         pip install .[test]
     - name: Lint with flake8
       run: |
-        flake8 step --count --verbose --max-line-length=127 --show-source --statistics
+        flake8 datastep --count --verbose --max-line-length=127 --show-source --statistics

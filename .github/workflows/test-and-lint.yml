@@ -23,7 +23,7 @@ jobs:
         pip install .[test]
     - name: Test with pytest
       run: |
-        pytest step/tests/
+        pytest datastep/tests/
 
   lint:
     runs-on: ubuntu-latest
@@ -40,4 +40,4 @@ jobs:
         pip install .[test]
     - name: Lint with flake8
       run: |
-        flake8 step --count --verbose --max-line-length=127 --show-source --statistics
+        flake8 datastep --count --verbose --max-line-length=127 --show-source --statistics
