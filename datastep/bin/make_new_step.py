@@ -207,27 +207,22 @@ def main():
         # Format the __all__ modules list
         current_module_all_list_line = line_match__all__(current_all_steps_init_text)
         current_module_all_list = list_match_in_line(
-            current_module_all_list_line,
-            current_all_steps_init_text
+            current_module_all_list_line, current_all_steps_init_text
         )
         new_module_all_list = insert_new_class(
-            current_module_all_list,
-            truecase_step_name
+            current_module_all_list, truecase_step_name
         )
 
         # Format the new last manual import
         current_last_import_line = find_last_import_line(current_all_steps_init_text)
         new_last_import_line = insert_new_import(
-            current_last_import_line,
-            truecase_step_name, step_name
+            current_last_import_line, truecase_step_name, step_name
         )
 
         # Replace old strings with new ones
         new_all_steps_init_text = current_all_steps_init_text.replace(
             current_module_all_list, new_module_all_list
-        ).replace(
-            current_last_import_line, new_last_import_line
-        )
+        ).replace(current_last_import_line, new_last_import_line)
 
         # Write the new all steps init file
         with open(all_steps_init, "w") as write_all_steps_init:
