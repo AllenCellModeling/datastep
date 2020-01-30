@@ -4,7 +4,8 @@
 import pytest
 
 from datastep import file_utils
-from .test_step import ExampleStep
+
+from .example_step import ExampleStep
 
 ###############################################################################
 

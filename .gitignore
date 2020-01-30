@@ -107,3 +107,7 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+
+# Test generated files
+example/
