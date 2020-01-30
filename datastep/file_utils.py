@@ -74,7 +74,7 @@ def _filepath_rel2abs(filepath: Path, prefixpath: Path = Path(".")) -> Path:
 
 
 def _filepath_abs2rel(filepath: Path, otherpath: Path = Path(".")) -> Path:
-    return filepath.resolve().relative_to(otherpath.resolve())
+    return (otherpath / filepath).resolve().relative_to(otherpath.resolve())
 
 
 def manifest_filepaths_rel2abs(mystep):
