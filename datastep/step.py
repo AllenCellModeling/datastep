@@ -1,18 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import inspect
 import json
 import logging
 import os
 from abc import ABC, abstractmethod
+from functools import wraps
 from pathlib import Path
 from typing import Dict, List, Optional, Union
-from functools import wraps
-import inspect
 
+import git
 import pandas as pd
 import quilt3
-import git
 
 from . import constants, exceptions, file_utils, quilt_utils
 
@@ -194,7 +194,7 @@ class Step(ABC):
         #
         # The `self.step_local_staging_dir` is exposed to save files in
         #
-        # The user should set `self.manifest` to a dataframe of relative paths that
+        # The user should set `self.manifest` to a dataframe of absolute paths that
         # point to the created files and each files metadata
         #
         # By default, `self.filepath_columns` is ["filepath"], but should be edited
