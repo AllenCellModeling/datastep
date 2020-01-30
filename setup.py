@@ -40,6 +40,7 @@ interactive_requirements = ["altair", "jupyterlab", "matplotlib"]
 
 requirements = [
     "boto3>=1.11.9",
+    "docutils<0.16",
     "gitpython>=3.0.5",
     "jinja2>=2.10.3",
     "pandas",
@@ -76,7 +77,7 @@ setup(
     description="A base class and utilities for creating steps in DAGs that are tied "
     "to large amounts of data.",
     entry_points={"console_scripts": [
-        "make_new_step=datastep.bin.make_new_datastep:main"
+        "make_new_step=datastep.bin.make_new_step:main"
     ]},
     install_requires=requirements,
     license="Allen Institute Software License",

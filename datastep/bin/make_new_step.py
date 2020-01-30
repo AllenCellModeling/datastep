@@ -3,11 +3,12 @@
 
 """
 This sample script will get deployed in the bin directory of the
-users' virtualenv when the parent module is installed using pip.
+user's virtualenv when the parent module is installed using pip.
 """
 
 import argparse
 import logging
+import re
 import sys
 import traceback
 from pathlib import Path
@@ -52,11 +53,49 @@ class Args(argparse.Namespace):
 
 ###############################################################################
 
+# find where __all__ is set in the init file
+def line_match__all__(py_txt):
+    lines = [line for line in py_txt.split("\n") if "__all__" in line]
+    assert len(lines) == 1
+    return lines[0]
+
+
+# find the string match for the list of classes that are set in __all__
+def list_match_in_line(line, py_txt):
+    class_list_str = re.findall(r"\[(.+?)\]", py_txt)
+    assert len(class_list_str) == 1
+    return class_list_str[0]
+
+
+# insert the new class into the list set in __all__
+def insert_new_class(old_list_string, new_class_name_string):
+    new_list_string = f'{old_list_string}, "{new_class_name_string}"'
+    return new_list_string
+
+
+# find the last line of relative imports
+def find_last_import_line(py_txt):
+    lines = [line for line in py_txt.split("\n") if "from ." in line]
+    return lines[-1]
+
+
+# append our new import to the last one
+def insert_new_import(last_old_line, new_class_name_string, new_class_dir_string):
+    return (
+        f"{last_old_line}\n"
+        f"from .{new_class_dir_string} import {new_class_name_string}"
+    )
+
+
+###############################################################################
+
+
 INIT_TEMPLATE = Template(
     """# -*- coding: utf-8 -*-
 
 from .{{ step_name }} import {{ truecase_step_name }}  # noqa: F401
 
+__all__ = ["{{ truecase_step_name }}"]
 """
 )
 
@@ -68,7 +107,7 @@ import logging
 from pathlib import Path
 from typing import Dict, List, Optional, Union
 
-from datastep import Step, log_params
+from datastep import Step, log_run_params
 
 ###############################################################################
 
@@ -89,17 +128,16 @@ class {{ truecase_step_name }}(Step):
     def run(self, **kwargs):
         # Your code here
         #
-        # The `self.step_local_staging_dir` is exposed for you to save files in
+        # The `self.step_local_staging_dir` is exposed to save files in
         #
-        # You should set `self.manifest` to a dataframe of relative paths that
-        # point to the created files and each file's metadata
+        # The user should set `self.manifest` to a dataframe of absolute paths that
+        # point to the created files and each files metadata
         #
         # By default, `self.filepath_columns` is ["filepath"], but should be edited
-        # if there are more than a single column of filepaths in your manifest.
+        # if there are more than a single column of filepaths
         #
         # By default, `self.metadata_columns` is [], but should be edited to include
         # any columns that should be parsed for metadata and attached to objects
-
         pass
 
 """
@@ -158,6 +196,37 @@ def main():
             write_step_file.write(
                 STEP_TEMPLATE.render(truecase_step_name=truecase_step_name)
             )
+
+        # Mutate the all steps dir init file to include the new step
+        all_steps_init = all_steps_dir / "__init__.py"
+
+        # Read all steps init
+        with open(all_steps_init, "r") as read_all_steps_init:
+            current_all_steps_init_text = read_all_steps_init.read()
+
+        # Format the __all__ modules list
+        current_module_all_list_line = line_match__all__(current_all_steps_init_text)
+        current_module_all_list = list_match_in_line(
+            current_module_all_list_line, current_all_steps_init_text
+        )
+        new_module_all_list = insert_new_class(
+            current_module_all_list, truecase_step_name
+        )
+
+        # Format the new last manual import
+        current_last_import_line = find_last_import_line(current_all_steps_init_text)
+        new_last_import_line = insert_new_import(
+            current_last_import_line, truecase_step_name, step_name
+        )
+
+        # Replace old strings with new ones
+        new_all_steps_init_text = current_all_steps_init_text.replace(
+            current_module_all_list, new_module_all_list
+        ).replace(current_last_import_line, new_last_import_line)
+
+        # Write the new all steps init file
+        with open(all_steps_init, "w") as write_all_steps_init:
+            write_all_steps_init.write(new_all_steps_init_text)
 
     except Exception as e:
         log.error("=============================================")
