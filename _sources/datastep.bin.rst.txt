@@ -1,0 +1,22 @@
+datastep.bin package
+====================
+
+Submodules
+----------
+
+datastep.bin.make\_new\_step module
+-----------------------------------
+
+.. automodule:: datastep.bin.make_new_step
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: datastep.bin
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,440 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>datastep package &mdash; datastep 0.1.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="datastep.bin package" href="datastep.bin.html" />
+    <link rel="prev" title="datastep" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> datastep
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#stable-release">Stable release</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#from-sources">From sources</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Package modules</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">datastep package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="datastep.bin.html">datastep.bin package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-datastep.constants">datastep.constants module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-datastep.exceptions">datastep.exceptions module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-datastep.file_utils">datastep.file_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-datastep.quilt_utils">datastep.quilt_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-datastep.step">datastep.step module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-datastep">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#get-started">Get Started!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#deploying">Deploying</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">datastep</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modules.html">datastep</a> &raquo;</li>
+        
+      <li>datastep package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/datastep.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
+      
+        <a href="datastep.bin.html" class="btn btn-neutral float-right" title="datastep.bin package" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="modules.html" class="btn btn-neutral float-left" title="datastep" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+  </div>
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="datastep-package">
+<h1>datastep package<a class="headerlink" href="#datastep-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="datastep.bin.html">datastep.bin package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="datastep.bin.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datastep.bin.html#module-datastep.bin.make_new_step">datastep.bin.make_new_step module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datastep.bin.html#module-datastep.bin">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-datastep.constants">
+<span id="datastep-constants-module"></span><h2>datastep.constants module<a class="headerlink" href="#module-datastep.constants" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-datastep.exceptions">
+<span id="datastep-exceptions-module"></span><h2>datastep.exceptions module<a class="headerlink" href="#module-datastep.exceptions" title="Permalink to this headline">¶</a></h2>
+<dl class="exception">
+<dt id="datastep.exceptions.DirectoryNotFoundError">
+<em class="property">exception </em><code class="sig-prename descclassname">datastep.exceptions.</code><code class="sig-name descname">DirectoryNotFoundError</code><a class="reference internal" href="_modules/datastep/exceptions.html#DirectoryNotFoundError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.exceptions.DirectoryNotFoundError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="datastep.exceptions.InvalidGitStatus">
+<em class="property">exception </em><code class="sig-prename descclassname">datastep.exceptions.</code><code class="sig-name descname">InvalidGitStatus</code><a class="reference internal" href="_modules/datastep/exceptions.html#InvalidGitStatus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.exceptions.InvalidGitStatus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-datastep.file_utils">
+<span id="datastep-file-utils-module"></span><h2>datastep.file_utils module<a class="headerlink" href="#module-datastep.file_utils" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="datastep.file_utils.create_unique_logical_key">
+<code class="sig-prename descclassname">datastep.file_utils.</code><code class="sig-name descname">create_unique_logical_key</code><span class="sig-paren">(</span><em class="sig-param">physical_key: Union[str, pathlib.Path]</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/datastep/file_utils.html#create_unique_logical_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.file_utils.create_unique_logical_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="datastep.file_utils.make_json_serializable">
+<code class="sig-prename descclassname">datastep.file_utils.</code><code class="sig-name descname">make_json_serializable</code><span class="sig-paren">(</span><em class="sig-param">value: Any</em>, <em class="sig-param">context: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; Union[bool, float, int, str, List, Dict]<a class="reference internal" href="_modules/datastep/file_utils.html#make_json_serializable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.file_utils.make_json_serializable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="datastep.file_utils.manifest_filepaths_abs2rel">
+<code class="sig-prename descclassname">datastep.file_utils.</code><code class="sig-name descname">manifest_filepaths_abs2rel</code><span class="sig-paren">(</span><em class="sig-param">mystep</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datastep/file_utils.html#manifest_filepaths_abs2rel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.file_utils.manifest_filepaths_abs2rel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="datastep.file_utils.manifest_filepaths_rel2abs">
+<code class="sig-prename descclassname">datastep.file_utils.</code><code class="sig-name descname">manifest_filepaths_rel2abs</code><span class="sig-paren">(</span><em class="sig-param">mystep</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datastep/file_utils.html#manifest_filepaths_rel2abs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.file_utils.manifest_filepaths_rel2abs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="datastep.file_utils.resolve_directory">
+<code class="sig-prename descclassname">datastep.file_utils.</code><code class="sig-name descname">resolve_directory</code><span class="sig-paren">(</span><em class="sig-param">d: Union[str, pathlib.Path], make: bool = False</em><span class="sig-paren">)</span> &#x2192; pathlib.Path<a class="reference internal" href="_modules/datastep/file_utils.html#resolve_directory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.file_utils.resolve_directory" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="datastep.file_utils.resolve_filepath">
+<code class="sig-prename descclassname">datastep.file_utils.</code><code class="sig-name descname">resolve_filepath</code><span class="sig-paren">(</span><em class="sig-param">f: Union[str, pathlib.Path]</em><span class="sig-paren">)</span> &#x2192; pathlib.Path<a class="reference internal" href="_modules/datastep/file_utils.html#resolve_filepath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.file_utils.resolve_filepath" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-datastep.quilt_utils">
+<span id="datastep-quilt-utils-module"></span><h2>datastep.quilt_utils module<a class="headerlink" href="#module-datastep.quilt_utils" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="datastep.quilt_utils.ValidationDetails">
+<em class="property">class </em><code class="sig-prename descclassname">datastep.quilt_utils.</code><code class="sig-name descname">ValidationDetails</code><span class="sig-paren">(</span><em class="sig-param">value</em>, <em class="sig-param">index</em>, <em class="sig-param">origin_column</em>, <em class="sig-param">details_type</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datastep/quilt_utils.html#ValidationDetails"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.quilt_utils.ValidationDetails" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
+<p>Create new instance of ValidationDetails(value, index, origin_column, details_type)</p>
+<dl class="method">
+<dt id="datastep.quilt_utils.ValidationDetails.details_type">
+<em class="property">property </em><code class="sig-name descname">details_type</code><a class="headerlink" href="#datastep.quilt_utils.ValidationDetails.details_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 3</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="datastep.quilt_utils.ValidationDetails.index">
+<em class="property">property </em><code class="sig-name descname">index</code><a class="headerlink" href="#datastep.quilt_utils.ValidationDetails.index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="datastep.quilt_utils.ValidationDetails.origin_column">
+<em class="property">property </em><code class="sig-name descname">origin_column</code><a class="headerlink" href="#datastep.quilt_utils.ValidationDetails.origin_column" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="datastep.quilt_utils.ValidationDetails.value">
+<em class="property">property </em><code class="sig-name descname">value</code><a class="headerlink" href="#datastep.quilt_utils.ValidationDetails.value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="datastep.quilt_utils.clean_metadata">
+<code class="sig-prename descclassname">datastep.quilt_utils.</code><code class="sig-name descname">clean_metadata</code><span class="sig-paren">(</span><em class="sig-param">details: datastep.quilt_utils.ValidationDetails</em><span class="sig-paren">)</span> &#x2192; datastep.quilt_utils.ValidationDetails<a class="reference internal" href="_modules/datastep/quilt_utils.html#clean_metadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.quilt_utils.clean_metadata" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="datastep.quilt_utils.create_package">
+<code class="sig-prename descclassname">datastep.quilt_utils.</code><code class="sig-name descname">create_package</code><span class="sig-paren">(</span><em class="sig-param">manifest: pandas.core.frame.DataFrame, step_pkg_root: pathlib.Path, filepath_columns: List[str] = ['filepath'], metadata_columns: List[str] = []</em><span class="sig-paren">)</span> &#x2192; quilt3.packages.Package<a class="reference internal" href="_modules/datastep/quilt_utils.html#create_package"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.quilt_utils.create_package" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="datastep.quilt_utils.route_validator">
+<code class="sig-prename descclassname">datastep.quilt_utils.</code><code class="sig-name descname">route_validator</code><span class="sig-paren">(</span><em class="sig-param">details: datastep.quilt_utils.ValidationDetails</em>, <em class="sig-param">manifest: pandas.core.frame.DataFrame</em>, <em class="sig-param">progress_bar</em><span class="sig-paren">)</span> &#x2192; datastep.quilt_utils.ValidationDetails<a class="reference internal" href="_modules/datastep/quilt_utils.html#route_validator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.quilt_utils.route_validator" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="datastep.quilt_utils.validate_filepath">
+<code class="sig-prename descclassname">datastep.quilt_utils.</code><code class="sig-name descname">validate_filepath</code><span class="sig-paren">(</span><em class="sig-param">details: datastep.quilt_utils.ValidationDetails</em><span class="sig-paren">)</span> &#x2192; datastep.quilt_utils.ValidationDetails<a class="reference internal" href="_modules/datastep/quilt_utils.html#validate_filepath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.quilt_utils.validate_filepath" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="datastep.quilt_utils.validate_manifest">
+<code class="sig-prename descclassname">datastep.quilt_utils.</code><code class="sig-name descname">validate_manifest</code><span class="sig-paren">(</span><em class="sig-param">manifest: pandas.core.frame.DataFrame, filepath_columns: List[str], metadata_columns: List[str]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datastep/quilt_utils.html#validate_manifest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.quilt_utils.validate_manifest" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-datastep.step">
+<span id="datastep-step-module"></span><h2>datastep.step module<a class="headerlink" href="#module-datastep.step" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="datastep.step.Step">
+<em class="property">class </em><code class="sig-prename descclassname">datastep.step.</code><code class="sig-name descname">Step</code><span class="sig-paren">(</span><em class="sig-param">direct_upstream_tasks: Optional[List[Step]] = None, config: Union[str, pathlib.Path, Dict[str, str], None] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datastep/step.html#Step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.step.Step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<dl class="method">
+<dt id="datastep.step.Step.checkout">
+<code class="sig-name descname">checkout</code><span class="sig-paren">(</span><em class="sig-param">data_version: Optional[str] = None</em>, <em class="sig-param">bucket: Optional[str] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datastep/step.html#Step.checkout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.step.Step.checkout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="datastep.step.Step.package_name">
+<em class="property">property </em><code class="sig-name descname">package_name</code><a class="headerlink" href="#datastep.step.Step.package_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="datastep.step.Step.project_local_staging_dir">
+<em class="property">property </em><code class="sig-name descname">project_local_staging_dir</code><a class="headerlink" href="#datastep.step.Step.project_local_staging_dir" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="datastep.step.Step.pull">
+<code class="sig-name descname">pull</code><span class="sig-paren">(</span><em class="sig-param">data_version: Optional[str] = None</em>, <em class="sig-param">bucket: Optional[str] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datastep/step.html#Step.pull"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.step.Step.pull" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="datastep.step.Step.push">
+<code class="sig-name descname">push</code><span class="sig-paren">(</span><em class="sig-param">bucket: Optional[str] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datastep/step.html#Step.push"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.step.Step.push" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="datastep.step.Step.quilt_package_owner">
+<em class="property">property </em><code class="sig-name descname">quilt_package_owner</code><a class="headerlink" href="#datastep.step.Step.quilt_package_owner" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="datastep.step.Step.run">
+<em class="property">abstract </em><code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datastep/step.html#Step.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.step.Step.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="datastep.step.Step.step_local_staging_dir">
+<em class="property">property </em><code class="sig-name descname">step_local_staging_dir</code><a class="headerlink" href="#datastep.step.Step.step_local_staging_dir" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="datastep.step.Step.step_name">
+<em class="property">property </em><code class="sig-name descname">step_name</code><a class="headerlink" href="#datastep.step.Step.step_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="datastep.step.Step.storage_bucket">
+<em class="property">property </em><code class="sig-name descname">storage_bucket</code><a class="headerlink" href="#datastep.step.Step.storage_bucket" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="datastep.step.Step.upstream_tasks">
+<em class="property">property </em><code class="sig-name descname">upstream_tasks</code><a class="headerlink" href="#datastep.step.Step.upstream_tasks" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="datastep.step.log_run_params">
+<code class="sig-prename descclassname">datastep.step.</code><code class="sig-name descname">log_run_params</code><span class="sig-paren">(</span><em class="sig-param">func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datastep/step.html#log_run_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.step.log_run_params" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-datastep">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-datastep" title="Permalink to this headline">¶</a></h2>
+<p>Top-level package for datastep.</p>
+<dl class="function">
+<dt id="datastep.get_module_version">
+<code class="sig-prename descclassname">datastep.</code><code class="sig-name descname">get_module_version</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/datastep.html#get_module_version"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.get_module_version" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Jackson Maxfield Brown
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

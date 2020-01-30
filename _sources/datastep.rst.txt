@@ -1,0 +1,61 @@
+datastep package
+================
+
+Subpackages
+-----------
+
+.. toctree::
+
+   datastep.bin
+
+Submodules
+----------
+
+datastep.constants module
+-------------------------
+
+.. automodule:: datastep.constants
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+datastep.exceptions module
+--------------------------
+
+.. automodule:: datastep.exceptions
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+datastep.file\_utils module
+---------------------------
+
+.. automodule:: datastep.file_utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+datastep.quilt\_utils module
+----------------------------
+
+.. automodule:: datastep.quilt_utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+datastep.step module
+--------------------
+
+.. automodule:: datastep.step
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: datastep
+   :members:
+   :undoc-members:
+   :show-inheritance:

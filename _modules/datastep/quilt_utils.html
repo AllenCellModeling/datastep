@@ -1,0 +1,573 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>datastep.quilt_utils &mdash; datastep 0.1.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> datastep
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#stable-release">Stable release</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#from-sources">From sources</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Package modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../datastep.html">datastep package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../datastep.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../datastep.bin.html">datastep.bin package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../datastep.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../datastep.html#module-datastep.constants">datastep.constants module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../datastep.html#module-datastep.exceptions">datastep.exceptions module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../datastep.html#module-datastep.file_utils">datastep.file_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../datastep.html#module-datastep.quilt_utils">datastep.quilt_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../datastep.html#module-datastep.step">datastep.step module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../datastep.html#module-datastep">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#get-started">Get Started!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing.html#deploying">Deploying</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">datastep</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../datastep.html">datastep</a> &raquo;</li>
+        
+      <li>datastep.quilt_utils</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for datastep.quilt_utils</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">concurrent.futures</span> <span class="kn">import</span> <span class="n">ThreadPoolExecutor</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">NamedTuple</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">quilt3.packages</span> <span class="kn">import</span> <span class="n">Package</span><span class="p">,</span> <span class="n">PackageEntry</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">file_utils</span>
+
+<span class="c1">###############################################################################</span>
+
+
+<div class="viewcode-block" id="ValidationDetails"><a class="viewcode-back" href="../../datastep.html#datastep.quilt_utils.ValidationDetails">[docs]</a><span class="k">class</span> <span class="nc">ValidationDetails</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+    <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Path</span><span class="p">]</span>
+    <span class="n">index</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">origin_column</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">details_type</span><span class="p">:</span> <span class="nb">str</span></div>
+
+
+<div class="viewcode-block" id="validate_filepath"><a class="viewcode-back" href="../../datastep.html#datastep.quilt_utils.validate_filepath">[docs]</a><span class="k">def</span> <span class="nf">validate_filepath</span><span class="p">(</span><span class="n">details</span><span class="p">:</span> <span class="n">ValidationDetails</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValidationDetails</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ValidationDetails</span><span class="p">(</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">file_utils</span><span class="o">.</span><span class="n">resolve_filepath</span><span class="p">(</span><span class="n">details</span><span class="o">.</span><span class="n">value</span><span class="p">),</span>
+            <span class="n">index</span><span class="o">=</span><span class="n">details</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
+            <span class="n">origin_column</span><span class="o">=</span><span class="n">details</span><span class="o">.</span><span class="n">origin_column</span><span class="p">,</span>
+            <span class="n">details_type</span><span class="o">=</span><span class="n">details</span><span class="o">.</span><span class="n">details_type</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Failed to find file: &#39;</span><span class="si">{details.value}</span><span class="s2">&#39;. &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Source column: &#39;</span><span class="si">{details.origin_column}</span><span class="s2">&#39;, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;at index: </span><span class="si">{details.index}</span><span class="s2">.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="ne">IsADirectoryError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">IsADirectoryError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Paths to directories are not allowed. Please be explicit in which files &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;should be uploaded. Directory: &#39;</span><span class="si">{details.value}</span><span class="s2">&#39;, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;source column: &#39;</span><span class="si">{details.origin_column}</span><span class="s2">&#39;, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;at index: </span><span class="si">{details.index}</span><span class="s2">.&quot;</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="clean_metadata"><a class="viewcode-back" href="../../datastep.html#datastep.quilt_utils.clean_metadata">[docs]</a><span class="k">def</span> <span class="nf">clean_metadata</span><span class="p">(</span><span class="n">details</span><span class="p">:</span> <span class="n">ValidationDetails</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValidationDetails</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">details</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">details</span>
+    <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ValidationDetails</span><span class="p">(</span>
+            <span class="n">value</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">details</span><span class="o">.</span><span class="n">value</span><span class="p">),</span>
+            <span class="n">index</span><span class="o">=</span><span class="n">details</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
+            <span class="n">origin_column</span><span class="o">=</span><span class="n">details</span><span class="o">.</span><span class="n">origin_column</span><span class="p">,</span>
+            <span class="n">details_type</span><span class="o">=</span><span class="n">details</span><span class="o">.</span><span class="n">details_type</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="route_validator"><a class="viewcode-back" href="../../datastep.html#datastep.quilt_utils.route_validator">[docs]</a><span class="k">def</span> <span class="nf">route_validator</span><span class="p">(</span>
+    <span class="n">details</span><span class="p">:</span> <span class="n">ValidationDetails</span><span class="p">,</span> <span class="n">manifest</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">progress_bar</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValidationDetails</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">details</span><span class="o">.</span><span class="n">details_type</span> <span class="o">==</span> <span class="s2">&quot;path&quot;</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">validate_filepath</span><span class="p">(</span><span class="n">details</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">clean_metadata</span><span class="p">(</span><span class="n">details</span><span class="p">)</span>
+
+    <span class="c1"># Update value with validated</span>
+    <span class="n">manifest</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">result</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">origin_column</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">value</span>
+
+    <span class="c1"># Update progress</span>
+    <span class="n">progress_bar</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+<span class="c1">###############################################################################</span>
+
+<span class="c1"># VALIDATION</span>
+
+
+<div class="viewcode-block" id="validate_manifest"><a class="viewcode-back" href="../../datastep.html#datastep.quilt_utils.validate_manifest">[docs]</a><span class="k">def</span> <span class="nf">validate_manifest</span><span class="p">(</span>
+    <span class="n">manifest</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">filepath_columns</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">metadata_columns</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+<span class="p">):</span>
+    <span class="c1"># Check filepath columns exist in manifest</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">filepath_columns</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">manifest</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Could not find filepath column: &#39;</span><span class="si">{col}</span><span class="s2">&#39; &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;in manifest columns: </span><span class="si">{manifest.columns}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+    <span class="c1"># Check filepath columns exist in manifest</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">metadata_columns</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">manifest</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Could not find metadata column: &#39;</span><span class="si">{col}</span><span class="s2">&#39; &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;in manifest columns: </span><span class="si">{manifest.columns}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+    <span class="c1"># Create large list of paths to validate and metadata to clean</span>
+    <span class="n">details_to_validate_or_clean</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Create filepath validation details objects</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">filepath_columns</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">manifest</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+            <span class="n">details_to_validate_or_clean</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">ValidationDetails</span><span class="p">(</span>
+                    <span class="n">value</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="n">col</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">origin_column</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">details_type</span><span class="o">=</span><span class="s2">&quot;path&quot;</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+    <span class="c1"># Create metadata cleaning details objects</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">metadata_columns</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">manifest</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+            <span class="n">details_to_validate_or_clean</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">ValidationDetails</span><span class="p">(</span>
+                    <span class="n">value</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="n">col</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">origin_column</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">details_type</span><span class="o">=</span><span class="s2">&quot;metadata&quot;</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+    <span class="c1"># Create progress bar</span>
+    <span class="k">with</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">details_to_validate_or_clean</span><span class="p">),</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Validating&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">pbar</span><span class="p">:</span>
+        <span class="c1"># Create a deep copy of the dataframe to mutate</span>
+        <span class="n">manifest</span> <span class="o">=</span> <span class="n">manifest</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Create validator partial</span>
+        <span class="n">validator_func</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">route_validator</span><span class="p">,</span> <span class="n">manifest</span><span class="o">=</span><span class="n">manifest</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="n">pbar</span><span class="p">)</span>
+
+        <span class="c1"># Threaded validation and update</span>
+        <span class="k">with</span> <span class="n">ThreadPoolExecutor</span><span class="p">()</span> <span class="k">as</span> <span class="n">exe</span><span class="p">:</span>
+            <span class="c1"># We cast to a list to force a block until all are done</span>
+            <span class="nb">list</span><span class="p">(</span><span class="n">exe</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">validator_func</span><span class="p">,</span> <span class="n">details_to_validate_or_clean</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">manifest</span></div>
+
+
+<span class="c1">###############################################################################</span>
+
+<span class="c1"># PACKAGING</span>
+
+
+<span class="k">def</span> <span class="nf">_recursive_clean</span><span class="p">(</span><span class="n">pkg</span><span class="p">:</span> <span class="n">Package</span><span class="p">,</span> <span class="n">metadata_reduction_map</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]):</span>
+    <span class="c1"># For all keys in current package level</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">pkg</span><span class="p">:</span>
+        <span class="c1"># If it is a PackageEntry object, we know we have hit a leaf node</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pkg</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">PackageEntry</span><span class="p">):</span>
+            <span class="c1"># Reduce the metadata to a single value where it can</span>
+            <span class="n">cleaned_meta</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">meta_k</span><span class="p">,</span> <span class="n">meta_v</span> <span class="ow">in</span> <span class="n">pkg</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="c1"># If the metadata reduction map at the metadata column (or meta_k) can</span>
+                <span class="c1"># be reduced / collapsed (True), reduce /collapse the metadata</span>
+                <span class="c1"># Reminder: this step will make the metadata access for every file of</span>
+                <span class="c1"># the same file type the same format. Example: all files under the key</span>
+                <span class="c1"># &quot;FOV&quot; will have the same metadata access after this function runs.</span>
+                <span class="c1"># All the metadata access for the same file type across the package, if</span>
+                <span class="c1"># one file has a list of values for the metadata key, &quot;A&quot;, we want all</span>
+                <span class="c1"># files of the same type to all have list of values for the metadata</span>
+                <span class="c1"># key, &quot;A&quot;. We also can&#39;t just use a set here for two reasons, the</span>
+                <span class="c1"># first is simply that sets are not JSON serializable. &quot;But you can</span>
+                <span class="c1"># just cast to a set then back to a list!!!&quot;. The second reason is that</span>
+                <span class="c1"># because a file can have multiple list of values in it&#39;s metadata, if</span>
+                <span class="c1"># we cast to a set, one list may be reduced to two items while another,</span>
+                <span class="c1"># different metadata list of values may be reduced to</span>
+                <span class="c1"># a single item. Which leads to the problem of matching up metadata to</span>
+                <span class="c1"># metadata for the same file.</span>
+                <span class="c1"># The example to use here is looking at an FOV files metadata:</span>
+                <span class="c1"># {&quot;CellID&quot;: [1, 2, 3], &quot;CellIndex&quot;: [4, 8, 12]}</span>
+                <span class="c1"># By having them both as list without any chance of reduction means</span>
+                <span class="c1"># that it is easy to match metadata values to each other.</span>
+                <span class="c1"># &quot;CellId&quot; 1 maps to &quot;CellIndex&quot; 4, 2 maps to 8, and 3 maps to 12 in</span>
+                <span class="c1"># this case.</span>
+                <span class="k">if</span> <span class="n">metadata_reduction_map</span><span class="p">[</span><span class="n">meta_k</span><span class="p">]:</span>
+                    <span class="n">cleaned_meta</span><span class="p">[</span><span class="n">meta_k</span><span class="p">]</span> <span class="o">=</span> <span class="n">meta_v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="c1"># Else, do not reduce</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">cleaned_meta</span><span class="p">[</span><span class="n">meta_k</span><span class="p">]</span> <span class="o">=</span> <span class="n">meta_v</span>
+
+            <span class="c1"># Update the object with the cleaned metadata</span>
+            <span class="n">pkg</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="n">cleaned_meta</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">_recursive_clean</span><span class="p">(</span><span class="n">pkg</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">metadata_reduction_map</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">pkg</span>
+
+
+<div class="viewcode-block" id="create_package"><a class="viewcode-back" href="../../datastep.html#datastep.quilt_utils.create_package">[docs]</a><span class="k">def</span> <span class="nf">create_package</span><span class="p">(</span>
+    <span class="n">manifest</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+    <span class="n">step_pkg_root</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
+    <span class="n">filepath_columns</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;filepath&quot;</span><span class="p">],</span>
+    <span class="n">metadata_columns</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Package</span><span class="p">:</span>
+    <span class="c1"># Create empty package</span>
+    <span class="n">pkg</span> <span class="o">=</span> <span class="n">Package</span><span class="p">()</span>
+
+    <span class="c1"># Create associate mappings: List[Dict[str, str]]</span>
+    <span class="c1"># This list is in index order. Meaning that as the column values are descended we</span>
+    <span class="c1"># can simply add a new associate to the already existing associate map at that list</span>
+    <span class="c1"># index.</span>
+    <span class="n">associates</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Create metadata reduction map</span>
+    <span class="c1"># This will be used to clean up and standardize the metadata access after object</span>
+    <span class="c1"># construction. Metadata column name to boolean value for should or should not</span>
+    <span class="c1"># reduce metadata values. This will be used during the &quot;clean up the package</span>
+    <span class="c1"># metadata step&quot;. If we have multiple files each with the same keys for the</span>
+    <span class="c1"># metadata, but for one reason or another, one packaged file&#39;s value for a certain</span>
+    <span class="c1"># key is a list while another&#39;s is a single string, this leads to a confusing mixed</span>
+    <span class="c1"># return value API for the same _type_ of object. Example:</span>
+    <span class="c1"># fov/</span>
+    <span class="c1">#   obj1/</span>
+    <span class="c1">#      {example_key: &quot;hello&quot;}</span>
+    <span class="c1">#   obj2/</span>
+    <span class="c1">#      {example_key: [&quot;hello&quot;, &quot;world&quot;]}</span>
+    <span class="c1"># Commonly this happens when a manifest has rows of unique instances of a child</span>
+    <span class="c1"># object but retains a reference to a parent object, example: rows of information</span>
+    <span class="c1"># about unique cells that were all generated using the same algorithm, whose</span>
+    <span class="c1"># information is stored in a column, for each cell information row. This could</span>
+    <span class="c1"># result in some files (which only have one cell) being a single string while other</span>
+    <span class="c1"># files (which have more than one cell) being a list of the same string over and</span>
+    <span class="c1"># over again. &quot;Why spend all this time to reduce/ collapse the metadata anyway?&quot;,</span>
+    <span class="c1"># besides making it so that users won&#39;t have to call `obj2.meta[&quot;example_key&quot;][0]`</span>
+    <span class="c1"># every time they want the value, and besides the fact that it standardizes the</span>
+    <span class="c1"># metadata api, the biggest reason is that S3 objects can only have 2KB of metadata,</span>
+    <span class="c1"># without this reduction/ collapse step, manifests are more likely to hit that limit</span>
+    <span class="c1"># and cause a package distribution error.</span>
+    <span class="n">metadata_reduction_map</span> <span class="o">=</span> <span class="p">{</span><span class="n">index_col</span><span class="p">:</span> <span class="kc">True</span> <span class="k">for</span> <span class="n">index_col</span> <span class="ow">in</span> <span class="n">metadata_columns</span><span class="p">}</span>
+
+    <span class="c1"># Set all files</span>
+    <span class="k">with</span> <span class="n">tqdm</span><span class="p">(</span>
+        <span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">filepath_columns</span><span class="p">)</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">manifest</span><span class="p">),</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Constructing package&quot;</span>
+    <span class="p">)</span> <span class="k">as</span> <span class="n">pbar</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">filepath_columns</span><span class="p">:</span>
+            <span class="c1"># Update values to the logical key as they are set</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">manifest</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">):</span>
+                <span class="c1"># Fully resolve the path</span>
+                <span class="n">physical_key</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+
+                <span class="c1"># Just using val.name could result in files that shouldn&#39;t be grouped</span>
+                <span class="c1"># being grouped</span>
+                <span class="c1"># Example column:</span>
+                <span class="c1"># SourceReadpath</span>
+                <span class="c1"># a/0.tiff</span>
+                <span class="c1"># a/1.tiff</span>
+                <span class="c1"># b/0.tiff</span>
+                <span class="c1"># b/1.tiff</span>
+                <span class="c1"># Even though there are four files, this would result in both a/0.tiff</span>
+                <span class="c1"># and b/0.tiff, and, a/1.tiff and b/1.tiff being grouped together. To</span>
+                <span class="c1"># solve this we can prepend a the first couple of characters from a</span>
+                <span class="c1"># hash of the fully resolved path to the logical key.</span>
+
+                <span class="n">logical_key</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">physical_key</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">step_pkg_root</span><span class="o">.</span><span class="n">resolve</span><span class="p">()))</span>
+                <span class="k">if</span> <span class="n">physical_key</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+                    <span class="n">manifest</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">logical_key</span>
+
+                    <span class="c1"># Create metadata dictionary to attach to object</span>
+                    <span class="n">meta</span> <span class="o">=</span> <span class="p">{}</span>
+                    <span class="k">for</span> <span class="n">meta_col</span> <span class="ow">in</span> <span class="n">metadata_columns</span><span class="p">:</span>
+                        <span class="c1"># Short reference to current metadata value</span>
+                        <span class="n">v</span> <span class="o">=</span> <span class="n">manifest</span><span class="p">[</span><span class="n">meta_col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+                        <span class="c1"># Enforce simple JSON serializable type</span>
+                        <span class="c1"># First check if value is a numpy value</span>
+                        <span class="c1"># It likely is because pandas relies on numpy</span>
+                        <span class="c1"># All numpy types have the &quot;dtype&quot; attribute and can be cast to</span>
+                        <span class="c1"># python type by using the `item` function, details here:</span>
+                        <span class="c1"># https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.item.html</span>
+                        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s2">&quot;dtype&quot;</span><span class="p">):</span>
+                            <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+                        <span class="c1"># Cast to JSON serializable type</span>
+                        <span class="n">v</span> <span class="o">=</span> <span class="n">file_utils</span><span class="o">.</span><span class="n">make_json_serializable</span><span class="p">(</span>
+                            <span class="n">v</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Value from column: </span><span class="si">{meta_col}</span><span class="s2">, index: </span><span class="si">{i}</span><span class="s2">&quot;</span>
+                        <span class="p">)</span>
+
+                        <span class="c1"># Update metadata with value</span>
+                        <span class="n">meta</span><span class="p">[</span><span class="n">meta_col</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span><span class="p">]</span>
+
+                    <span class="c1"># Check if object already exists</span>
+                    <span class="k">if</span> <span class="n">logical_key</span> <span class="ow">in</span> <span class="n">pkg</span><span class="p">:</span>
+                        <span class="c1"># Join the two meta dictionaries</span>
+                        <span class="n">joined_meta</span> <span class="o">=</span> <span class="p">{}</span>
+                        <span class="k">for</span> <span class="n">meta_col</span><span class="p">,</span> <span class="n">curr_v</span> <span class="ow">in</span> <span class="n">pkg</span><span class="p">[</span><span class="n">logical_key</span><span class="p">]</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                            <span class="c1"># Join the values for the current iteration of the metadata</span>
+                            <span class="n">joined_values</span> <span class="o">=</span> <span class="p">[</span><span class="o">*</span><span class="n">curr_v</span><span class="p">,</span> <span class="o">*</span><span class="n">meta</span><span class="p">[</span><span class="n">meta_col</span><span class="p">]]</span>
+
+                            <span class="c1"># Only check if the metadata at this index can be reduced</span>
+                            <span class="c1"># if currently is still being decided. We know if the</span>
+                            <span class="c1"># metadata value at this index is still be decided if:</span>
+                            <span class="c1"># the boolean value in the metadata reduction map is True,</span>
+                            <span class="c1"># as in, this index can be reduced or collapsed.</span>
+                            <span class="c1"># The other reason to make this check is so that we don&#39;t</span>
+                            <span class="c1"># override an earlier False reduction value. In the case</span>
+                            <span class="c1"># where early on we encounter an instance of the metadata</span>
+                            <span class="c1"># that should not be reduced but then later on we say it</span>
+                            <span class="c1"># can be, this check prevents that. As we want all metadata</span>
+                            <span class="c1"># access across the dataset to be uniform.</span>
+                            <span class="k">if</span> <span class="n">metadata_reduction_map</span><span class="p">[</span><span class="n">meta_col</span><span class="p">]:</span>
+                                <span class="c1"># Update the metadata reduction map</span>
+                                <span class="c1"># For the current column being checked, as long as it</span>
+                                <span class="c1"># is still being determined that the column can be</span>
+                                <span class="c1"># reduced (aka we have entered this if block) check if</span>
+                                <span class="c1"># we can still reduce the metadata after the recent</span>
+                                <span class="c1"># addition. &quot;We can reduce the metadata if the count of</span>
+                                <span class="c1"># the first value (or any value) is the same as the</span>
+                                <span class="c1"># length of the entire list of values&quot;.</span>
+                                <span class="c1"># This runs quickly for small lists as seen here:</span>
+                                <span class="c1"># https://stackoverflow.com/questions/3844801/check-if-all-elements-in-a-list-are-identical</span>
+                                <span class="n">metadata_reduction_map</span><span class="p">[</span><span class="n">meta_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">joined_values</span><span class="o">.</span><span class="n">count</span><span class="p">(</span>
+                                    <span class="n">joined_values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                                <span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span>
+                                    <span class="n">joined_values</span>
+                                <span class="p">)</span>  <span class="c1"># noqa F501</span>
+
+                            <span class="c1"># Attached the joined values to the joined metadata</span>
+                            <span class="n">joined_meta</span><span class="p">[</span><span class="n">meta_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">joined_values</span>
+
+                        <span class="c1"># Update meta</span>
+                        <span class="n">pkg</span><span class="p">[</span><span class="n">logical_key</span><span class="p">]</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="n">joined_meta</span><span class="p">)</span>
+
+                    <span class="c1"># Object didn&#39;t already exist, simply set it</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">pkg</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">logical_key</span><span class="p">,</span> <span class="n">physical_key</span><span class="p">,</span> <span class="n">meta</span><span class="p">)</span>
+
+                    <span class="c1"># Update associates</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">associates</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">logical_key</span>
+                    <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                        <span class="n">associates</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="n">col</span><span class="p">:</span> <span class="n">logical_key</span><span class="p">})</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">manifest</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">logical_key</span>
+                    <span class="n">pkg</span><span class="o">.</span><span class="n">set_dir</span><span class="p">(</span><span class="n">logical_key</span><span class="p">,</span> <span class="n">physical_key</span><span class="p">)</span>
+
+                <span class="c1"># Update progress bar</span>
+                <span class="n">pbar</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+
+        <span class="c1"># Clean up package metadata</span>
+        <span class="n">pkg</span> <span class="o">=</span> <span class="n">_recursive_clean</span><span class="p">(</span><span class="n">pkg</span><span class="p">,</span> <span class="n">metadata_reduction_map</span><span class="p">)</span>
+
+        <span class="c1"># Attach associates</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">associate_mapping</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span>
+            <span class="nb">enumerate</span><span class="p">(</span><span class="n">associates</span><span class="p">),</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Creating associate metadata blocks&quot;</span>
+        <span class="p">):</span>
+            <span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="n">lk</span> <span class="ow">in</span> <span class="n">associate_mapping</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="c1"># Having dictionary expansion in this order means that associates will</span>
+                <span class="c1"># override a prior existing `associates` key, this is assumed safe</span>
+                <span class="c1"># because attach_associates was set to True.</span>
+                <span class="n">pkg</span><span class="p">[</span><span class="n">lk</span><span class="p">]</span><span class="o">.</span><span class="n">set_meta</span><span class="p">({</span><span class="o">**</span><span class="n">pkg</span><span class="p">[</span><span class="n">lk</span><span class="p">]</span><span class="o">.</span><span class="n">meta</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="s2">&quot;associates&quot;</span><span class="p">:</span> <span class="n">associate_mapping</span><span class="p">}})</span>
+
+        <span class="k">return</span> <span class="n">pkg</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Jackson Maxfield Brown
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

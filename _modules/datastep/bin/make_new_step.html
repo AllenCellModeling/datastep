@@ -1,0 +1,466 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>datastep.bin.make_new_step &mdash; datastep 0.1.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> datastep
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../installation.html#stable-release">Stable release</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../installation.html#from-sources">From sources</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Package modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../datastep.html">datastep package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../datastep.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../datastep.bin.html">datastep.bin package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../datastep.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../datastep.html#module-datastep.constants">datastep.constants module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../datastep.html#module-datastep.exceptions">datastep.exceptions module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../datastep.html#module-datastep.file_utils">datastep.file_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../datastep.html#module-datastep.quilt_utils">datastep.quilt_utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../datastep.html#module-datastep.step">datastep.step module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../datastep.html#module-datastep">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#get-started">Get Started!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#deploying">Deploying</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">datastep</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../datastep.html">datastep</a> &raquo;</li>
+        
+      <li>datastep.bin.make_new_step</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for datastep.bin.make_new_step</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This sample script will get deployed in the bin directory of the</span>
+<span class="sd">user&#39;s virtualenv when the parent module is installed using pip.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">traceback</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">from</span> <span class="nn">jinja2</span> <span class="kn">import</span> <span class="n">Template</span>
+
+<span class="kn">from</span> <span class="nn">datastep</span> <span class="kn">import</span> <span class="n">exceptions</span><span class="p">,</span> <span class="n">file_utils</span><span class="p">,</span> <span class="n">get_module_version</span>
+
+<span class="c1">###############################################################################</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
+    <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;[</span><span class="si">%(levelname)4s</span><span class="s2">:</span><span class="si">%(lineno)4s</span><span class="s2"> </span><span class="si">%(asctime)s</span><span class="s2">] </span><span class="si">%(message)s</span><span class="s2">&quot;</span>
+<span class="p">)</span>
+
+<span class="c1">###############################################################################</span>
+
+
+<div class="viewcode-block" id="Args"><a class="viewcode-back" href="../../../datastep.bin.html#datastep.bin.make_new_step.Args">[docs]</a><span class="k">class</span> <span class="nc">Args</span><span class="p">(</span><span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Arguments that could be passed in through the command line</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">debug</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="c1">#</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__parse</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__parse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span>
+            <span class="n">prog</span><span class="o">=</span><span class="s2">&quot;make_new_step&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Generate new step and directory.&quot;</span>
+        <span class="p">)</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;-v&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--version&quot;</span><span class="p">,</span>
+            <span class="n">action</span><span class="o">=</span><span class="s2">&quot;version&quot;</span><span class="p">,</span>
+            <span class="n">version</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%(prog)s</span><span class="s2"> &quot;</span> <span class="o">+</span> <span class="n">get_module_version</span><span class="p">(),</span>
+        <span class="p">)</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;step_name&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The name of the step.&quot;</span><span class="p">)</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;--debug&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;debug&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">SUPPRESS</span>
+        <span class="p">)</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">namespace</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span></div>
+
+
+<span class="c1">###############################################################################</span>
+
+<span class="c1"># find where __all__ is set in the init file</span>
+<div class="viewcode-block" id="line_match__all__"><a class="viewcode-back" href="../../../datastep.bin.html#datastep.bin.make_new_step.line_match__all__">[docs]</a><span class="k">def</span> <span class="nf">line_match__all__</span><span class="p">(</span><span class="n">py_txt</span><span class="p">):</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">py_txt</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="s2">&quot;__all__&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<span class="c1"># find the string match for the list of classes that are set in __all__</span>
+<div class="viewcode-block" id="list_match_in_line"><a class="viewcode-back" href="../../../datastep.bin.html#datastep.bin.make_new_step.list_match_in_line">[docs]</a><span class="k">def</span> <span class="nf">list_match_in_line</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">py_txt</span><span class="p">):</span>
+    <span class="n">class_list_str</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\[(.+?)\]&quot;</span><span class="p">,</span> <span class="n">py_txt</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">class_list_str</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">class_list_str</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<span class="c1"># insert the new class into the list set in __all__</span>
+<div class="viewcode-block" id="insert_new_class"><a class="viewcode-back" href="../../../datastep.bin.html#datastep.bin.make_new_step.insert_new_class">[docs]</a><span class="k">def</span> <span class="nf">insert_new_class</span><span class="p">(</span><span class="n">old_list_string</span><span class="p">,</span> <span class="n">new_class_name_string</span><span class="p">):</span>
+    <span class="n">new_list_string</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{old_list_string}</span><span class="s1">, &quot;</span><span class="si">{new_class_name_string}</span><span class="s1">&quot;&#39;</span>
+    <span class="k">return</span> <span class="n">new_list_string</span></div>
+
+
+<span class="c1"># find the last line of relative imports</span>
+<div class="viewcode-block" id="find_last_import_line"><a class="viewcode-back" href="../../../datastep.bin.html#datastep.bin.make_new_step.find_last_import_line">[docs]</a><span class="k">def</span> <span class="nf">find_last_import_line</span><span class="p">(</span><span class="n">py_txt</span><span class="p">):</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">py_txt</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="s2">&quot;from .&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">lines</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
+
+
+<span class="c1"># append our new import to the last one</span>
+<div class="viewcode-block" id="insert_new_import"><a class="viewcode-back" href="../../../datastep.bin.html#datastep.bin.make_new_step.insert_new_import">[docs]</a><span class="k">def</span> <span class="nf">insert_new_import</span><span class="p">(</span><span class="n">last_old_line</span><span class="p">,</span> <span class="n">new_class_name_string</span><span class="p">,</span> <span class="n">new_class_dir_string</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{last_old_line}</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;from .</span><span class="si">{new_class_dir_string}</span><span class="s2"> import </span><span class="si">{new_class_name_string}</span><span class="s2">&quot;</span>
+    <span class="p">)</span></div>
+
+
+<span class="c1">###############################################################################</span>
+
+
+<span class="n">INIT_TEMPLATE</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span>
+    <span class="sd">&quot;&quot;&quot;# -*- coding: utf-8 -*-</span>
+
+<span class="sd">from .{{ step_name }} import {{ truecase_step_name }}  # noqa: F401</span>
+
+<span class="sd">__all__ = [&quot;{{ truecase_step_name }}&quot;]</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="p">)</span>
+
+<span class="n">STEP_TEMPLATE</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span>
+    <span class="sd">&quot;&quot;&quot;#!/usr/bin/env python</span>
+<span class="sd"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">import logging</span>
+<span class="sd">from pathlib import Path</span>
+<span class="sd">from typing import Dict, List, Optional, Union</span>
+
+<span class="sd">from datastep import Step, log_run_params</span>
+
+<span class="sd">###############################################################################</span>
+
+<span class="sd">log = logging.getLogger(__name__)</span>
+
+<span class="sd">###############################################################################</span>
+
+
+<span class="sd">class {{ truecase_step_name }}(Step):</span>
+<span class="sd">    def __init__(</span>
+<span class="sd">        self,</span>
+<span class="sd">        direct_upstream_tasks: Optional[List[&quot;Step&quot;]] = None,</span>
+<span class="sd">        config: Optional[Union[str, Path, Dict[str, str]]] = None,</span>
+<span class="sd">    ):</span>
+<span class="sd">        super().__init__(direct_upstream_tasks, config)</span>
+
+<span class="sd">    @log_run_params</span>
+<span class="sd">    def run(self, **kwargs):</span>
+<span class="sd">        # Your code here</span>
+<span class="sd">        #</span>
+<span class="sd">        # The `self.step_local_staging_dir` is exposed to save files in</span>
+<span class="sd">        #</span>
+<span class="sd">        # The user should set `self.manifest` to a dataframe of absolute paths that</span>
+<span class="sd">        # point to the created files and each files metadata</span>
+<span class="sd">        #</span>
+<span class="sd">        # By default, `self.filepath_columns` is [&quot;filepath&quot;], but should be edited</span>
+<span class="sd">        # if there are more than a single column of filepaths</span>
+<span class="sd">        #</span>
+<span class="sd">        # By default, `self.metadata_columns` is [], but should be edited to include</span>
+<span class="sd">        # any columns that should be parsed for metadata and attached to objects</span>
+<span class="sd">        pass</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="p">)</span>
+
+
+<span class="c1">###############################################################################</span>
+
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../datastep.bin.html#datastep.bin.make_new_step.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="n">Args</span><span class="p">()</span>
+        <span class="n">dbg</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">debug</span>
+
+        <span class="c1"># Check if the step already exists</span>
+        <span class="n">cwd</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+
+        <span class="c1"># Find steps subdirectory</span>
+        <span class="n">steps_dir_finds</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cwd</span><span class="o">.</span><span class="n">rglob</span><span class="p">(</span><span class="s2">&quot;steps&quot;</span><span class="p">))</span>
+
+        <span class="c1"># Catch no steps dir found</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">steps_dir_finds</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">DirectoryNotFoundError</span><span class="p">(</span>
+                <span class="s2">&quot;Could not find any subdirectory named &#39;steps&#39; in the current working &quot;</span>
+                <span class="s2">&quot;directory.&quot;</span>
+            <span class="p">)</span>
+        <span class="c1"># Catch multiple found</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">steps_dir_finds</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">DirectoryNotFoundError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Found multiple subdirectories named &#39;steps&#39; in the current working &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;directory. Found: </span><span class="si">{steps_dir_finds}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Properly found</span>
+        <span class="n">all_steps_dir</span> <span class="o">=</span> <span class="n">steps_dir_finds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># Normalize the provided name</span>
+        <span class="n">step_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">step_name</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">truecase_step_name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">token</span><span class="o">.</span><span class="n">title</span><span class="p">()</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">step_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)])</span>
+
+        <span class="c1"># Make the directory</span>
+        <span class="n">this_step_dir</span> <span class="o">=</span> <span class="n">file_utils</span><span class="o">.</span><span class="n">resolve_directory</span><span class="p">(</span>
+            <span class="n">all_steps_dir</span> <span class="o">/</span> <span class="n">step_name</span><span class="p">,</span> <span class="n">make</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Make the __init__ file</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">this_step_dir</span> <span class="o">/</span> <span class="s2">&quot;__init__.py&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">write_init</span><span class="p">:</span>
+            <span class="n">write_init</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                <span class="n">INIT_TEMPLATE</span><span class="o">.</span><span class="n">render</span><span class="p">(</span>
+                    <span class="n">step_name</span><span class="o">=</span><span class="n">step_name</span><span class="p">,</span> <span class="n">truecase_step_name</span><span class="o">=</span><span class="n">truecase_step_name</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Make the step file</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">this_step_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{step_name}</span><span class="s2">.py&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">write_step_file</span><span class="p">:</span>
+            <span class="n">write_step_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                <span class="n">STEP_TEMPLATE</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">truecase_step_name</span><span class="o">=</span><span class="n">truecase_step_name</span><span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Mutate the all steps dir init file to include the new step</span>
+        <span class="n">all_steps_init</span> <span class="o">=</span> <span class="n">all_steps_dir</span> <span class="o">/</span> <span class="s2">&quot;__init__.py&quot;</span>
+
+        <span class="c1"># Read all steps init</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">all_steps_init</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">read_all_steps_init</span><span class="p">:</span>
+            <span class="n">current_all_steps_init_text</span> <span class="o">=</span> <span class="n">read_all_steps_init</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+        <span class="c1"># Format the __all__ modules list</span>
+        <span class="n">current_module_all_list_line</span> <span class="o">=</span> <span class="n">line_match__all__</span><span class="p">(</span><span class="n">current_all_steps_init_text</span><span class="p">)</span>
+        <span class="n">current_module_all_list</span> <span class="o">=</span> <span class="n">list_match_in_line</span><span class="p">(</span>
+            <span class="n">current_module_all_list_line</span><span class="p">,</span> <span class="n">current_all_steps_init_text</span>
+        <span class="p">)</span>
+        <span class="n">new_module_all_list</span> <span class="o">=</span> <span class="n">insert_new_class</span><span class="p">(</span>
+            <span class="n">current_module_all_list</span><span class="p">,</span> <span class="n">truecase_step_name</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Format the new last manual import</span>
+        <span class="n">current_last_import_line</span> <span class="o">=</span> <span class="n">find_last_import_line</span><span class="p">(</span><span class="n">current_all_steps_init_text</span><span class="p">)</span>
+        <span class="n">new_last_import_line</span> <span class="o">=</span> <span class="n">insert_new_import</span><span class="p">(</span>
+            <span class="n">current_last_import_line</span><span class="p">,</span> <span class="n">truecase_step_name</span><span class="p">,</span> <span class="n">step_name</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Replace old strings with new ones</span>
+        <span class="n">new_all_steps_init_text</span> <span class="o">=</span> <span class="n">current_all_steps_init_text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+            <span class="n">current_module_all_list</span><span class="p">,</span> <span class="n">new_module_all_list</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">current_last_import_line</span><span class="p">,</span> <span class="n">new_last_import_line</span><span class="p">)</span>
+
+        <span class="c1"># Write the new all steps init file</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">all_steps_init</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">write_all_steps_init</span><span class="p">:</span>
+            <span class="n">write_all_steps_init</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">new_all_steps_init_text</span><span class="p">)</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;=============================================&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dbg</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">())</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;=============================================&quot;</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;=============================================&quot;</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<span class="c1"># Allow caller to directly run this module (usually in development scenarios)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Jackson Maxfield Brown
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
