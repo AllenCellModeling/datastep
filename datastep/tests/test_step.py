@@ -64,39 +64,39 @@ from .example_step import ExampleStep
             "example/config/1",
             "example/config/1/examplestep",
         ),
-        # # Provided all options, use config var
-        # (
-        #     "example_config_1.json",
-        #     "example_config_2.json",
-        #     "example_config_3.json",
-        #     None,
-        #     [],
-        #     "s3://example_config_1",
-        #     "example/config/1",
-        #     "example/config/1/examplestep",
-        # ),
-        # # Provided config var and current working directory, use config var
-        # (
-        #     "example_config_1.json",
-        #     None,
-        #     "example_config_3.json",
-        #     None,
-        #     [],
-        #     "s3://example_config_1",
-        #     "example/config/1",
-        #     "example/config/1/examplestep",
-        # ),
-        # # Provided env and current working directory, use env
-        # (
-        #     None,
-        #     "example_config_2.json",
-        #     "example_config_3.json",
-        #     None,
-        #     [],
-        #     "s3://example_config_2",
-        #     "example/config/2",
-        #     "example/config/2/examplestep",
-        # ),
+        # Provided all options, use config var
+        (
+            "example_config_1.json",
+            "example_config_2.json",
+            "example_config_3.json",
+            None,
+            [],
+            "s3://example_config_1",
+            "example/config/1",
+            "example/config/1/examplestep",
+        ),
+        # Provided config var and current working directory, use config var
+        (
+            "example_config_1.json",
+            None,
+            "example_config_3.json",
+            None,
+            [],
+            "s3://example_config_1",
+            "example/config/1",
+            "example/config/1/examplestep",
+        ),
+        # Provided env and current working directory, use env
+        (
+            None,
+            "example_config_2.json",
+            "example_config_3.json",
+            None,
+            [],
+            "s3://example_config_2",
+            "example/config/2",
+            "example/config/2/examplestep",
+        ),
         # Provided env, use env
         (
             None,
@@ -108,17 +108,17 @@ from .example_step import ExampleStep
             "example/config/2",
             "example/config/2/examplestep",
         ),
-        # # Provided current working directory, use current working directory
-        # (
-        #     None,
-        #     None,
-        #     "example_config_3.json",
-        #     None,
-        #     [],
-        #     "s3://example_config_3",
-        #     "example/config/3",
-        #     "example/config/3/examplestep",
-        # ),
+        # Provided current working directory, use current working directory
+        (
+            None,
+            None,
+            "example_config_3.json",
+            None,
+            [],
+            "s3://example_config_3",
+            "example/config/3",
+            "example/config/3/examplestep",
+        ),
         # Missing bucket value from config
         (
             "example_config_4.json",
@@ -167,17 +167,17 @@ from .example_step import ExampleStep
                 make=True,
             ),
         ),
-        # # Specific output directory for step available
-        # (
-        #     "example_config_7.json",
-        #     None,
-        #     None,
-        #     None,
-        #     [],
-        #     "s3://example_config_7",
-        #     "example/config/7",
-        #     "example/step/local/staging/7",
-        # ),
+        # Specific output directory for step available
+        (
+            "example_config_7.json",
+            None,
+            None,
+            None,
+            [],
+            "s3://example_config_7",
+            "example/config/7",
+            "example/config/7/examplestep",
+        ),
         # Step has key in config but no specific output directory listed
         (
             "example_config_8.json",
@@ -259,8 +259,10 @@ def test_init(
     assert t.step_name == "examplestep"
     assert t.upstream_tasks == expected_direct_upstream_tasks
     assert t.storage_bucket == expected_storage_bucket
-    assert str(expected_project_local_staging_dir) in str(t.project_local_staging_dir)
-    assert str(expected_step_local_staging_dir) in str(t.step_local_staging_dir)
+    assert str(Path(expected_project_local_staging_dir)) in str(
+        t.project_local_staging_dir
+    )
+    assert str(Path(expected_step_local_staging_dir)) in str(t.step_local_staging_dir)
 
     # Clear env
     os.environ.pop(constants.CONFIG_ENV_VAR_NAME, None)
