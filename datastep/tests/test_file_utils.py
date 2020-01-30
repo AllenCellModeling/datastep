@@ -4,6 +4,7 @@
 import pytest
 
 from datastep import file_utils
+from .test_step import Test
 
 ###############################################################################
 
@@ -47,3 +48,31 @@ def test_resolve_directory(data_dir, f):
 
     # Run
     file_utils.resolve_directory(f)
+
+
+def test_abs2rel2abs(N=3):
+    test = Test()
+    test.run(N=N)
+    df_abs = test.manifest.copy()
+
+    file_utils.manifest_filepaths_abs2rel(test)
+    file_utils.manifest_filepaths_rel2abs(test)
+
+    assert (
+        df_abs["filepath"].astype(str) == test.manifest["filepath"].astype(str)
+    ).all()
+
+
+def test_2Xabs2rel2abs(N=3):
+    test = Test()
+    test.run(N=N)
+    df_abs = test.manifest.copy()
+
+    file_utils.manifest_filepaths_abs2rel(test)
+    file_utils.manifest_filepaths_abs2rel(test)
+    file_utils.manifest_filepaths_rel2abs(test)
+    file_utils.manifest_filepaths_rel2abs(test)
+
+    assert (
+        df_abs["filepath"].astype(str) == test.manifest["filepath"].astype(str)
+    ).all()
