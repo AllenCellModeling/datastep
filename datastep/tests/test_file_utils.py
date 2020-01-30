@@ -4,7 +4,7 @@
 import pytest
 
 from datastep import file_utils
-from .test_step import Test
+from .test_step import ExampleStep
 
 ###############################################################################
 
@@ -51,28 +51,28 @@ def test_resolve_directory(data_dir, f):
 
 
 def test_abs2rel2abs(N=3):
-    test = Test()
-    test.run(N=N)
-    df_abs = test.manifest.copy()
+    example_step = ExampleStep()
+    example_step.run(N=N)
+    df_abs = example_step.manifest.copy()
 
-    file_utils.manifest_filepaths_abs2rel(test)
-    file_utils.manifest_filepaths_rel2abs(test)
+    file_utils.manifest_filepaths_abs2rel(example_step)
+    file_utils.manifest_filepaths_rel2abs(example_step)
 
     assert (
-        df_abs["filepath"].astype(str) == test.manifest["filepath"].astype(str)
+        df_abs["filepath"].astype(str) == example_step.manifest["filepath"].astype(str)
     ).all()
 
 
 def test_2Xabs2rel2abs(N=3):
-    test = Test()
-    test.run(N=N)
-    df_abs = test.manifest.copy()
+    example_step = ExampleStep()
+    example_step.run(N=N)
+    df_abs = example_step.manifest.copy()
 
-    file_utils.manifest_filepaths_abs2rel(test)
-    file_utils.manifest_filepaths_abs2rel(test)
-    file_utils.manifest_filepaths_rel2abs(test)
-    file_utils.manifest_filepaths_rel2abs(test)
+    file_utils.manifest_filepaths_abs2rel(example_step)
+    file_utils.manifest_filepaths_abs2rel(example_step)
+    file_utils.manifest_filepaths_rel2abs(example_step)
+    file_utils.manifest_filepaths_rel2abs(example_step)
 
     assert (
-        df_abs["filepath"].astype(str) == test.manifest["filepath"].astype(str)
+        df_abs["filepath"].astype(str) == example_step.manifest["filepath"].astype(str)
     ).all()
