@@ -293,6 +293,7 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
+        <span class="n">clean_before_run</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">direct_upstream_tasks</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="s2">&quot;Step&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
@@ -312,6 +313,10 @@
 
         <span class="c1"># Unpack config</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_unpack_config</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+
+        <span class="c1"># clean old files</span>
+        <span class="k">if</span> <span class="n">clean_before_run</span><span class="p">:</span>
+            <span class="n">file_utils</span><span class="o">.</span><span class="n">_clean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">step_local_staging_dir</span><span class="p">)</span>
 
         <span class="c1"># write out args/kwargs now that we know where</span>
         <span class="n">parameter_store</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_local_staging_dir</span> <span class="o">/</span> <span class="s2">&quot;init_parameters.json&quot;</span>
@@ -495,6 +500,9 @@
             <span class="n">registry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">storage_bucket</span><span class="p">,</span>
             <span class="n">message</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_create_data_commit_message</span><span class="p">(),</span>
         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Step.clean"><a class="viewcode-back" href="../../datastep.html#datastep.step.Step.clean">[docs]</a>    <span class="k">def</span> <span class="nf">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">file_utils</span><span class="o">.</span><span class="n">_clean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">step_local_staging_dir</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span>
