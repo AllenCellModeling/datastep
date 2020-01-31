@@ -8,6 +8,7 @@ import os
 from abc import ABC, abstractmethod
 from functools import wraps
 from pathlib import Path
+from shutil import rmtree
 from typing import Dict, List, Optional, Union
 
 import git
