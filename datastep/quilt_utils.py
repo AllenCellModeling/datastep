@@ -11,7 +11,7 @@ import pandas as pd
 from quilt3.packages import Package, PackageEntry
 from tqdm import tqdm
 
-from . import file_utils
+from . import file_utils, constants
 
 ###############################################################################
 
@@ -350,3 +350,47 @@ def create_package(
                 pkg[lk].set_meta({**pkg[lk].meta, **{"associates": associate_mapping}})
 
         return pkg
+
+
+# used in cookiecutter template to init quilt repo
+# nd other quilt-centric cmdline tasks as methods here
+class _Quilt:
+    def __init__(self, config_file="step_config.json", **kwargs):
+
+        # get package name from name of python package
+        package_name = f"{self.__module__.split('.')[0]}"
+
+        # start with defaults
+        self.config = {
+            "storage_bucket": constants.DEFAULT_QUILT_STORAGE,
+            "quilt_package_owner": constants.DEFAULT_QUILT_PACKAGE_OWNER,
+            "package_name": package_name,
+        }
+
+        # load values from config file
+        config_file = Path(config_file)
+        if config_file.is_file():
+            with open(config_file) as json_file:
+                file_config = json.load(json_file)
+        else:
+            file_config = {}
+
+        # put values from config file into main config dict
+        for k, v in file_config.items():
+            self.config[k] = v
+
+        # overwrite values in main dict with kwargs if passed
+        for k, v in kwargs.items():
+            self.config[k] = v
+
+    # this is named init for the cli to run as `proj_name quilt init` vi fire
+    def init(self):
+
+        # create an empty quilt package
+        p = Package()
+
+        # push it to quilt
+        quilt_loc = (
+            f"{self.config['quilt_package_owner']}/{self.config['package_name']}"
+        )
+        p.push(quilt_loc, registry=self.config["storage_bucket"])
