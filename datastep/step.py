@@ -114,6 +114,7 @@ class Step(ABC):
 
     def __init__(
         self,
+        clean_before_run=True,
         direct_upstream_tasks: Optional[List["Step"]] = None,
         config: Optional[Union[str, Path, Dict[str, str]]] = None,
     ):
@@ -133,6 +134,10 @@ class Step(ABC):
 
         # Unpack config
         self._unpack_config(config)
+
+        # clean old files
+        if clean_before_run:
+            file_utils._clean(self.step_local_staging_dir)
 
         # write out args/kwargs now that we know where
         parameter_store = self.step_local_staging_dir / "init_parameters.json"
@@ -316,6 +321,9 @@ class Step(ABC):
             registry=self.storage_bucket,
             message=self._create_data_commit_message(),
         )
+
+    def clean(self) -> str:
+        file_utils._clean(self.step_local_staging_dir)
 
     def __str__(self):
         return (
