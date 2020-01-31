@@ -273,13 +273,13 @@ def test_init(
 
 
 def test_run():
-    t = ExampleStep(direct_upstream_tasks=direct_upstream_tasks, config=config_var)
+    t = ExampleStep()
     t.run()
     assert len([file for file in t.step_local_staging_dir.iterdir()]) > 0
 
 
 def test_clean():
-    t = ExampleStep(direct_upstream_tasks=direct_upstream_tasks, config=config_var)
+    t = ExampleStep()
     t.run()
     t.clean()
     assert len([file for file in t.step_local_staging_dir.iterdir()]) == 0
