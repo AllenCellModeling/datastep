@@ -270,3 +270,16 @@ def test_init(
     # Reset current working directory
     if use_cwd is not None:
         os.chdir(original_dir)
+
+
+def test_run():
+    t = ExampleStep()
+    t.run()
+    assert len([file for file in t.step_local_staging_dir.iterdir()]) > 0
+
+
+def test_clean():
+    t = ExampleStep()
+    t.run()
+    t.clean()
+    assert len([file for file in t.step_local_staging_dir.iterdir()]) == 0

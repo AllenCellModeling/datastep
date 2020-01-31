@@ -5,6 +5,7 @@ import hashlib
 import json
 import logging
 from pathlib import Path
+from shutil import rmtree
 from typing import Any, Dict, List, Optional, Union
 
 ###############################################################################
@@ -91,3 +92,11 @@ def manifest_filepaths_abs2rel(mystep):
         mystep.manifest[col] = mystep.manifest[col].apply(
             lambda x: str(_filepath_abs2rel(Path(x), mystep.step_local_staging_dir))
         )
+
+
+def _clean(dirpath: Path) -> Optional[Exception]:
+    # remove anything in step staging dir
+    rmtree(dirpath)
+
+    # create it again as empty dir
+    dirpath.mkdir(parents=True, exist_ok=True)
