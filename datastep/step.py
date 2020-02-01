@@ -99,18 +99,31 @@ class Step(ABC):
                 )
 
         else:
-            log.debug(f"Using default project and step configuration.")
-            self._storage_bucket = constants.DEFAULT_QUILT_STORAGE
-            self._quilt_package_owner = constants.DEFAULT_QUILT_PACKAGE_OWNER
-            self._project_local_staging_dir = file_utils.resolve_directory(
-                constants.DEFAULT_PROJECT_LOCAL_STAGING_DIR.format(cwd="."), make=True
-            )
-            self._step_local_staging_dir = file_utils.resolve_directory(
-                constants.DEFAULT_STEP_LOCAL_STAGING_DIR.format(
-                    cwd=".", module_name=self.step_name
+            config = {
+                "quilt_storage_bucket": constants.DEFAULT_QUILT_STORAGE,
+                "quilt_package_owner": constants.DEFAULT_QUILT_PACKAGE_OWNER,
+                "project_local_staging_dir": file_utils.resolve_directory(
+                    constants.DEFAULT_PROJECT_LOCAL_STAGING_DIR.format(cwd="."),
+                    make=True,
                 ),
-                make=True,
-            )
+                self.step_name: {
+                    "step_local_staging_dir": file_utils.resolve_directory(
+                        constants.DEFAULT_STEP_LOCAL_STAGING_DIR.format(
+                            cwd=".", module_name=self.step_name
+                        ),
+                        make=True,
+                    )
+                },
+            }
+            log.debug(f"Using default project and step configuration.")
+            self._storage_bucket = config["quilt_storage_bucket"]
+            self._quilt_package_owner = config["quilt_package_owner"]
+            self._project_local_staging_dir = config["project_local_staging_dir"]
+            self._step_local_staging_dir = config[self.step_name][
+                "step_local_staging_dir"
+            ]
+
+            return config
 
     def __init__(
         self,
@@ -133,7 +146,7 @@ class Step(ABC):
             self._upstream_tasks = direct_upstream_tasks
 
         # Unpack config
-        self._unpack_config(config)
+        params["config"] = self._unpack_config(config)
 
         # clean old files
         if clean_before_run:
