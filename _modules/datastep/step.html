@@ -278,18 +278,31 @@
                 <span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Using default project and step configuration.&quot;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_storage_bucket</span> <span class="o">=</span> <span class="n">constants</span><span class="o">.</span><span class="n">DEFAULT_QUILT_STORAGE</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_quilt_package_owner</span> <span class="o">=</span> <span class="n">constants</span><span class="o">.</span><span class="n">DEFAULT_QUILT_PACKAGE_OWNER</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_project_local_staging_dir</span> <span class="o">=</span> <span class="n">file_utils</span><span class="o">.</span><span class="n">resolve_directory</span><span class="p">(</span>
-                <span class="n">constants</span><span class="o">.</span><span class="n">DEFAULT_PROJECT_LOCAL_STAGING_DIR</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cwd</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">),</span> <span class="n">make</span><span class="o">=</span><span class="kc">True</span>
-            <span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_step_local_staging_dir</span> <span class="o">=</span> <span class="n">file_utils</span><span class="o">.</span><span class="n">resolve_directory</span><span class="p">(</span>
-                <span class="n">constants</span><span class="o">.</span><span class="n">DEFAULT_STEP_LOCAL_STAGING_DIR</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">cwd</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">module_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">step_name</span>
+            <span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;quilt_storage_bucket&quot;</span><span class="p">:</span> <span class="n">constants</span><span class="o">.</span><span class="n">DEFAULT_QUILT_STORAGE</span><span class="p">,</span>
+                <span class="s2">&quot;quilt_package_owner&quot;</span><span class="p">:</span> <span class="n">constants</span><span class="o">.</span><span class="n">DEFAULT_QUILT_PACKAGE_OWNER</span><span class="p">,</span>
+                <span class="s2">&quot;project_local_staging_dir&quot;</span><span class="p">:</span> <span class="n">file_utils</span><span class="o">.</span><span class="n">resolve_directory</span><span class="p">(</span>
+                    <span class="n">constants</span><span class="o">.</span><span class="n">DEFAULT_PROJECT_LOCAL_STAGING_DIR</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cwd</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">),</span>
+                    <span class="n">make</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                 <span class="p">),</span>
-                <span class="n">make</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">step_name</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;step_local_staging_dir&quot;</span><span class="p">:</span> <span class="n">file_utils</span><span class="o">.</span><span class="n">resolve_directory</span><span class="p">(</span>
+                        <span class="n">constants</span><span class="o">.</span><span class="n">DEFAULT_STEP_LOCAL_STAGING_DIR</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                            <span class="n">cwd</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">module_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">step_name</span>
+                        <span class="p">),</span>
+                        <span class="n">make</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="p">},</span>
+            <span class="p">}</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Using default project and step configuration.&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_storage_bucket</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;quilt_storage_bucket&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_quilt_package_owner</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;quilt_package_owner&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_project_local_staging_dir</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;project_local_staging_dir&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_step_local_staging_dir</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">step_name</span><span class="p">][</span>
+                <span class="s2">&quot;step_local_staging_dir&quot;</span>
+            <span class="p">]</span>
+
+            <span class="k">return</span> <span class="n">config</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -312,7 +325,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_upstream_tasks</span> <span class="o">=</span> <span class="n">direct_upstream_tasks</span>
 
         <span class="c1"># Unpack config</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_unpack_config</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;config&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unpack_config</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
 
         <span class="c1"># clean old files</span>
         <span class="k">if</span> <span class="n">clean_before_run</span><span class="p">:</span>
