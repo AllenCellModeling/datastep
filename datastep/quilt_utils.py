@@ -354,7 +354,7 @@ def create_package(
 
 # used in cookiecutter template to init quilt repo
 # nd other quilt-centric cmdline tasks as methods here
-class _Quilt:
+class QuiltCli:
     def __init__(self, config_file="step_config.json", **kwargs):
 
         # get package name from name of python package
