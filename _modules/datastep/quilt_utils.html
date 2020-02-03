@@ -533,7 +533,7 @@
 
 <span class="c1"># used in cookiecutter template to init quilt repo</span>
 <span class="c1"># nd other quilt-centric cmdline tasks as methods here</span>
-<span class="k">class</span> <span class="nc">_Quilt</span><span class="p">:</span>
+<div class="viewcode-block" id="QuiltCli"><a class="viewcode-back" href="../../datastep.html#datastep.quilt_utils.QuiltCli">[docs]</a><span class="k">class</span> <span class="nc">QuiltCli</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config_file</span><span class="o">=</span><span class="s2">&quot;step_config.json&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 
         <span class="c1"># get package name from name of python package</span>
@@ -563,7 +563,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
 
     <span class="c1"># this is named init for the cli to run as `proj_name quilt init` vi fire</span>
-    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="QuiltCli.init"><a class="viewcode-back" href="../../datastep.html#datastep.quilt_utils.QuiltCli.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="c1"># create an empty quilt package</span>
         <span class="n">p</span> <span class="o">=</span> <span class="n">Package</span><span class="p">()</span>
@@ -572,7 +572,7 @@
         <span class="n">quilt_loc</span> <span class="o">=</span> <span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{self.config[&#39;quilt_package_owner&#39;]}</span><span class="s2">/</span><span class="si">{self.config[&#39;package_name&#39;]}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
-        <span class="n">p</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">quilt_loc</span><span class="p">,</span> <span class="n">registry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;storage_bucket&quot;</span><span class="p">])</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">quilt_loc</span><span class="p">,</span> <span class="n">registry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;storage_bucket&quot;</span><span class="p">])</span></div></div>
 </pre></div>
 
            </div>
