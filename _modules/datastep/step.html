@@ -307,6 +307,8 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">clean_before_run</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">filepath_columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;filepath&quot;</span><span class="p">],</span>
+        <span class="n">metadata_columns</span><span class="o">=</span><span class="p">[],</span>
         <span class="n">direct_upstream_tasks</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="s2">&quot;Step&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
@@ -344,8 +346,10 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">manifest</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">manifest_path</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">manifest</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">filepath_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;filepath&quot;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">metadata_columns</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># save filepath and metadata columns for use elsewhere</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filepath_columns</span> <span class="o">=</span> <span class="n">filepath_columns</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata_columns</span> <span class="o">=</span> <span class="n">metadata_columns</span>
 
         <span class="c1"># Set the package name from the inherited class name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_package_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__module__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
