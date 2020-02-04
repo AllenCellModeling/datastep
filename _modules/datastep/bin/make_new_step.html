@@ -298,10 +298,10 @@
 <span class="sd">class {{ truecase_step_name }}(Step):</span>
 <span class="sd">    def __init__(</span>
 <span class="sd">        self,</span>
-<span class="sd">        direct_upstream_tasks: Optional[List[&quot;Step&quot;]] = None,</span>
+<span class="sd">        direct_upstream_tasks: List[&quot;Step&quot;] = [],</span>
 <span class="sd">        config: Optional[Union[str, Path, Dict[str, str]]] = None,</span>
 <span class="sd">    ):</span>
-<span class="sd">        super().__init__(direct_upstream_tasks, config)</span>
+<span class="sd">        super().__init__(direct_upstream_tasks=direct_upstream_tasks, config=config)</span>
 
 <span class="sd">    @log_run_params</span>
 <span class="sd">    def run(self, **kwargs):</span>
@@ -312,8 +312,8 @@
 <span class="sd">        # The user should set `self.manifest` to a dataframe of absolute paths that</span>
 <span class="sd">        # point to the created files and each files metadata</span>
 <span class="sd">        #</span>
-<span class="sd">        # By default, `self.filepath_columns` is [&quot;filepath&quot;], but should be edited</span>
-<span class="sd">        # if there are more than a single column of filepaths</span>
+<span class="sd">        # By default, `self.filepath_columns` is [&quot;filepath&quot;], but can be set</span>
+<span class="sd">        # in __init__ if there are more than a single column of filepaths</span>
 <span class="sd">        #</span>
 <span class="sd">        # By default, `self.metadata_columns` is [], but should be edited to include</span>
 <span class="sd">        # any columns that should be parsed for metadata and attached to objects</span>
