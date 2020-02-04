@@ -113,7 +113,7 @@ from .example_step import ExampleStep
             None,
             None,
             "example_config_3.json",
-            None,
+            [],
             [],
             "s3://example_config_3",
             "example/config/3",
@@ -193,7 +193,7 @@ from .example_step import ExampleStep
         (
             None,
             None,
-            [],
+            None,
             ["raw", "qc", "norm"],
             ["raw", "qc", "norm"],
             constants.DEFAULT_QUILT_STORAGE,
