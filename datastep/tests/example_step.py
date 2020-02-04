@@ -12,8 +12,21 @@ from datastep import Step
 
 # A dummy class to test with
 class ExampleStep(Step):
-    def __init__(self, clean_before_run=True, direct_upstream_tasks=None, config=None):
-        super().__init__(clean_before_run, direct_upstream_tasks, config)
+    def __init__(
+        self,
+        clean_before_run=True,
+        filepath_columns=["filepath"],
+        metadata_columns=[],
+        direct_upstream_tasks=None,
+        config=None,
+    ):
+        super().__init__(
+            clean_before_run,
+            filepath_columns,
+            metadata_columns,
+            direct_upstream_tasks,
+            config,
+        )
 
     def run(self, N=3):
         # make a directory of empty files
