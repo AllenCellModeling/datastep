@@ -128,6 +128,8 @@ class Step(ABC):
     def __init__(
         self,
         clean_before_run=True,
+        filepath_columns=["filepath"],
+        metadata_columns=[],
         direct_upstream_tasks: Optional[List["Step"]] = None,
         config: Optional[Union[str, Path, Dict[str, str]]] = None,
     ):
@@ -165,8 +167,10 @@ class Step(ABC):
             self.manifest = pd.read_csv(manifest_path)
         else:
             self.manifest = None
-        self.filepath_columns = ["filepath"]
-        self.metadata_columns = []
+
+        # save filepath and metadata columns for use elsewhere
+        self.filepath_columns = filepath_columns
+        self.metadata_columns = metadata_columns
 
         # Set the package name from the inherited class name
         self._package_name = self.__module__.split(".")[0]
