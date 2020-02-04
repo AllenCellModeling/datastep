@@ -119,10 +119,10 @@ log = logging.getLogger(__name__)
 class {{ truecase_step_name }}(Step):
     def __init__(
         self,
-        direct_upstream_tasks: Optional[List["Step"]] = None,
+        direct_upstream_tasks: List["Step"] = [],
         config: Optional[Union[str, Path, Dict[str, str]]] = None,
     ):
-        super().__init__(direct_upstream_tasks, config)
+        super().__init__(direct_upstream_tasks=direct_upstream_tasks, config=config)
 
     @log_run_params
     def run(self, **kwargs):
@@ -133,8 +133,8 @@ class {{ truecase_step_name }}(Step):
         # The user should set `self.manifest` to a dataframe of absolute paths that
         # point to the created files and each files metadata
         #
-        # By default, `self.filepath_columns` is ["filepath"], but should be edited
-        # if there are more than a single column of filepaths
+        # By default, `self.filepath_columns` is ["filepath"], but can be set
+        # in __init__ if there are more than a single column of filepaths
         #
         # By default, `self.metadata_columns` is [], but should be edited to include
         # any columns that should be parsed for metadata and attached to objects
