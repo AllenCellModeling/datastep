@@ -142,8 +142,13 @@ class Step(ABC):
 
         # Set names as attributes if not None
         if step_name is not None:
+            self._step_name = step_name
+        else:
             self._step_name = self.__class__.__name__.lower()
+
         if package_name is not None:
+            self._package_name = package_name
+        else:
             self._package_name = self.__module__.split(".")[0]
 
         # Set kwargs as attributes
