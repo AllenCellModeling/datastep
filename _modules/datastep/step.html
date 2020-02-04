@@ -309,7 +309,9 @@
         <span class="n">clean_before_run</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">filepath_columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;filepath&quot;</span><span class="p">],</span>
         <span class="n">metadata_columns</span><span class="o">=</span><span class="p">[],</span>
-        <span class="n">direct_upstream_tasks</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="s2">&quot;Step&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">step_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">package_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">direct_upstream_tasks</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="s2">&quot;Step&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
         <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
 
@@ -317,16 +319,24 @@
         <span class="n">params</span> <span class="o">=</span> <span class="nb">locals</span><span class="p">()</span>
         <span class="n">params</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;self&quot;</span><span class="p">)</span>
 
-        <span class="c1"># Set step name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_step_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="c1"># Set names as attributes if not None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_step_name</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">file_utils</span><span class="o">.</span><span class="n">_sanitize_name</span><span class="p">(</span><span class="n">step_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">step_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_package_name</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">file_utils</span><span class="o">.</span><span class="n">_sanitize_name</span><span class="p">(</span><span class="n">package_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">package_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__module__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="p">)</span>
 
-        <span class="c1"># Catch none</span>
-        <span class="k">if</span> <span class="n">direct_upstream_tasks</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_upstream_tasks</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_upstream_tasks</span> <span class="o">=</span> <span class="n">direct_upstream_tasks</span>
+        <span class="c1"># Set kwargs as attributes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_upstream_tasks</span> <span class="o">=</span> <span class="n">direct_upstream_tasks</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filepath_columns</span> <span class="o">=</span> <span class="n">filepath_columns</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata_columns</span> <span class="o">=</span> <span class="n">metadata_columns</span>
 
-        <span class="c1"># Unpack config</span>
+        <span class="c1"># Unpack config into param log dict</span>
         <span class="n">params</span><span class="p">[</span><span class="s2">&quot;config&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unpack_config</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
 
         <span class="c1"># clean old files</span>
@@ -339,20 +349,9 @@
             <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">write_out</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
             <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Stored params for run at: </span><span class="si">{parameter_store}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-        <span class="c1"># Set defaults</span>
-        <span class="c1"># TODO log manifest find or not</span>
-        <span class="n">manifest_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">step_local_staging_dir</span> <span class="o">/</span> <span class="s2">&quot;manifest.csv&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">manifest_path</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">manifest</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">manifest_path</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">manifest</span> <span class="o">=</span> <span class="kc">None</span>
-
-        <span class="c1"># save filepath and metadata columns for use elsewhere</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">filepath_columns</span> <span class="o">=</span> <span class="n">filepath_columns</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">metadata_columns</span> <span class="o">=</span> <span class="n">metadata_columns</span>
-
-        <span class="c1"># Set the package name from the inherited class name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_package_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__module__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c1"># Set defaults -- TODO log manifest find or not</span>
+        <span class="n">m_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">step_local_staging_dir</span> <span class="o">/</span> <span class="s2">&quot;manifest.csv&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manifest</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">m_path</span><span class="p">)</span> <span class="k">if</span> <span class="n">m_path</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="k">else</span> <span class="kc">None</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">step_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -495,9 +494,9 @@
 
         <span class="c1"># Add the manifest to the package</span>
         <span class="c1"># TODO error on None manifest</span>
-        <span class="n">manifest_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_local_staging_dir</span> <span class="o">/</span> <span class="s2">&quot;manifest.csv&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">manifest</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">manifest_path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="n">step_pkg</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;manifest.csv&quot;</span><span class="p">,</span> <span class="n">manifest_path</span><span class="p">)</span>
+        <span class="n">m_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_local_staging_dir</span> <span class="o">/</span> <span class="s2">&quot;manifest.csv&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manifest</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">m_path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">step_pkg</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;manifest.csv&quot;</span><span class="p">,</span> <span class="n">m_path</span><span class="p">)</span>
 
         <span class="c1"># Add the params files to the package</span>
         <span class="k">for</span> <span class="n">param_file</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;run_parameters.json&quot;</span><span class="p">,</span> <span class="s2">&quot;init_parameters.json&quot;</span><span class="p">]:</span>
