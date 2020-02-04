@@ -17,6 +17,8 @@ class ExampleStep(Step):
         clean_before_run=True,
         filepath_columns=["filepath"],
         metadata_columns=[],
+        step_name=None,
+        package_name=None,
         direct_upstream_tasks=None,
         config=None,
     ):
@@ -24,6 +26,8 @@ class ExampleStep(Step):
             clean_before_run,
             filepath_columns,
             metadata_columns,
+            step_name,
+            package_name,
             direct_upstream_tasks,
             config,
         )

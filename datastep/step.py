@@ -130,7 +130,9 @@ class Step(ABC):
         clean_before_run=True,
         filepath_columns=["filepath"],
         metadata_columns=[],
-        direct_upstream_tasks: Optional[List["Step"]] = None,
+        step_name=None,
+        package_name=None,
+        direct_upstream_tasks: List["Step"] = [],
         config: Optional[Union[str, Path, Dict[str, str]]] = None,
     ):
 
@@ -138,16 +140,24 @@ class Step(ABC):
         params = locals()
         params.pop("self")
 
-        # Set step name
-        self._step_name = self.__class__.__name__.lower()
+        # Set names as attributes if not None
+        self._step_name = (
+            file_utils._sanitize_name(step_name)
+            if step_name is not None
+            else self.__class__.__name__.lower()
+        )
+        self._package_name = (
+            file_utils._sanitize_name(package_name)
+            if package_name is not None
+            else self.__module__.split(".")[0]
+        )
 
-        # Catch none
-        if direct_upstream_tasks is None:
-            self._upstream_tasks = []
-        else:
-            self._upstream_tasks = direct_upstream_tasks
+        # Set kwargs as attributes
+        self._upstream_tasks = direct_upstream_tasks
+        self.filepath_columns = filepath_columns
+        self.metadata_columns = metadata_columns
 
-        # Unpack config
+        # Unpack config into param log dict
         params["config"] = self._unpack_config(config)
 
         # clean old files
@@ -160,20 +170,9 @@ class Step(ABC):
             json.dump(params, write_out, default=str)
             log.debug(f"Stored params for run at: {parameter_store}")
 
-        # Set defaults
-        # TODO log manifest find or not
-        manifest_path = Path(self.step_local_staging_dir / "manifest.csv")
-        if manifest_path.is_file():
-            self.manifest = pd.read_csv(manifest_path)
-        else:
-            self.manifest = None
-
-        # save filepath and metadata columns for use elsewhere
-        self.filepath_columns = filepath_columns
-        self.metadata_columns = metadata_columns
-
-        # Set the package name from the inherited class name
-        self._package_name = self.__module__.split(".")[0]
+        # Set defaults -- TODO log manifest find or not
+        m_path = Path(self.step_local_staging_dir / "manifest.csv")
+        self.manifest = pd.read_csv(m_path) if m_path.is_file() else None
 
     @property
     def step_name(self) -> str:
@@ -316,9 +315,9 @@ class Step(ABC):
 
         # Add the manifest to the package
         # TODO error on None manifest
-        manifest_path = self.step_local_staging_dir / "manifest.csv"
-        self.manifest.to_csv(manifest_path, index=False)
-        step_pkg.set("manifest.csv", manifest_path)
+        m_path = self.step_local_staging_dir / "manifest.csv"
+        self.manifest.to_csv(m_path, index=False)
+        step_pkg.set("manifest.csv", m_path)
 
         # Add the params files to the package
         for param_file in ["run_parameters.json", "init_parameters.json"]:

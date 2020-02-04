@@ -100,3 +100,7 @@ def _clean(dirpath: Path) -> Optional[Exception]:
 
     # create it again as empty dir
     dirpath.mkdir(parents=True, exist_ok=True)
+
+
+def _sanitize_name(input_str: str):
+    return input_str.replace(" ", "_")

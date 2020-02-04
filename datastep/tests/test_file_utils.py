@@ -77,3 +77,8 @@ def test_2Xabs2rel2abs(N=3):
     assert (
         df_abs["filepath"].astype(str) == example_step.manifest["filepath"].astype(str)
     ).all()
+
+
+def test_sanitize_name():
+    output_str = file_utils._sanitize_name("my dir")
+    assert output_str == "my_dir"
