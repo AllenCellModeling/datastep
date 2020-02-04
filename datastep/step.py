@@ -260,6 +260,12 @@ class Step(ABC):
             f"{current_branch} at commit {repo.head.object.hexsha}"
         )
 
+    def manifest_filepaths_rel2abs(self):
+        file_utils.manifest_filepaths_rel2abs(self)
+
+    def manifest_filepaths_abs2rel(self):
+        file_utils.manifest_filepaths_abs2rel(self)
+
     def checkout(
         self, data_version: Optional[str] = None, bucket: Optional[str] = None
     ):
