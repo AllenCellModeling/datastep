@@ -439,6 +439,12 @@
             <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{current_branch}</span><span class="s2"> at commit </span><span class="si">{repo.head.object.hexsha}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
 
+<div class="viewcode-block" id="Step.manifest_filepaths_rel2abs"><a class="viewcode-back" href="../../datastep.html#datastep.step.Step.manifest_filepaths_rel2abs">[docs]</a>    <span class="k">def</span> <span class="nf">manifest_filepaths_rel2abs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">file_utils</span><span class="o">.</span><span class="n">manifest_filepaths_rel2abs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Step.manifest_filepaths_abs2rel"><a class="viewcode-back" href="../../datastep.html#datastep.step.Step.manifest_filepaths_abs2rel">[docs]</a>    <span class="k">def</span> <span class="nf">manifest_filepaths_abs2rel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">file_utils</span><span class="o">.</span><span class="n">manifest_filepaths_abs2rel</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="Step.checkout"><a class="viewcode-back" href="../../datastep.html#datastep.step.Step.checkout">[docs]</a>    <span class="k">def</span> <span class="nf">checkout</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">data_version</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">bucket</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">):</span>
