@@ -130,6 +130,8 @@ class Step(ABC):
         clean_before_run=True,
         filepath_columns=["filepath"],
         metadata_columns=[],
+        step_name=None,
+        package_name=None,
         direct_upstream_tasks: List["Step"] = [],
         config: Optional[Union[str, Path, Dict[str, str]]] = None,
     ):
@@ -138,9 +140,11 @@ class Step(ABC):
         params = locals()
         params.pop("self")
 
-        # Set names as attributes
-        self._step_name = self.__class__.__name__.lower()
-        self._package_name = self.__module__.split(".")[0]
+        # Set names as attributes if not None
+        if step_name is not None:
+            self._step_name = self.__class__.__name__.lower()
+        if package_name is not None:
+            self._package_name = self.__module__.split(".")[0]
 
         # Set kwargs as attributes
         self._upstream_tasks = direct_upstream_tasks
