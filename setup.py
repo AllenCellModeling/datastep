@@ -76,9 +76,7 @@ setup(
     ],
     description="A base class and utilities for creating steps in DAGs that are tied "
     "to large amounts of data.",
-    entry_points={"console_scripts": [
-        "make_new_step=datastep.bin.make_new_step:main"
-    ]},
+    entry_points={"console_scripts": ["make_new_step=datastep.bin.make_new_step:main"]},
     install_requires=requirements,
     license="Allen Institute Software License",
     long_description=readme,
