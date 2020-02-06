@@ -127,7 +127,7 @@ class Step(Task):
 
     def __init__(
         self,
-        clean_before_run=True,
+        clean_before_run=False,
         filepath_columns=["filepath"],
         metadata_columns=[],
         step_name=None,
