@@ -44,6 +44,7 @@ requirements = [
     "gitpython>=3.0.5",
     "jinja2>=2.10.3",
     "pandas",
+    "prefect",
     "python-dateutil<=2.8.0",
     "quilt3>=3.1.10",
     "tqdm",
