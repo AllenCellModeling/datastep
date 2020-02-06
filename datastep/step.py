@@ -5,7 +5,6 @@ import inspect
 import json
 import logging
 import os
-from abc import ABC, abstractmethod
 from functools import wraps
 from pathlib import Path
 from typing import Dict, List, Optional, Union
@@ -13,6 +12,7 @@ from typing import Dict, List, Optional, Union
 import git
 import pandas as pd
 import quilt3
+from prefect import Task
 
 from . import constants, exceptions, file_utils, quilt_utils
 
@@ -38,7 +38,7 @@ def log_run_params(func):
     return wrapper
 
 
-class Step(ABC):
+class Step(Task):
     def _unpack_config(self, config: Optional[Union[str, Path, Dict[str, str]]] = None):
         # If not provided, check for other places the config could live
         if config is None:
@@ -134,7 +134,10 @@ class Step(ABC):
         package_name=None,
         direct_upstream_tasks: List["Step"] = [],
         config: Optional[Union[str, Path, Dict[str, str]]] = None,
+        **kwargs,
     ):
+        # get started with Task __init__
+        super().__init__(**kwargs)
 
         # grab args/kwarg to write out at end of init
         params = locals()
@@ -202,7 +205,6 @@ class Step(ABC):
     def quilt_package_owner(self) -> str:
         return self._quilt_package_owner
 
-    @abstractmethod
     def run(self, **kwargs):
         # Your code here
         #
