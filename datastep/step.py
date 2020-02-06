@@ -7,11 +7,13 @@ import logging
 import os
 from functools import wraps
 from pathlib import Path
+from tempfile import TemporaryDirectory
 from typing import Dict, List, Optional, Union
 
 import git
 import pandas as pd
 import quilt3
+
 from prefect import Task
 
 from . import constants, exceptions, file_utils, quilt_utils
@@ -263,6 +265,7 @@ class Step(Task):
         )
 
     def manifest_filepaths_rel2abs(self):
+        print(self.manifest.head())
         file_utils.manifest_filepaths_rel2abs(self)
 
     def manifest_filepaths_abs2rel(self):
@@ -314,37 +317,38 @@ class Step(Task):
         self._check_git_status_is_clean(push_target)
 
         # Construct the package
-        step_pkg = quilt_utils.create_package(
+        step_pkg, relative_manifest = quilt_utils.create_package(
             manifest=self.manifest,
             step_pkg_root=self.step_local_staging_dir,
             filepath_columns=self.filepath_columns,
             metadata_columns=self.metadata_columns,
         )
 
-        # Add the manifest to the package
+        # Add the relative manifest to the package
         # TODO error on None manifest
-        m_path = self.step_local_staging_dir / "manifest.csv"
-        self.manifest.to_csv(m_path, index=False)
-        step_pkg.set("manifest.csv", m_path)
+        with TemporaryDirectory() as tempdir:
+            m_path = Path(tempdir) / "manifest.csv"
+            relative_manifest.to_csv(m_path, index=False)
+            step_pkg.set("manifest.csv", m_path)
 
-        # Add the params files to the package
-        for param_file in ["run_parameters.json", "init_parameters.json"]:
-            param_file_path = self.step_local_staging_dir / param_file
-            step_pkg.set(param_file, param_file_path)
+            # Add the params files to the package
+            for param_file in ["run_parameters.json", "init_parameters.json"]:
+                param_file_path = self.step_local_staging_dir / param_file
+                step_pkg.set(param_file, param_file_path)
 
-        # Browse top level project package and add / overwrite to it in step dir
-        project_pkg = quilt3.Package.browse(quilt_loc, self.storage_bucket)
-        for (logical_key, pkg_entry) in step_pkg.walk():
-            project_pkg.set(
-                f"{current_branch}/{self.step_name}/{logical_key}", pkg_entry
+            # Browse top level project package and add / overwrite to it in step dir
+            project_pkg = quilt3.Package.browse(quilt_loc, self.storage_bucket)
+            for (logical_key, pkg_entry) in step_pkg.walk():
+                project_pkg.set(
+                    f"{current_branch}/{self.step_name}/{logical_key}", pkg_entry
+                )
+
+            # Push the data
+            project_pkg.push(
+                quilt_loc,
+                registry=self.storage_bucket,
+                message=self._create_data_commit_message(),
             )
-
-        # Push the data
-        project_pkg.push(
-            quilt_loc,
-            registry=self.storage_bucket,
-            message=self._create_data_commit_message(),
-        )
 
     def clean(self) -> str:
         file_utils._clean(self.step_local_staging_dir)

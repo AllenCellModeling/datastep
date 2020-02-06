@@ -5,13 +5,13 @@ import json
 from concurrent.futures import ThreadPoolExecutor
 from functools import partial
 from pathlib import Path
-from typing import Dict, List, NamedTuple, Union
+from typing import Dict, List, NamedTuple, Tuple, Union
 
 import pandas as pd
 from quilt3.packages import Package, PackageEntry
 from tqdm import tqdm
 
-from . import file_utils, constants
+from . import constants, file_utils
 
 ###############################################################################
 
@@ -191,7 +191,10 @@ def create_package(
     step_pkg_root: Path,
     filepath_columns: List[str] = ["filepath"],
     metadata_columns: List[str] = [],
-) -> Package:
+) -> Tuple[Package, pd.DataFrame]:
+    # Make a copy
+    relative_manifest = manifest.copy(deep=True)
+
     # Create empty package
     pkg = Package()
 
@@ -230,11 +233,12 @@ def create_package(
 
     # Set all files
     with tqdm(
-        total=len(filepath_columns) * len(manifest), desc="Constructing package"
+        total=len(filepath_columns) * len(relative_manifest),
+        desc="Constructing package",
     ) as pbar:
         for col in filepath_columns:
             # Update values to the logical key as they are set
-            for i, val in enumerate(manifest[col].values):
+            for i, val in enumerate(relative_manifest[col].values):
                 # Fully resolve the path
                 physical_key = Path(val).expanduser().resolve()
 
@@ -250,16 +254,19 @@ def create_package(
                 # and b/0.tiff, and, a/1.tiff and b/1.tiff being grouped together. To
                 # solve this we can prepend a the first couple of characters from a
                 # hash of the fully resolved path to the logical key.
-
-                logical_key = str(physical_key.relative_to(step_pkg_root.resolve()))
+                logical_key = str(
+                    file_utils._filepath_rel2abs(physical_key).relative_to(
+                        file_utils._filepath_rel2abs(step_pkg_root)
+                    )
+                )
                 if physical_key.is_file():
-                    manifest[col].values[i] = logical_key
+                    relative_manifest[col].values[i] = logical_key
 
                     # Create metadata dictionary to attach to object
                     meta = {}
                     for meta_col in metadata_columns:
                         # Short reference to current metadata value
-                        v = manifest[meta_col].values[i]
+                        v = relative_manifest[meta_col].values[i]
 
                         # Enforce simple JSON serializable type
                         # First check if value is a numpy value
@@ -330,7 +337,7 @@ def create_package(
                     except IndexError:
                         associates.append({col: logical_key})
                 else:
-                    manifest[col].values[i] = logical_key
+                    relative_manifest[col].values[i] = logical_key
                     pkg.set_dir(logical_key, physical_key)
 
                 # Update progress bar
@@ -349,7 +356,7 @@ def create_package(
                 # because attach_associates was set to True.
                 pkg[lk].set_meta({**pkg[lk].meta, **{"associates": associate_mapping}})
 
-        return pkg
+        return pkg, relative_manifest
 
 
 # used in cookiecutter template to init quilt repo
