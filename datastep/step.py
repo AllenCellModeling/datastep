@@ -31,7 +31,13 @@ def log_run_params(func):
     def wrapper(self, *args, **kwargs):
         params = inspect.signature(func).bind(self, *args, **kwargs).arguments
         params.pop("self")
+
+        # In the case the operation is happening in a distributed fashion
+        # Always make the local staging dir prior to run
+        self.step_local_staging_dir.mkdir(parents=True, exist_ok=True)
         parameter_store = self.step_local_staging_dir / "run_parameters.json"
+
+        # Dump params
         with open(parameter_store, "w") as write_out:
             json.dump(params, write_out, default=str)
             log.debug(f"Stored params for run at: {parameter_store}")
