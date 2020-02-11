@@ -26,7 +26,11 @@ def resolve_filepath(f: Union[str, Path]) -> Path:
     return f
 
 
-def resolve_directory(d: Union[str, Path], make: bool = False) -> Path:
+def resolve_directory(
+    d: Union[str, Path],
+    make: bool = False,
+    resolve: bool = True
+) -> Path:
     # Expand user
     d = Path(d).expanduser()
 
@@ -38,8 +42,13 @@ def resolve_directory(d: Union[str, Path], make: bool = False) -> Path:
     if make:
         d.mkdir(parents=True, exist_ok=True)
 
-    # Fully resolve
-    d = d.resolve(strict=True)
+    # Check if we want to fully resolve
+    if resolve:
+        # Fully resolve
+        d = d.resolve(strict=True)
+    else:
+        if not d.exists():
+            raise FileNotFoundError(d)
 
     return d
 

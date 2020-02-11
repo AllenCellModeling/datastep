@@ -90,6 +90,7 @@ class Step(Task):
                     constants.DEFAULT_PROJECT_LOCAL_STAGING_DIR.format(cwd="."),
                 ),
                 make=True,
+                resolve=False,
             )
 
             # Get or default step local staging
