@@ -29,6 +29,7 @@ log = logging.getLogger(__name__)
 def log_run_params(func):
     @wraps(func)
     def wrapper(self, *args, **kwargs):
+        # Get the params for the function, not the wrapper
         params = inspect.signature(func).bind(self, *args, **kwargs).arguments
         params.pop("self")
 
@@ -37,10 +38,17 @@ def log_run_params(func):
         self.step_local_staging_dir.mkdir(parents=True, exist_ok=True)
         parameter_store = self.step_local_staging_dir / "run_parameters.json"
 
-        # Dump params
+        # Dump run params
         with open(parameter_store, "w") as write_out:
             json.dump(params, write_out, default=str)
             log.debug(f"Stored params for run at: {parameter_store}")
+
+        # TODO:
+        # Actually fix this.
+        # Check if we want to clean the step local staging prior to run
+        if params["clean"]:
+            file_utils._clean(self.step_local_staging_dir)
+
         return func(self, *args, **kwargs)
 
     return wrapper
