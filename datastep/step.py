@@ -288,7 +288,6 @@ class Step(Task):
         )
 
     def manifest_filepaths_rel2abs(self):
-        print(self.manifest.head())
         file_utils.manifest_filepaths_rel2abs(self)
 
     def manifest_filepaths_abs2rel(self):
