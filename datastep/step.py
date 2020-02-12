@@ -207,6 +207,10 @@ class Step(Task):
         return self._step_name
 
     @property
+    def name(self) -> str:
+        return self.step_name
+
+    @property
     def upstream_tasks(self) -> List[str]:
         return self._upstream_tasks
 
