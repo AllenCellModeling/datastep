@@ -202,6 +202,9 @@ class Step(Task):
         m_path = Path(self.step_local_staging_dir / "manifest.csv")
         self.manifest = pd.read_csv(m_path) if m_path.is_file() else None
 
+        # Set name for prefect task retrieval
+        self.name = self.step_name
+
     @property
     def step_name(self) -> str:
         return self._step_name
