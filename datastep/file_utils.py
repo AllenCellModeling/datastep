@@ -15,7 +15,7 @@ log = logging.getLogger(__name__)
 ###############################################################################
 
 
-def resolve_filepath(f: Union[str, Path], resolve: bool = True) -> Path:
+def resolve_filepath(f: Union[str, Path], strict: bool = True) -> Path:
     # Resolve
     f = Path(f).expanduser()
 
@@ -24,7 +24,7 @@ def resolve_filepath(f: Union[str, Path], resolve: bool = True) -> Path:
         raise IsADirectoryError(f)
 
     # Check if we want to fully resolve
-    if resolve:
+    if strict:
         f = f.resolve(strict=True)
     else:
         if not f.exists():
@@ -36,7 +36,7 @@ def resolve_filepath(f: Union[str, Path], resolve: bool = True) -> Path:
 def resolve_directory(
     d: Union[str, Path],
     make: bool = False,
-    resolve: bool = True
+    strict: bool = True
 ) -> Path:
     # Expand user
     d = Path(d).expanduser()
@@ -50,7 +50,7 @@ def resolve_directory(
         d.mkdir(parents=True, exist_ok=True)
 
     # Check if we want to fully resolve
-    if resolve:
+    if strict:
         # Fully resolve
         d = d.resolve(strict=True)
     else:
