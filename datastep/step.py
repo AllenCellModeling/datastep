@@ -98,7 +98,7 @@ class Step(Task):
                     constants.DEFAULT_PROJECT_LOCAL_STAGING_DIR.format(cwd="."),
                 ),
                 make=True,
-                resolve=False,
+                strict=False,
             )
 
             # Get or default step local staging
@@ -106,26 +106,38 @@ class Step(Task):
                 self._step_local_staging_dir = file_utils.resolve_directory(
                     config[self.step_name].get(
                         "step_local_staging_dir",
-                        f"{self.project_local_staging_dir / self.step_name}",
+                        f"{self._project_local_staging_dir / self.step_name}",
                     ),
                     make=True,
-                    resolve=False,
+                    strict=False,
                 )
             else:
                 self._step_local_staging_dir = file_utils.resolve_directory(
-                    f"{self.project_local_staging_dir / self.step_name}",
+                    f"{self._project_local_staging_dir / self.step_name}",
                     make=True,
-                    resolve=False,
+                    strict=False,
                 )
 
+            # Get or default quilt package name
+            self._quilt_package_name = file_utils._sanitize_name(
+                config.get("quilt_package_name", self.__module__.split(".")[0])
+            )
+
+            log.debug(f"Unpacked config: {config}")
+
         else:
+            # Log debug message indicating using defaults
+            log.debug(f"Using default project and step configuration.")
+
+            # Construct config dictionary object
             config = {
                 "quilt_storage_bucket": constants.DEFAULT_QUILT_STORAGE,
                 "quilt_package_owner": constants.DEFAULT_QUILT_PACKAGE_OWNER,
+                "quilt_package_name": self.__module__.split(".")[0],
                 "project_local_staging_dir": file_utils.resolve_directory(
                     constants.DEFAULT_PROJECT_LOCAL_STAGING_DIR.format(cwd="."),
                     make=True,
-                    resolve=False,
+                    strict=False,
                 ),
                 self.step_name: {
                     "step_local_staging_dir": file_utils.resolve_directory(
@@ -133,13 +145,15 @@ class Step(Task):
                             cwd=".", module_name=self.step_name
                         ),
                         make=True,
-                        resolve=False,
+                        strict=False,
                     )
                 },
             }
-            log.debug(f"Using default project and step configuration.")
+
+            # Set object properties from config
             self._storage_bucket = config["quilt_storage_bucket"]
             self._quilt_package_owner = config["quilt_package_owner"]
+            self._quilt_package_name = config["quilt_package_name"]
             self._project_local_staging_dir = config["project_local_staging_dir"]
             self._step_local_staging_dir = config[self.step_name][
                 "step_local_staging_dir"
@@ -156,15 +170,13 @@ class Step(Task):
                 )
             )
 
-        log.debug(f"Unpacked config: {config}")
         return config
 
     def __init__(
         self,
+        step_name: Optional[str] = None,
         filepath_columns: List[str] = ["filepath"],
         metadata_columns: List[str] = [],
-        step_name: Optional[str] = None,
-        package_name: Optional[str] = None,
         direct_upstream_tasks: List["Step"] = [],
         config: Optional[Union[str, Path, Dict[str, str]]] = None,
         **kwargs,
@@ -172,16 +184,11 @@ class Step(Task):
         # Run super prefect Task init
         super().__init__(**kwargs)
 
-        # Set names as attributes if not None
+        # Set step name as attributes if not None
         self._step_name = (
             file_utils._sanitize_name(step_name)
             if step_name is not None
             else self.__class__.__name__.lower()
-        )
-        self._package_name = (
-            file_utils._sanitize_name(package_name)
-            if package_name is not None
-            else self.__module__.split(".")[0]
         )
 
         # Set kwargs as attributes
