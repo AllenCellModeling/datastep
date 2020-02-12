@@ -15,13 +15,20 @@ log = logging.getLogger(__name__)
 ###############################################################################
 
 
-def resolve_filepath(f: Union[str, Path]) -> Path:
+def resolve_filepath(f: Union[str, Path], resolve: bool = True) -> Path:
     # Resolve
-    f = Path(f).expanduser().resolve(strict=True)
+    f = Path(f).expanduser()
 
     # Check is not dir
     if f.is_dir():
         raise IsADirectoryError(f)
+
+    # Check if we want to fully resolve
+    if resolve:
+        f = f.resolve(strict=True)
+    else:
+        if not f.exists():
+            raise FileNotFoundError(f)
 
     return f
 
