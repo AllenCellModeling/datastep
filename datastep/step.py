@@ -148,25 +148,21 @@ class Step(Task):
                 )
             )
 
-            return config
+        log.debug(f"Unpacked config: {config}")
+        return config
 
     def __init__(
         self,
-        clean_before_run=False,
-        filepath_columns=["filepath"],
-        metadata_columns=[],
-        step_name=None,
-        package_name=None,
+        filepath_columns: List[str] = ["filepath"],
+        metadata_columns: List[str] = [],
+        step_name: Optional[str] = None,
+        package_name: Optional[str] = None,
         direct_upstream_tasks: List["Step"] = [],
         config: Optional[Union[str, Path, Dict[str, str]]] = None,
         **kwargs,
     ):
-        # get started with Task __init__
+        # Run super prefect Task init
         super().__init__(**kwargs)
-
-        # grab args/kwarg to write out at end of init
-        params = locals()
-        params.pop("self")
 
         # Set names as attributes if not None
         self._step_name = (
@@ -185,22 +181,29 @@ class Step(Task):
         self.filepath_columns = filepath_columns
         self.metadata_columns = metadata_columns
 
+        # Prepare locals to be stored for data logging
+        params = locals()
+        params.pop("self")
+
         # Unpack config into param log dict
         params["config"] = self._unpack_config(config)
 
-        # clean old files
-        if clean_before_run:
-            file_utils._clean(self.step_local_staging_dir)
-
-        # write out args/kwargs now that we know where
+        # Write out initialization params for data logging
         parameter_store = self.step_local_staging_dir / "init_parameters.json"
         with open(parameter_store, "w") as write_out:
             json.dump(params, write_out, default=str)
             log.debug(f"Stored params for run at: {parameter_store}")
 
-        # Set defaults -- TODO log manifest find or not
+        # Attempt to read a previously written manifest produced by this step
         m_path = Path(self.step_local_staging_dir / "manifest.csv")
-        self.manifest = pd.read_csv(m_path) if m_path.is_file() else None
+
+        # Check if a prior manifest exists
+        if m_path.is_file():
+            self.manifest = pd.read_csv(m_path)
+            log.debug(f"Read previously produced manifest from file: {m_path}")
+        else:
+            self.manifest = None
+            log.debug(f"No previous manifest found. Checked path: {m_path}")
 
         # Set name for prefect task retrieval
         self.name = self.step_name
