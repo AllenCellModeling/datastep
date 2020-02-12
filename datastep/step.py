@@ -101,10 +101,13 @@ class Step(Task):
                         f"{self.project_local_staging_dir / self.step_name}",
                     ),
                     make=True,
+                    resolve=False,
                 )
             else:
                 self._step_local_staging_dir = file_utils.resolve_directory(
-                    f"{self.project_local_staging_dir / self.step_name}", make=True
+                    f"{self.project_local_staging_dir / self.step_name}",
+                    make=True,
+                    resolve=False,
                 )
 
         else:
@@ -114,6 +117,7 @@ class Step(Task):
                 "project_local_staging_dir": file_utils.resolve_directory(
                     constants.DEFAULT_PROJECT_LOCAL_STAGING_DIR.format(cwd="."),
                     make=True,
+                    resolve=False,
                 ),
                 self.step_name: {
                     "step_local_staging_dir": file_utils.resolve_directory(
@@ -121,6 +125,7 @@ class Step(Task):
                             cwd=".", module_name=self.step_name
                         ),
                         make=True,
+                        resolve=False,
                     )
                 },
             }
