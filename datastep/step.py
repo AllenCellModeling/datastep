@@ -206,9 +206,8 @@ class Step(Task):
     def step_name(self) -> str:
         return self._step_name
 
-    @property
-    def name(self) -> str:
-        return self.step_name
+    def get_result(self, state, flow) -> str:
+        return state.result[flow.get_tasks(name=self.step_name)[0]].result
 
     @property
     def upstream_tasks(self) -> List[str]:
