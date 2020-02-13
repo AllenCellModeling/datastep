@@ -401,10 +401,28 @@ class Step(Task):
         )
 
     def manifest_filepaths_rel2abs(self):
-        file_utils.manifest_filepaths_rel2abs(self)
+        """
+        Convert manifest filepaths to absolute paths.
+
+        Useful for after you pull data from a remote bucket.
+        """
+        self.manifest = file_utils.manifest_filepaths_rel2abs(
+            self.manifest,
+            self.filepath_columns,
+            self.step_local_staging_dir
+        )
 
     def manifest_filepaths_abs2rel(self):
-        file_utils.manifest_filepaths_abs2rel(self)
+        """
+        Convert manifest filepaths to relative paths.
+
+        Useful for when you are ready to upload to a remote bucket.
+        """
+        self.manifest = file_utils.manifest_filepaths_abs2rel(
+            self.manifest,
+            self.filepath_columns,
+            self.step_local_staging_dir
+        )
 
     def checkout(
         self, data_version: Optional[str] = None, bucket: Optional[str] = None
