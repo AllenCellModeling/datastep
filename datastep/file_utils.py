@@ -109,10 +109,10 @@ def manifest_filepaths_abs2rel(mystep):
 
 
 def _clean(dirpath: Path) -> Optional[Exception]:
-    # remove anything in step staging dir
+    # Remove anything in step staging dir
     rmtree(dirpath)
 
-    # create it again as empty dir
+    # Create it again as empty dir
     dirpath.mkdir(parents=True, exist_ok=True)
 
 
