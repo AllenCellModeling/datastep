@@ -359,22 +359,25 @@ def create_package(
         return pkg, relative_manifest
 
 
-# used in cookiecutter template to init quilt repo
-# nd other quilt-centric cmdline tasks as methods here
+###############################################################################
+
+# CLI
+
+
+# Used in cookiecutter template to init quilt repo
 class QuiltCli:
-    def __init__(self, config_file="step_config.json", **kwargs):
+    def __init__(self, config_file="workflow_config.json", **kwargs):
+        # Get default package name
+        quilt_package_name = f"{self.__module__.split('.')[0]}"
 
-        # get package name from name of python package
-        package_name = f"{self.__module__.split('.')[0]}"
-
-        # start with defaults
+        # Start with defaults
         self.config = {
             "storage_bucket": constants.DEFAULT_QUILT_STORAGE,
             "quilt_package_owner": constants.DEFAULT_QUILT_PACKAGE_OWNER,
-            "package_name": package_name,
+            "quilt_package_name": quilt_package_name,
         }
 
-        # load values from config file
+        # Load values from config file
         config_file = Path(config_file)
         if config_file.is_file():
             with open(config_file) as json_file:
@@ -382,22 +385,21 @@ class QuiltCli:
         else:
             file_config = {}
 
-        # put values from config file into main config dict
+        # Put or overwrite values from config file into main config dict
         for k, v in file_config.items():
             self.config[k] = v
 
-        # overwrite values in main dict with kwargs if passed
+        # Put or overwrite values in main dict with kwargs if passed
         for k, v in kwargs.items():
             self.config[k] = v
 
-    # this is named init for the cli to run as `proj_name quilt init` vi fire
+    # This is named init for the cli to run as `proj_name quilt init`
     def init(self):
-
-        # create an empty quilt package
+        # Create an empty quilt package
         p = Package()
 
-        # push it to quilt
+        # Push it to quilt
         quilt_loc = (
-            f"{self.config['quilt_package_owner']}/{self.config['package_name']}"
+            f"{self.config['quilt_package_owner']}/{self.config['quilt_package_name']}"
         )
         p.push(quilt_loc, registry=self.config["storage_bucket"])
