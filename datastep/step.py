@@ -407,9 +407,7 @@ class Step(Task):
         Useful for after you pull data from a remote bucket.
         """
         self.manifest = file_utils.manifest_filepaths_rel2abs(
-            self.manifest,
-            self.filepath_columns,
-            self.step_local_staging_dir
+            self.manifest, self.filepath_columns, self.step_local_staging_dir
         )
 
     def manifest_filepaths_abs2rel(self):
@@ -419,9 +417,7 @@ class Step(Task):
         Useful for when you are ready to upload to a remote bucket.
         """
         self.manifest = file_utils.manifest_filepaths_abs2rel(
-            self.manifest,
-            self.filepath_columns,
-            self.step_local_staging_dir
+            self.manifest, self.filepath_columns, self.step_local_staging_dir
         )
 
     def checkout(

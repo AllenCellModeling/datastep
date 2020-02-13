@@ -95,9 +95,7 @@ def _filepath_abs2rel(filepath: Path, otherpath: Path = Path(".")) -> Path:
 
 
 def manifest_filepaths_rel2abs(
-    manifest: pd.DataFrame,
-    filepath_columns: List[str],
-    relative_dir: Path
+    manifest: pd.DataFrame, filepath_columns: List[str], relative_dir: Path
 ):
     # Make a copy of the manifest
     manifest = manifest.copy(deep=True)
@@ -112,9 +110,7 @@ def manifest_filepaths_rel2abs(
 
 
 def manifest_filepaths_abs2rel(
-    manifest: pd.DataFrame,
-    filepath_columns: List[str],
-    relative_dir: Path
+    manifest: pd.DataFrame, filepath_columns: List[str], relative_dir: Path
 ):
     # Make a copy of the manifest
     manifest = manifest.copy(deep=True)
