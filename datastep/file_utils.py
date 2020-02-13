@@ -97,9 +97,7 @@ def _filepath_abs2rel(filepath: Path, otherpath: Path = Path(".")) -> Path:
 def manifest_filepaths_rel2abs(mystep):
     for col in mystep.filepath_columns:
         mystep.manifest[col] = mystep.manifest[col].apply(
-            lambda x: str(
-                _filepath_rel2abs(Path(x), prefixpath=mystep.step_local_staging_dir)
-            )
+            lambda x: str(_filepath_rel2abs(Path(x), mystep.step_local_staging_dir))
         )
 
 
