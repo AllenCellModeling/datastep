@@ -165,15 +165,11 @@ class Step(Task):
                 "step_local_staging_dir"
             ]
 
-            self._project_local_staging_dir = (
-                self._project_local_staging_dir.relative_to(
-                    Path.cwd()
-                )
+            self._project_local_staging_dir = self._project_local_staging_dir.relative_to(
+                Path.cwd()
             )
-            self._step_local_staging_dir = (
-                self._step_local_staging_dir.relative_to(
-                    Path.cwd()
-                )
+            self._step_local_staging_dir = self._step_local_staging_dir.relative_to(
+                Path.cwd()
             )
 
         return config
@@ -239,7 +235,7 @@ class Step(Task):
             "To enforce that there is no reliance on object state during run "
             "functions, the upstream_tasks property will be deprecated on the "
             "next datastep release.",
-            PendingDeprecationWarning
+            PendingDeprecationWarning,
         )
         return self._upstream_tasks
 
@@ -249,7 +245,7 @@ class Step(Task):
             "To enforce that there is no reliance on object state during run "
             "functions, the storage_bucket property will be deprecated on the "
             "next datastep release.",
-            PendingDeprecationWarning
+            PendingDeprecationWarning,
         )
         return self._storage_bucket
 
@@ -259,7 +255,7 @@ class Step(Task):
             "To enforce that there is no reliance on object state during run "
             "functions, the project_local_staging_dir property will be deprecated "
             "on the next datastep release.",
-            PendingDeprecationWarning
+            PendingDeprecationWarning,
         )
         return self._project_local_staging_dir
 
@@ -273,7 +269,7 @@ class Step(Task):
             "To enforce that there is no reliance on object state during run "
             "functions, the quilt_package_name property will be deprecated on the "
             "next datastep release.",
-            PendingDeprecationWarning
+            PendingDeprecationWarning,
         )
         return self._package_name
 
@@ -283,7 +279,7 @@ class Step(Task):
             "To enforce that there is no reliance on object state during run "
             "functions, the quilt_package_owner property will be deprecated on the "
             "next datastep release.",
-            PendingDeprecationWarning
+            PendingDeprecationWarning,
         )
         return self._quilt_package_owner
 
@@ -292,7 +288,7 @@ class Step(Task):
         distributed_executor_address: Optional[str] = None,
         clean: bool = False,
         debug: bool = False,
-        **kwargs
+        **kwargs,
     ) -> Any:
         """
         Run a pure function.

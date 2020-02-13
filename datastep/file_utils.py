@@ -34,9 +34,7 @@ def resolve_filepath(f: Union[str, Path], strict: bool = True) -> Path:
 
 
 def resolve_directory(
-    d: Union[str, Path],
-    make: bool = False,
-    strict: bool = True
+    d: Union[str, Path], make: bool = False, strict: bool = True
 ) -> Path:
     # Expand user
     d = Path(d).expanduser()
