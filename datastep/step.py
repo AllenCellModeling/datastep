@@ -44,11 +44,16 @@ def log_run_params(func):
             json.dump(params, write_out, default=str)
             log.debug(f"Stored params for run at: {parameter_store}")
 
-        # TODO:
-        # Actually fix this.
         # Check if we want to clean the step local staging prior to run
-        if params["clean"]:
+        # If the user has defined clean in their run function it will be in
+        # top level params, if they haven't it will be in the kwargs
+        if "clean" in params and params["clean"]:
             file_utils._clean(self.step_local_staging_dir)
+            log.info(f"Cleaned directory: {self.step_local_staging_dir}")
+        elif "kwargs" in params:
+            if "clean" in params["kwargs"] and params["kwargs"]["clean"]:
+                file_utils._clean(self.step_local_staging_dir)
+                log.info(f"Cleaned directory: {self.step_local_staging_dir}")
 
         return func(self, *args, **kwargs)
 
