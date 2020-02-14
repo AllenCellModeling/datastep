@@ -17,7 +17,7 @@ import prefect
 import quilt3
 from prefect import Flow, Task
 
-from . import constants, exceptions, file_utils, quilt_utils
+from . import constants, exceptions, file_utils, get_module_version, quilt_utils
 
 ###############################################################################
 
@@ -88,17 +88,18 @@ class Step(Task):
 
         # Config should now either have been provided as a dict, parsed, or None
         if isinstance(config, dict):
-            # Get or default
-            self._storage_bucket = config.get(
+            # Get or default storage bucket
+            config["quilt_storage_bucket"] = config.get(
                 "quilt_storage_bucket", constants.DEFAULT_QUILT_STORAGE
             )
-            # Get or default
-            self._quilt_package_owner = config.get(
+
+            # Get or default package owner
+            config["quilt_package_owner"] = config.get(
                 "quilt_package_owner", constants.DEFAULT_QUILT_PACKAGE_OWNER
             )
 
             # Get or default project local staging
-            self._project_local_staging_dir = file_utils.resolve_directory(
+            config["project_local_staging_dir"] = file_utils.resolve_directory(
                 config.get(
                     "project_local_staging_dir",
                     constants.DEFAULT_PROJECT_LOCAL_STAGING_DIR.format(cwd="."),
@@ -109,23 +110,29 @@ class Step(Task):
 
             # Get or default step local staging
             if self.step_name in config:
-                self._step_local_staging_dir = file_utils.resolve_directory(
+                config[self.step_name][
+                    "step_local_staging_dir"
+                ] = file_utils.resolve_directory(
                     config[self.step_name].get(
                         "step_local_staging_dir",
-                        f"{self._project_local_staging_dir / self.step_name}",
+                        f"{config['project_local_staging_dir'] / self.step_name}",
                     ),
                     make=True,
                     strict=False,
                 )
             else:
-                self._step_local_staging_dir = file_utils.resolve_directory(
-                    f"{self._project_local_staging_dir / self.step_name}",
+                # Step name wasn't in the config, add it as a key to a further dict
+                config[self.step_name] = {}
+                config[self.step_name][
+                    "step_local_staging_dir"
+                ] = file_utils.resolve_directory(
+                    f"{config['project_local_staging_dir'] / self.step_name}",
                     make=True,
                     strict=False,
                 )
 
             # Get or default quilt package name
-            self._quilt_package_name = file_utils._sanitize_name(
+            config["quilt_package_name"] = file_utils._sanitize_name(
                 config.get("quilt_package_name", self.__module__.split(".")[0])
             )
 
@@ -156,14 +163,12 @@ class Step(Task):
                 },
             }
 
-            # Set object properties from config
-            self._storage_bucket = config["quilt_storage_bucket"]
-            self._quilt_package_owner = config["quilt_package_owner"]
-            self._quilt_package_name = config["quilt_package_name"]
-            self._project_local_staging_dir = config["project_local_staging_dir"]
-            self._step_local_staging_dir = config[self.step_name][
-                "step_local_staging_dir"
-            ]
+        # Set object properties from config
+        self._storage_bucket = config["quilt_storage_bucket"]
+        self._quilt_package_owner = config["quilt_package_owner"]
+        self._quilt_package_name = config["quilt_package_name"]
+        self._project_local_staging_dir = config["project_local_staging_dir"]
+        self._step_local_staging_dir = config[self.step_name]["step_local_staging_dir"]
 
         return config
 
@@ -193,10 +198,15 @@ class Step(Task):
 
         # Prepare locals to be stored for data logging
         params = locals()
+        params["step_name"] = self._step_name
         params.pop("self")
+        params.pop("__class__")
 
         # Unpack config into param log dict
         params["config"] = self._unpack_config(config)
+
+        # Store current version of datastep in initialization parameters
+        params["__version__"] = get_module_version()
 
         # Write out initialization params for data logging
         parameter_store = self.step_local_staging_dir / "init_parameters.json"
@@ -217,6 +227,12 @@ class Step(Task):
 
         # Set name for prefect task retrieval
         self.name = self.step_name
+
+        # Prior to any operation log where we are operating
+        log.info(
+            f"{self.step_name} will use step local staging directory: "
+            f"{self.step_local_staging_dir}"
+        )
 
     @property
     def step_name(self) -> str:
