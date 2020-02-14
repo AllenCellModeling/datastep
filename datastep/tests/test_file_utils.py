@@ -26,6 +26,11 @@ from datastep import file_utils
             True,
             marks=pytest.mark.raises(exceptions=FileNotFoundError),
         ),
+        pytest.param(
+            "not_a_file.json",
+            False,
+            marks=pytest.mark.raises(exceptions=FileNotFoundError),
+        ),
     ],
 )
 def test_resolve_filepath(data_dir, f, strict):
