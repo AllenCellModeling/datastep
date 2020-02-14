@@ -257,6 +257,8 @@ def main():
         with open(all_steps_init, "w") as write_all_steps_init:
             write_all_steps_init.write(new_all_steps_init_text)
 
+        log.info(f"Generated new step file at: {this_step_dir}")
+
     except Exception as e:
         log.error("=============================================")
         if dbg:
