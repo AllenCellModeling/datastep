@@ -21,10 +21,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -275,11 +275,12 @@
 <span class="sd">from .{{ step_name }} import {{ truecase_step_name }}  # noqa: F401</span>
 
 <span class="sd">__all__ = [&quot;{{ truecase_step_name }}&quot;]</span>
+
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="p">)</span>
 
 <span class="n">STEP_TEMPLATE</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span>
-    <span class="sd">&quot;&quot;&quot;#!/usr/bin/env python</span>
+    <span class="sd">&#39;&#39;&#39;#!/usr/bin/env python</span>
 <span class="sd"># -*- coding: utf-8 -*-</span>
 
 <span class="sd">import logging</span>
@@ -305,6 +306,29 @@
 
 <span class="sd">    @log_run_params</span>
 <span class="sd">    def run(self, **kwargs):</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        Run a pure function.</span>
+
+<span class="sd">        Protected Parameters</span>
+<span class="sd">        --------------------</span>
+<span class="sd">        distributed_executor_address: Optional[str]</span>
+<span class="sd">            An optional executor address to pass to some computation engine.</span>
+<span class="sd">        clean: bool</span>
+<span class="sd">            Should the local staging directory be cleaned prior to this run.</span>
+<span class="sd">            Default: False (Do not clean)</span>
+<span class="sd">        debug: bool</span>
+<span class="sd">            A debug flag for the developer to use to manipulate how much data runs,</span>
+<span class="sd">            how it is processed, etc.</span>
+<span class="sd">            Default: False (Do not debug)</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        result: Any</span>
+<span class="sd">            A pickable object or value that is the result of any processing you do.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 <span class="sd">        # Your code here</span>
 <span class="sd">        #</span>
 <span class="sd">        # The `self.step_local_staging_dir` is exposed to save files in</span>
@@ -312,14 +336,19 @@
 <span class="sd">        # The user should set `self.manifest` to a dataframe of absolute paths that</span>
 <span class="sd">        # point to the created files and each files metadata</span>
 <span class="sd">        #</span>
-<span class="sd">        # By default, `self.filepath_columns` is [&quot;filepath&quot;], but can be set</span>
-<span class="sd">        # in __init__ if there are more than a single column of filepaths</span>
+<span class="sd">        # By default, `self.filepath_columns` is [&quot;filepath&quot;], but should be edited</span>
+<span class="sd">        # if there are more than a single column of filepaths</span>
 <span class="sd">        #</span>
 <span class="sd">        # By default, `self.metadata_columns` is [], but should be edited to include</span>
 <span class="sd">        # any columns that should be parsed for metadata and attached to objects</span>
-<span class="sd">        pass</span>
+<span class="sd">        #</span>
+<span class="sd">        # The user should not rely on object state to retrieve results from prior steps.</span>
+<span class="sd">        # I.E. do not call use the attribute self.upstream_tasks to retrieve data.</span>
+<span class="sd">        # Pass the required path to a directory of files, the path to a prior manifest,</span>
+<span class="sd">        # or in general, the exact parameters required for this function to run.</span>
+<span class="sd">        return</span>
 
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">&#39;&#39;&#39;</span>
 <span class="p">)</span>
 
 
@@ -406,6 +435,8 @@
         <span class="c1"># Write the new all steps init file</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">all_steps_init</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">write_all_steps_init</span><span class="p">:</span>
             <span class="n">write_all_steps_init</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">new_all_steps_init_text</span><span class="p">)</span>
+
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Generated new step file at: </span><span class="si">{this_step_dir}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;=============================================&quot;</span><span class="p">)</span>

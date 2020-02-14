@@ -21,10 +21,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -224,6 +224,12 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
 </dd></dl>
 
+<dl class="exception">
+<dt id="datastep.exceptions.PackagingError">
+<em class="property">exception </em><code class="sig-prename descclassname">datastep.exceptions.</code><code class="sig-name descname">PackagingError</code><a class="reference internal" href="_modules/datastep/exceptions.html#PackagingError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.exceptions.PackagingError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
 </div>
 <div class="section" id="module-datastep.file_utils">
 <span id="datastep-file-utils-module"></span><h2>datastep.file_utils module<a class="headerlink" href="#module-datastep.file_utils" title="Permalink to this headline">¶</a></h2>
@@ -239,22 +245,22 @@
 
 <dl class="function">
 <dt id="datastep.file_utils.manifest_filepaths_abs2rel">
-<code class="sig-prename descclassname">datastep.file_utils.</code><code class="sig-name descname">manifest_filepaths_abs2rel</code><span class="sig-paren">(</span><em class="sig-param">mystep</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datastep/file_utils.html#manifest_filepaths_abs2rel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.file_utils.manifest_filepaths_abs2rel" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">datastep.file_utils.</code><code class="sig-name descname">manifest_filepaths_abs2rel</code><span class="sig-paren">(</span><em class="sig-param">manifest: pandas.core.frame.DataFrame, filepath_columns: List[str], relative_dir: pathlib.Path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datastep/file_utils.html#manifest_filepaths_abs2rel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.file_utils.manifest_filepaths_abs2rel" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="datastep.file_utils.manifest_filepaths_rel2abs">
-<code class="sig-prename descclassname">datastep.file_utils.</code><code class="sig-name descname">manifest_filepaths_rel2abs</code><span class="sig-paren">(</span><em class="sig-param">mystep</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datastep/file_utils.html#manifest_filepaths_rel2abs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.file_utils.manifest_filepaths_rel2abs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">datastep.file_utils.</code><code class="sig-name descname">manifest_filepaths_rel2abs</code><span class="sig-paren">(</span><em class="sig-param">manifest: pandas.core.frame.DataFrame, filepath_columns: List[str], relative_dir: pathlib.Path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datastep/file_utils.html#manifest_filepaths_rel2abs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.file_utils.manifest_filepaths_rel2abs" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="datastep.file_utils.resolve_directory">
-<code class="sig-prename descclassname">datastep.file_utils.</code><code class="sig-name descname">resolve_directory</code><span class="sig-paren">(</span><em class="sig-param">d: Union[str, pathlib.Path], make: bool = False</em><span class="sig-paren">)</span> &#x2192; pathlib.Path<a class="reference internal" href="_modules/datastep/file_utils.html#resolve_directory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.file_utils.resolve_directory" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">datastep.file_utils.</code><code class="sig-name descname">resolve_directory</code><span class="sig-paren">(</span><em class="sig-param">d: Union[str, pathlib.Path], make: bool = False, strict: bool = True</em><span class="sig-paren">)</span> &#x2192; pathlib.Path<a class="reference internal" href="_modules/datastep/file_utils.html#resolve_directory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.file_utils.resolve_directory" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="datastep.file_utils.resolve_filepath">
-<code class="sig-prename descclassname">datastep.file_utils.</code><code class="sig-name descname">resolve_filepath</code><span class="sig-paren">(</span><em class="sig-param">f: Union[str, pathlib.Path]</em><span class="sig-paren">)</span> &#x2192; pathlib.Path<a class="reference internal" href="_modules/datastep/file_utils.html#resolve_filepath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.file_utils.resolve_filepath" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">datastep.file_utils.</code><code class="sig-name descname">resolve_filepath</code><span class="sig-paren">(</span><em class="sig-param">f: Union[str, pathlib.Path], strict: bool = True</em><span class="sig-paren">)</span> &#x2192; pathlib.Path<a class="reference internal" href="_modules/datastep/file_utils.html#resolve_filepath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.file_utils.resolve_filepath" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -262,7 +268,7 @@
 <span id="datastep-quilt-utils-module"></span><h2>datastep.quilt_utils module<a class="headerlink" href="#module-datastep.quilt_utils" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="datastep.quilt_utils.QuiltCli">
-<em class="property">class </em><code class="sig-prename descclassname">datastep.quilt_utils.</code><code class="sig-name descname">QuiltCli</code><span class="sig-paren">(</span><em class="sig-param">config_file='step_config.json'</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datastep/quilt_utils.html#QuiltCli"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.quilt_utils.QuiltCli" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">datastep.quilt_utils.</code><code class="sig-name descname">QuiltCli</code><span class="sig-paren">(</span><em class="sig-param">config_file='workflow_config.json'</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datastep/quilt_utils.html#QuiltCli"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.quilt_utils.QuiltCli" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="method">
 <dt id="datastep.quilt_utils.QuiltCli.init">
@@ -309,7 +315,7 @@
 
 <dl class="function">
 <dt id="datastep.quilt_utils.create_package">
-<code class="sig-prename descclassname">datastep.quilt_utils.</code><code class="sig-name descname">create_package</code><span class="sig-paren">(</span><em class="sig-param">manifest: pandas.core.frame.DataFrame, step_pkg_root: pathlib.Path, filepath_columns: List[str] = ['filepath'], metadata_columns: List[str] = []</em><span class="sig-paren">)</span> &#x2192; quilt3.packages.Package<a class="reference internal" href="_modules/datastep/quilt_utils.html#create_package"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.quilt_utils.create_package" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">datastep.quilt_utils.</code><code class="sig-name descname">create_package</code><span class="sig-paren">(</span><em class="sig-param">manifest: pandas.core.frame.DataFrame, step_pkg_root: pathlib.Path, filepath_columns: List[str] = ['filepath'], metadata_columns: List[str] = []</em><span class="sig-paren">)</span> &#x2192; Tuple[quilt3.packages.Package, pandas.core.frame.DataFrame]<a class="reference internal" href="_modules/datastep/quilt_utils.html#create_package"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.quilt_utils.create_package" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
@@ -332,8 +338,8 @@
 <span id="datastep-step-module"></span><h2>datastep.step module<a class="headerlink" href="#module-datastep.step" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="datastep.step.Step">
-<em class="property">class </em><code class="sig-prename descclassname">datastep.step.</code><code class="sig-name descname">Step</code><span class="sig-paren">(</span><em class="sig-param">clean_before_run=True, filepath_columns=['filepath'], metadata_columns=[], step_name=None, package_name=None, direct_upstream_tasks: List[Step] = [], config: Union[str, pathlib.Path, Dict[str, str], None] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datastep/step.html#Step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.step.Step" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<em class="property">class </em><code class="sig-prename descclassname">datastep.step.</code><code class="sig-name descname">Step</code><span class="sig-paren">(</span><em class="sig-param">step_name: Optional[str] = None, filepath_columns: List[str] = ['filepath'], metadata_columns: List[str] = [], direct_upstream_tasks: List[Step] = [], config: Union[str, pathlib.Path, Dict[str, str], None] = None, **kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datastep/step.html#Step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.step.Step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">prefect.core.task.Task</span></code></p>
 <dl class="method">
 <dt id="datastep.step.Step.checkout">
 <code class="sig-name descname">checkout</code><span class="sig-paren">(</span><em class="sig-param">data_version: Optional[str] = None</em>, <em class="sig-param">bucket: Optional[str] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datastep/step.html#Step.checkout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.step.Step.checkout" title="Permalink to this definition">¶</a></dt>
@@ -345,19 +351,44 @@
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="datastep.step.Step.get_result">
+<code class="sig-name descname">get_result</code><span class="sig-paren">(</span><em class="sig-param">state: prefect.engine.state.State</em>, <em class="sig-param">flow: prefect.core.flow.Flow</em><span class="sig-paren">)</span> &#x2192; Any<a class="reference internal" href="_modules/datastep/step.html#Step.get_result"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.step.Step.get_result" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the result of this step.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> (<em>prefect.engine.state.State</em>) – The final state object of a prefect flow produced by running the flow.</p></li>
+<li><p><strong>flow</strong> (<em>prefect.core.flow.Flow</em>) – The flow that ran this step.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>result</strong> – The resulting object from running this step in a flow.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Any</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This will always return the first item that matches this step.
+What this means for the user is that if this step was used in a mapped task,
+you would only recieve the result of the first iteration of that map.</p>
+<p>Generally though, you shouldn’t be using these steps in mapped tasks.
+(It’s on our to-do list…)</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="datastep.step.Step.manifest_filepaths_abs2rel">
 <code class="sig-name descname">manifest_filepaths_abs2rel</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/datastep/step.html#Step.manifest_filepaths_abs2rel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.step.Step.manifest_filepaths_abs2rel" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Convert manifest filepaths to relative paths.</p>
+<p>Useful for when you are ready to upload to a remote bucket.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="datastep.step.Step.manifest_filepaths_rel2abs">
 <code class="sig-name descname">manifest_filepaths_rel2abs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/datastep/step.html#Step.manifest_filepaths_rel2abs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.step.Step.manifest_filepaths_rel2abs" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="datastep.step.Step.package_name">
-<em class="property">property </em><code class="sig-name descname">package_name</code><a class="headerlink" href="#datastep.step.Step.package_name" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Convert manifest filepaths to absolute paths.</p>
+<p>Useful for after you pull data from a remote bucket.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="datastep.step.Step.project_local_staging_dir">
@@ -375,14 +406,39 @@
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="datastep.step.Step.quilt_package_name">
+<em class="property">property </em><code class="sig-name descname">quilt_package_name</code><a class="headerlink" href="#datastep.step.Step.quilt_package_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="datastep.step.Step.quilt_package_owner">
 <em class="property">property </em><code class="sig-name descname">quilt_package_owner</code><a class="headerlink" href="#datastep.step.Step.quilt_package_owner" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="datastep.step.Step.run">
-<em class="property">abstract </em><code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datastep/step.html#Step.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.step.Step.run" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">distributed_executor_address: Optional[str] = None</em>, <em class="sig-param">clean: bool = False</em>, <em class="sig-param">debug: bool = False</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; Any<a class="reference internal" href="_modules/datastep/step.html#Step.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.step.Step.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run a pure function.</p>
+<p>There are a few “protected” parameters that are the following:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>distributed_executor_address</strong> (<em>Optional[str]</em>) – An optional executor address to pass to some computation engine.</p></li>
+<li><p><strong>clean</strong> (<em>bool</em>) – Should the local staging directory be cleaned prior to this run.
+Default: False (Do not clean)</p></li>
+<li><p><strong>debug</strong> (<em>bool</em>) – A debug flag for the developer to use to manipulate how much data runs,
+how it is processed, etc.
+Default: False (Do not debug)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>result</strong> – A pickable object or value that is the result of any processing you do.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Any</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="datastep.step.Step.step_local_staging_dir">

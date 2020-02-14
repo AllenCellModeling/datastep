@@ -21,10 +21,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -184,13 +184,13 @@
 <span class="kn">from</span> <span class="nn">concurrent.futures</span> <span class="kn">import</span> <span class="n">ThreadPoolExecutor</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">NamedTuple</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">NamedTuple</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">quilt3.packages</span> <span class="kn">import</span> <span class="n">Package</span><span class="p">,</span> <span class="n">PackageEntry</span>
 <span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
 
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">file_utils</span><span class="p">,</span> <span class="n">constants</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">constants</span><span class="p">,</span> <span class="n">file_utils</span>
 
 <span class="c1">###############################################################################</span>
 
@@ -370,7 +370,10 @@
     <span class="n">step_pkg_root</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
     <span class="n">filepath_columns</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;filepath&quot;</span><span class="p">],</span>
     <span class="n">metadata_columns</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Package</span><span class="p">:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Package</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]:</span>
+    <span class="c1"># Make a copy</span>
+    <span class="n">relative_manifest</span> <span class="o">=</span> <span class="n">manifest</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
     <span class="c1"># Create empty package</span>
     <span class="n">pkg</span> <span class="o">=</span> <span class="n">Package</span><span class="p">()</span>
 
@@ -409,11 +412,12 @@
 
     <span class="c1"># Set all files</span>
     <span class="k">with</span> <span class="n">tqdm</span><span class="p">(</span>
-        <span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">filepath_columns</span><span class="p">)</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">manifest</span><span class="p">),</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Constructing package&quot;</span>
+        <span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">filepath_columns</span><span class="p">)</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">relative_manifest</span><span class="p">),</span>
+        <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Constructing package&quot;</span><span class="p">,</span>
     <span class="p">)</span> <span class="k">as</span> <span class="n">pbar</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">filepath_columns</span><span class="p">:</span>
             <span class="c1"># Update values to the logical key as they are set</span>
-            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">manifest</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">relative_manifest</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">):</span>
                 <span class="c1"># Fully resolve the path</span>
                 <span class="n">physical_key</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
 
@@ -429,16 +433,19 @@
                 <span class="c1"># and b/0.tiff, and, a/1.tiff and b/1.tiff being grouped together. To</span>
                 <span class="c1"># solve this we can prepend a the first couple of characters from a</span>
                 <span class="c1"># hash of the fully resolved path to the logical key.</span>
-
-                <span class="n">logical_key</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">physical_key</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">step_pkg_root</span><span class="o">.</span><span class="n">resolve</span><span class="p">()))</span>
+                <span class="n">logical_key</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span>
+                    <span class="n">file_utils</span><span class="o">.</span><span class="n">_filepath_rel2abs</span><span class="p">(</span><span class="n">physical_key</span><span class="p">)</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span>
+                        <span class="n">file_utils</span><span class="o">.</span><span class="n">_filepath_rel2abs</span><span class="p">(</span><span class="n">step_pkg_root</span><span class="p">)</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
                 <span class="k">if</span> <span class="n">physical_key</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
-                    <span class="n">manifest</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">logical_key</span>
+                    <span class="n">relative_manifest</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">logical_key</span>
 
                     <span class="c1"># Create metadata dictionary to attach to object</span>
                     <span class="n">meta</span> <span class="o">=</span> <span class="p">{}</span>
                     <span class="k">for</span> <span class="n">meta_col</span> <span class="ow">in</span> <span class="n">metadata_columns</span><span class="p">:</span>
                         <span class="c1"># Short reference to current metadata value</span>
-                        <span class="n">v</span> <span class="o">=</span> <span class="n">manifest</span><span class="p">[</span><span class="n">meta_col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                        <span class="n">v</span> <span class="o">=</span> <span class="n">relative_manifest</span><span class="p">[</span><span class="n">meta_col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
 
                         <span class="c1"># Enforce simple JSON serializable type</span>
                         <span class="c1"># First check if value is a numpy value</span>
@@ -509,7 +516,7 @@
                     <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
                         <span class="n">associates</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="n">col</span><span class="p">:</span> <span class="n">logical_key</span><span class="p">})</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">manifest</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">logical_key</span>
+                    <span class="n">relative_manifest</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">logical_key</span>
                     <span class="n">pkg</span><span class="o">.</span><span class="n">set_dir</span><span class="p">(</span><span class="n">logical_key</span><span class="p">,</span> <span class="n">physical_key</span><span class="p">)</span>
 
                 <span class="c1"># Update progress bar</span>
@@ -528,25 +535,28 @@
                 <span class="c1"># because attach_associates was set to True.</span>
                 <span class="n">pkg</span><span class="p">[</span><span class="n">lk</span><span class="p">]</span><span class="o">.</span><span class="n">set_meta</span><span class="p">({</span><span class="o">**</span><span class="n">pkg</span><span class="p">[</span><span class="n">lk</span><span class="p">]</span><span class="o">.</span><span class="n">meta</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="s2">&quot;associates&quot;</span><span class="p">:</span> <span class="n">associate_mapping</span><span class="p">}})</span>
 
-        <span class="k">return</span> <span class="n">pkg</span></div>
+        <span class="k">return</span> <span class="n">pkg</span><span class="p">,</span> <span class="n">relative_manifest</span></div>
 
 
-<span class="c1"># used in cookiecutter template to init quilt repo</span>
-<span class="c1"># nd other quilt-centric cmdline tasks as methods here</span>
+<span class="c1">###############################################################################</span>
+
+<span class="c1"># CLI</span>
+
+
+<span class="c1"># Used in cookiecutter template to init quilt repo</span>
 <div class="viewcode-block" id="QuiltCli"><a class="viewcode-back" href="../../datastep.html#datastep.quilt_utils.QuiltCli">[docs]</a><span class="k">class</span> <span class="nc">QuiltCli</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config_file</span><span class="o">=</span><span class="s2">&quot;step_config.json&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config_file</span><span class="o">=</span><span class="s2">&quot;workflow_config.json&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c1"># Get default package name</span>
+        <span class="n">quilt_package_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;{self.__module__.split(&#39;.&#39;)[0]}&quot;</span>
 
-        <span class="c1"># get package name from name of python package</span>
-        <span class="n">package_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;{self.__module__.split(&#39;.&#39;)[0]}&quot;</span>
-
-        <span class="c1"># start with defaults</span>
+        <span class="c1"># Start with defaults</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;storage_bucket&quot;</span><span class="p">:</span> <span class="n">constants</span><span class="o">.</span><span class="n">DEFAULT_QUILT_STORAGE</span><span class="p">,</span>
             <span class="s2">&quot;quilt_package_owner&quot;</span><span class="p">:</span> <span class="n">constants</span><span class="o">.</span><span class="n">DEFAULT_QUILT_PACKAGE_OWNER</span><span class="p">,</span>
-            <span class="s2">&quot;package_name&quot;</span><span class="p">:</span> <span class="n">package_name</span><span class="p">,</span>
+            <span class="s2">&quot;quilt_package_name&quot;</span><span class="p">:</span> <span class="n">quilt_package_name</span><span class="p">,</span>
         <span class="p">}</span>
 
-        <span class="c1"># load values from config file</span>
+        <span class="c1"># Load values from config file</span>
         <span class="n">config_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">config_file</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">config_file</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_file</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
@@ -554,23 +564,22 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">file_config</span> <span class="o">=</span> <span class="p">{}</span>
 
-        <span class="c1"># put values from config file into main config dict</span>
+        <span class="c1"># Put or overwrite values from config file into main config dict</span>
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">file_config</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
 
-        <span class="c1"># overwrite values in main dict with kwargs if passed</span>
+        <span class="c1"># Put or overwrite values in main dict with kwargs if passed</span>
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
 
-    <span class="c1"># this is named init for the cli to run as `proj_name quilt init` vi fire</span>
+    <span class="c1"># This is named init for the cli to run as `proj_name quilt init`</span>
 <div class="viewcode-block" id="QuiltCli.init"><a class="viewcode-back" href="../../datastep.html#datastep.quilt_utils.QuiltCli.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
-        <span class="c1"># create an empty quilt package</span>
+        <span class="c1"># Create an empty quilt package</span>
         <span class="n">p</span> <span class="o">=</span> <span class="n">Package</span><span class="p">()</span>
 
-        <span class="c1"># push it to quilt</span>
+        <span class="c1"># Push it to quilt</span>
         <span class="n">quilt_loc</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{self.config[&#39;quilt_package_owner&#39;]}</span><span class="s2">/</span><span class="si">{self.config[&#39;package_name&#39;]}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{self.config[&#39;quilt_package_owner&#39;]}</span><span class="s2">/</span><span class="si">{self.config[&#39;quilt_package_name&#39;]}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
         <span class="n">p</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">quilt_loc</span><span class="p">,</span> <span class="n">registry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;storage_bucket&quot;</span><span class="p">])</span></div></div>
 </pre></div>
