@@ -12,23 +12,34 @@ from datastep import file_utils
 
 
 @pytest.mark.parametrize(
-    "f",
+    "f, strict",
     [
-        ("example_config_1.json"),
+        ("example_config_1.json", True),
+        ("example_config_1.json", False),
         pytest.param(
-            "example_directory", marks=pytest.mark.raises(exceptions=IsADirectoryError)
+            "example_directory",
+            True,
+            marks=pytest.mark.raises(exceptions=IsADirectoryError),
         ),
         pytest.param(
-            "not_a_file.json", marks=pytest.mark.raises(exceptions=FileNotFoundError)
+            "not_a_file.json",
+            True,
+            marks=pytest.mark.raises(exceptions=FileNotFoundError),
         ),
     ],
 )
-def test_resolve_filepath(data_dir, f):
+def test_resolve_filepath(data_dir, f, strict):
     # Route to data dir
     f = data_dir / f
 
     # Run
-    file_utils.resolve_filepath(f)
+    result = file_utils.resolve_filepath(f, strict)
+
+    # Assert expected value based off strict
+    if strict:
+        assert result.is_absolute()
+    else:
+        assert str(result) == str(f)
 
 
 @pytest.mark.parametrize(
