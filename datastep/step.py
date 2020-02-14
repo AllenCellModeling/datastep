@@ -232,7 +232,7 @@ class Step(Task):
         # Prior to any operation log where we are operating
         log.info(
             f"{self.step_name} will use step local staging directory: "
-            f"{self.step_local_staging_dir.absolute()}"
+            f"{self.step_local_staging_dir}"
         )
 
     @property
