@@ -165,13 +165,6 @@ class Step(Task):
                 "step_local_staging_dir"
             ]
 
-            self._project_local_staging_dir = self._project_local_staging_dir.relative_to(
-                Path.cwd()
-            )
-            self._step_local_staging_dir = self._step_local_staging_dir.relative_to(
-                Path.cwd()
-            )
-
         return config
 
     def __init__(

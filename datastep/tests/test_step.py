@@ -33,13 +33,16 @@ from .example_step import ExampleStep
             [],
             constants.DEFAULT_QUILT_STORAGE,
             file_utils.resolve_directory(
-                constants.DEFAULT_PROJECT_LOCAL_STAGING_DIR.format(cwd="."), make=True
+                constants.DEFAULT_PROJECT_LOCAL_STAGING_DIR.format(cwd="."),
+                make=True,
+                strict=False,
             ),
             file_utils.resolve_directory(
                 constants.DEFAULT_STEP_LOCAL_STAGING_DIR.format(
                     cwd=".", module_name="examplestep"
                 ),
                 make=True,
+                strict=False,
             ),
         ),
         # Provided only config var, use it
@@ -139,13 +142,16 @@ from .example_step import ExampleStep
             [],
             "s3://example_config_5",
             file_utils.resolve_directory(
-                constants.DEFAULT_PROJECT_LOCAL_STAGING_DIR.format(cwd="."), make=True
+                constants.DEFAULT_PROJECT_LOCAL_STAGING_DIR.format(cwd="."),
+                make=True,
+                strict=False,
             ),
             file_utils.resolve_directory(
                 constants.DEFAULT_STEP_LOCAL_STAGING_DIR.format(
                     cwd=".", module_name="examplestep"
                 ),
                 make=True,
+                strict=False,
             ),
         ),
         # Missing both values from config
@@ -158,13 +164,16 @@ from .example_step import ExampleStep
             [],
             constants.DEFAULT_QUILT_STORAGE,
             file_utils.resolve_directory(
-                constants.DEFAULT_PROJECT_LOCAL_STAGING_DIR.format(cwd="."), make=True
+                constants.DEFAULT_PROJECT_LOCAL_STAGING_DIR.format(cwd="."),
+                make=True,
+                strict=False,
             ),
             file_utils.resolve_directory(
                 constants.DEFAULT_STEP_LOCAL_STAGING_DIR.format(
                     cwd=".", module_name="examplestep"
                 ),
                 make=True,
+                strict=False,
             ),
         ),
         # Specific output directory for step available
@@ -198,13 +207,16 @@ from .example_step import ExampleStep
             ["raw", "qc", "norm"],
             constants.DEFAULT_QUILT_STORAGE,
             file_utils.resolve_directory(
-                constants.DEFAULT_PROJECT_LOCAL_STAGING_DIR.format(cwd="."), make=True
+                constants.DEFAULT_PROJECT_LOCAL_STAGING_DIR.format(cwd="."),
+                make=True,
+                strict=False,
             ),
             file_utils.resolve_directory(
                 constants.DEFAULT_STEP_LOCAL_STAGING_DIR.format(
                     cwd=".", module_name="examplestep"
                 ),
                 make=True,
+                strict=False,
             ),
         ),
         # Checking when config doesn't exist
