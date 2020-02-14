@@ -111,25 +111,25 @@ class Step(Task):
 
             # Get or default step local staging
             if self.step_name in config:
-                config[self.step_name]["step_local_staging_dir"] = (
-                    file_utils.resolve_directory(
-                        config[self.step_name].get(
-                            "step_local_staging_dir",
-                            f"{config['project_local_staging_dir'] / self.step_name}",
-                        ),
-                        make=True,
-                        strict=False,
-                    )
+                config[self.step_name][
+                    "step_local_staging_dir"
+                ] = file_utils.resolve_directory(
+                    config[self.step_name].get(
+                        "step_local_staging_dir",
+                        f"{config['project_local_staging_dir'] / self.step_name}",
+                    ),
+                    make=True,
+                    strict=False,
                 )
             else:
                 # Step name wasn't in the config, add it as a key to a further dict
                 config[self.step_name] = {}
-                config[self.step_name]["step_local_staging_dir"] = (
-                    file_utils.resolve_directory(
-                        f"{config['project_local_staging_dir'] / self.step_name}",
-                        make=True,
-                        strict=False,
-                    )
+                config[self.step_name][
+                    "step_local_staging_dir"
+                ] = file_utils.resolve_directory(
+                    f"{config['project_local_staging_dir'] / self.step_name}",
+                    make=True,
+                    strict=False,
                 )
 
             # Get or default quilt package name
@@ -169,9 +169,7 @@ class Step(Task):
         self._quilt_package_owner = config["quilt_package_owner"]
         self._quilt_package_name = config["quilt_package_name"]
         self._project_local_staging_dir = config["project_local_staging_dir"]
-        self._step_local_staging_dir = config[self.step_name][
-            "step_local_staging_dir"
-        ]
+        self._step_local_staging_dir = config[self.step_name]["step_local_staging_dir"]
 
         return config
 
