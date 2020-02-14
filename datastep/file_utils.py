@@ -8,6 +8,8 @@ from pathlib import Path
 from shutil import rmtree
 from typing import Any, Dict, List, Optional, Union
 
+import pandas as pd
+
 ###############################################################################
 
 log = logging.getLogger(__name__)
@@ -15,18 +17,27 @@ log = logging.getLogger(__name__)
 ###############################################################################
 
 
-def resolve_filepath(f: Union[str, Path]) -> Path:
+def resolve_filepath(f: Union[str, Path], strict: bool = True) -> Path:
     # Resolve
-    f = Path(f).expanduser().resolve(strict=True)
+    f = Path(f).expanduser()
 
     # Check is not dir
     if f.is_dir():
         raise IsADirectoryError(f)
 
+    # Check if we want to fully resolve
+    if strict:
+        f = f.resolve(strict=True)
+    else:
+        if not f.exists():
+            raise FileNotFoundError(f)
+
     return f
 
 
-def resolve_directory(d: Union[str, Path], make: bool = False) -> Path:
+def resolve_directory(
+    d: Union[str, Path], make: bool = False, strict: bool = True
+) -> Path:
     # Expand user
     d = Path(d).expanduser()
 
@@ -38,8 +49,13 @@ def resolve_directory(d: Union[str, Path], make: bool = False) -> Path:
     if make:
         d.mkdir(parents=True, exist_ok=True)
 
-    # Fully resolve
-    d = d.resolve(strict=True)
+    # Check if we want to fully resolve
+    if strict:
+        # Fully resolve
+        d = d.resolve(strict=True)
+    else:
+        if not d.exists():
+            raise FileNotFoundError(d)
 
     return d
 
@@ -78,27 +94,41 @@ def _filepath_abs2rel(filepath: Path, otherpath: Path = Path(".")) -> Path:
     return (otherpath / filepath).resolve().relative_to(otherpath.resolve())
 
 
-def manifest_filepaths_rel2abs(mystep):
-    for col in mystep.filepath_columns:
-        mystep.manifest[col] = mystep.manifest[col].apply(
-            lambda x: str(
-                _filepath_rel2abs(Path(x), prefixpath=mystep.step_local_staging_dir)
-            )
+def manifest_filepaths_rel2abs(
+    manifest: pd.DataFrame, filepath_columns: List[str], relative_dir: Path
+):
+    # Make a copy of the manifest
+    manifest = manifest.copy(deep=True)
+
+    # Run for each column in filepath columns
+    for col in filepath_columns:
+        manifest[col] = manifest[col].apply(
+            lambda x: str(_filepath_rel2abs(Path(x), relative_dir))
         )
 
+    return manifest
 
-def manifest_filepaths_abs2rel(mystep):
-    for col in mystep.filepath_columns:
-        mystep.manifest[col] = mystep.manifest[col].apply(
-            lambda x: str(_filepath_abs2rel(Path(x), mystep.step_local_staging_dir))
+
+def manifest_filepaths_abs2rel(
+    manifest: pd.DataFrame, filepath_columns: List[str], relative_dir: Path
+):
+    # Make a copy of the manifest
+    manifest = manifest.copy(deep=True)
+
+    # Run for each column in filepath columns
+    for col in filepath_columns:
+        manifest[col] = manifest[col].apply(
+            lambda x: str(_filepath_abs2rel(Path(x), relative_dir))
         )
+
+    return manifest
 
 
 def _clean(dirpath: Path) -> Optional[Exception]:
-    # remove anything in step staging dir
+    # Remove anything in step staging dir
     rmtree(dirpath)
 
-    # create it again as empty dir
+    # Create it again as empty dir
     dirpath.mkdir(parents=True, exist_ok=True)
 
 

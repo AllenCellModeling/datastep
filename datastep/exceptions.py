@@ -8,3 +8,7 @@ class DirectoryNotFoundError(Exception):
 
 class InvalidGitStatus(Exception):
     pass
+
+
+class PackagingError(Exception):
+    pass

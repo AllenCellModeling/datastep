@@ -1,33 +1,50 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from pathlib import Path
+
+import pandas as pd
 import pytest
 
 from datastep import file_utils
-
-from .example_step import ExampleStep
 
 ###############################################################################
 
 
 @pytest.mark.parametrize(
-    "f",
+    "f, strict",
     [
-        ("example_config_1.json"),
+        ("example_config_1.json", True),
+        ("example_config_1.json", False),
         pytest.param(
-            "example_directory", marks=pytest.mark.raises(exceptions=IsADirectoryError)
+            "example_directory",
+            True,
+            marks=pytest.mark.raises(exceptions=IsADirectoryError),
         ),
         pytest.param(
-            "not_a_file.json", marks=pytest.mark.raises(exceptions=FileNotFoundError)
+            "not_a_file.json",
+            True,
+            marks=pytest.mark.raises(exceptions=FileNotFoundError),
+        ),
+        pytest.param(
+            "not_a_file.json",
+            False,
+            marks=pytest.mark.raises(exceptions=FileNotFoundError),
         ),
     ],
 )
-def test_resolve_filepath(data_dir, f):
+def test_resolve_filepath(data_dir, f, strict):
     # Route to data dir
     f = data_dir / f
 
     # Run
-    file_utils.resolve_filepath(f)
+    result = file_utils.resolve_filepath(f, strict)
+
+    # Assert expected value based off strict
+    if strict:
+        assert result.is_absolute()
+    else:
+        assert str(result) == str(f)
 
 
 @pytest.mark.parametrize(
@@ -51,32 +68,140 @@ def test_resolve_directory(data_dir, f):
     file_utils.resolve_directory(f)
 
 
-def test_abs2rel2abs(N=3):
-    example_step = ExampleStep()
-    example_step.run(N=N)
-    df_abs = example_step.manifest.copy()
+@pytest.mark.parametrize(
+    "manifest, filepath_columns, relative_dir",
+    [
+        (
+            pd.DataFrame(
+                [
+                    {"filepath": "example_config_1.json"},
+                    {"filepath": "example_config_2.json"},
+                    {"filepath": "example_config_3.json"},
+                ]
+            ),
+            ["filepath"],
+            Path(__file__).parent / "data",
+        ),
+        (
+            pd.DataFrame(
+                [
+                    {"files": "example_config_1.json"},
+                    {"files": "example_config_2.json"},
+                    {"files": "example_config_3.json"},
+                ]
+            ),
+            ["files"],
+            Path(__file__).parent / "data",
+        ),
+        (
+            pd.DataFrame(
+                [
+                    {
+                        "filepath": "example_config_1.json",
+                        "files": "example_config_2.json",
+                    },
+                    {
+                        "filepath": "example_config_3.json",
+                        "files": "example_config_4.json",
+                    },
+                    {
+                        "filepath": "example_config_5.json",
+                        "files": "example_config_6.json",
+                    },
+                ]
+            ),
+            ["filepath", "files"],
+            Path(__file__).parent / "data",
+        ),
+    ],
+)
+def test_rel2abs2rel(manifest, filepath_columns, relative_dir):
+    # Run rel2abs
+    df_abs = file_utils.manifest_filepaths_rel2abs(
+        manifest, filepath_columns, relative_dir,
+    )
 
-    file_utils.manifest_filepaths_abs2rel(example_step)
-    file_utils.manifest_filepaths_rel2abs(example_step)
+    # Run abs2rel
+    df_rel = file_utils.manifest_filepaths_abs2rel(
+        df_abs, filepath_columns, relative_dir,
+    )
 
-    assert (
-        df_abs["filepath"].astype(str) == example_step.manifest["filepath"].astype(str)
-    ).all()
+    # Check that the paths in each filepath column are equal to the original manifest
+    for col in filepath_columns:
+        assert (df_rel[col].astype(str) == manifest[col].astype(str)).all()
 
 
-def test_2Xabs2rel2abs(N=3):
-    example_step = ExampleStep()
-    example_step.run(N=N)
-    df_abs = example_step.manifest.copy()
+@pytest.mark.parametrize(
+    "manifest, filepath_columns, relative_dir",
+    [
+        (
+            pd.DataFrame(
+                [
+                    {"filepath": "example_config_1.json"},
+                    {"filepath": "example_config_2.json"},
+                    {"filepath": "example_config_3.json"},
+                ]
+            ),
+            ["filepath"],
+            Path(__file__).parent / "data",
+        ),
+        (
+            pd.DataFrame(
+                [
+                    {"files": "example_config_1.json"},
+                    {"files": "example_config_2.json"},
+                    {"files": "example_config_3.json"},
+                ]
+            ),
+            ["files"],
+            Path(__file__).parent / "data",
+        ),
+        (
+            pd.DataFrame(
+                [
+                    {
+                        "filepath": "example_config_1.json",
+                        "files": "example_config_2.json",
+                    },
+                    {
+                        "filepath": "example_config_3.json",
+                        "files": "example_config_4.json",
+                    },
+                    {
+                        "filepath": "example_config_5.json",
+                        "files": "example_config_6.json",
+                    },
+                ]
+            ),
+            ["filepath", "files"],
+            Path(__file__).parent / "data",
+        ),
+    ],
+)
+def test_2Xrel2abs2rel(manifest, filepath_columns, relative_dir):
+    # Run rel2abs
+    df_abs = file_utils.manifest_filepaths_rel2abs(
+        manifest, filepath_columns, relative_dir,
+    )
 
-    file_utils.manifest_filepaths_abs2rel(example_step)
-    file_utils.manifest_filepaths_abs2rel(example_step)
-    file_utils.manifest_filepaths_rel2abs(example_step)
-    file_utils.manifest_filepaths_rel2abs(example_step)
+    # Run rel2abs round two
+    df_abs_2 = file_utils.manifest_filepaths_rel2abs(
+        df_abs, filepath_columns, relative_dir,
+    )
 
-    assert (
-        df_abs["filepath"].astype(str) == example_step.manifest["filepath"].astype(str)
-    ).all()
+    # Run abs2rel
+    df_rel = file_utils.manifest_filepaths_abs2rel(
+        df_abs_2, filepath_columns, relative_dir,
+    )
+
+    # Run abs2rel round two
+    df_rel_2 = file_utils.manifest_filepaths_abs2rel(
+        df_rel, filepath_columns, relative_dir,
+    )
+
+    # Check that the paths in each filepath column are equal to the original manifest
+    for col in filepath_columns:
+        assert (df_rel_2[col].astype(str) == manifest[col].astype(str)).all()
 
 
 def test_sanitize_name():

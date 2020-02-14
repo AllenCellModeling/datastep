@@ -96,11 +96,12 @@ INIT_TEMPLATE = Template(
 from .{{ step_name }} import {{ truecase_step_name }}  # noqa: F401
 
 __all__ = ["{{ truecase_step_name }}"]
+
 """
 )
 
 STEP_TEMPLATE = Template(
-    """#!/usr/bin/env python
+    '''#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import logging
@@ -126,6 +127,29 @@ class {{ truecase_step_name }}(Step):
 
     @log_run_params
     def run(self, **kwargs):
+        """
+        Run a pure function.
+
+        Protected Parameters
+        --------------------
+        distributed_executor_address: Optional[str]
+            An optional executor address to pass to some computation engine.
+        clean: bool
+            Should the local staging directory be cleaned prior to this run.
+            Default: False (Do not clean)
+        debug: bool
+            A debug flag for the developer to use to manipulate how much data runs,
+            how it is processed, etc.
+            Default: False (Do not debug)
+
+        Parameters
+        ----------
+
+        Returns
+        -------
+        result: Any
+            A pickable object or value that is the result of any processing you do.
+        """
         # Your code here
         #
         # The `self.step_local_staging_dir` is exposed to save files in
@@ -133,14 +157,19 @@ class {{ truecase_step_name }}(Step):
         # The user should set `self.manifest` to a dataframe of absolute paths that
         # point to the created files and each files metadata
         #
-        # By default, `self.filepath_columns` is ["filepath"], but can be set
-        # in __init__ if there are more than a single column of filepaths
+        # By default, `self.filepath_columns` is ["filepath"], but should be edited
+        # if there are more than a single column of filepaths
         #
         # By default, `self.metadata_columns` is [], but should be edited to include
         # any columns that should be parsed for metadata and attached to objects
-        pass
+        #
+        # The user should not rely on object state to retrieve results from prior steps.
+        # I.E. do not call use the attribute self.upstream_tasks to retrieve data.
+        # Pass the required path to a directory of files, the path to a prior manifest,
+        # or in general, the exact parameters required for this function to run.
+        return
 
-"""
+'''
 )
 
 
@@ -227,6 +256,8 @@ def main():
         # Write the new all steps init file
         with open(all_steps_init, "w") as write_all_steps_init:
             write_all_steps_init.write(new_all_steps_init_text)
+
+        log.info(f"Generated new step file at: {this_step_dir}")
 
     except Exception as e:
         log.error("=============================================")
