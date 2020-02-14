@@ -399,6 +399,29 @@ class Step(Task):
                 f"Check files: {all_changed_files}."
             )
 
+        # Check that current hash is the same as remote head hash
+        # Check that the current branch has even been pushed to origin
+        origin_branches = [b.name for b in repo.remotes.origin.refs]
+        if f"origin/{current_branch}" not in origin_branches:
+            raise exceptions.InvalidGitStatus(
+                f"Push to '{push_target}' was rejected because the current git "
+                f"branch was not found on the origin."
+            )
+        # Origin has current branch, check for matching commit hash
+        else:
+            # Find matching origin branch
+            for origin_branch in repo.remotes.origin.refs:
+                if origin_branch.name == f"origin/{current_branch}":
+                    matching_origin_branch = origin_branch
+                break
+
+            # Check git commit hash match
+            if matching_origin_branch.commit.hexsha != repo.head.object.hexsha:
+                raise exceptions.InvalidGitStatus(
+                    f"Push to '{push_target}' was rejected because the current git "
+                    f"commit has not been pushed to {matching_origin_branch.name}"
+                )
+
     @staticmethod
     def _create_data_commit_message() -> str:
         # This will throw an error if the current working directory is not a git repo
