@@ -196,7 +196,7 @@
 <span class="kn">import</span> <span class="nn">quilt3</span>
 <span class="kn">from</span> <span class="nn">prefect</span> <span class="kn">import</span> <span class="n">Flow</span><span class="p">,</span> <span class="n">Task</span>
 
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">constants</span><span class="p">,</span> <span class="n">exceptions</span><span class="p">,</span> <span class="n">file_utils</span><span class="p">,</span> <span class="n">quilt_utils</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">constants</span><span class="p">,</span> <span class="n">exceptions</span><span class="p">,</span> <span class="n">file_utils</span><span class="p">,</span> <span class="n">get_module_version</span><span class="p">,</span> <span class="n">quilt_utils</span>
 
 <span class="c1">###############################################################################</span>
 
@@ -267,17 +267,18 @@
 
         <span class="c1"># Config should now either have been provided as a dict, parsed, or None</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-            <span class="c1"># Get or default</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_storage_bucket</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="c1"># Get or default storage bucket</span>
+            <span class="n">config</span><span class="p">[</span><span class="s2">&quot;quilt_storage_bucket&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
                 <span class="s2">&quot;quilt_storage_bucket&quot;</span><span class="p">,</span> <span class="n">constants</span><span class="o">.</span><span class="n">DEFAULT_QUILT_STORAGE</span>
             <span class="p">)</span>
-            <span class="c1"># Get or default</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_quilt_package_owner</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+
+            <span class="c1"># Get or default package owner</span>
+            <span class="n">config</span><span class="p">[</span><span class="s2">&quot;quilt_package_owner&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
                 <span class="s2">&quot;quilt_package_owner&quot;</span><span class="p">,</span> <span class="n">constants</span><span class="o">.</span><span class="n">DEFAULT_QUILT_PACKAGE_OWNER</span>
             <span class="p">)</span>
 
             <span class="c1"># Get or default project local staging</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_project_local_staging_dir</span> <span class="o">=</span> <span class="n">file_utils</span><span class="o">.</span><span class="n">resolve_directory</span><span class="p">(</span>
+            <span class="n">config</span><span class="p">[</span><span class="s2">&quot;project_local_staging_dir&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">file_utils</span><span class="o">.</span><span class="n">resolve_directory</span><span class="p">(</span>
                 <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
                     <span class="s2">&quot;project_local_staging_dir&quot;</span><span class="p">,</span>
                     <span class="n">constants</span><span class="o">.</span><span class="n">DEFAULT_PROJECT_LOCAL_STAGING_DIR</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cwd</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">),</span>
@@ -288,23 +289,29 @@
 
             <span class="c1"># Get or default step local staging</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_name</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_step_local_staging_dir</span> <span class="o">=</span> <span class="n">file_utils</span><span class="o">.</span><span class="n">resolve_directory</span><span class="p">(</span>
+                <span class="n">config</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">step_name</span><span class="p">][</span>
+                    <span class="s2">&quot;step_local_staging_dir&quot;</span>
+                <span class="p">]</span> <span class="o">=</span> <span class="n">file_utils</span><span class="o">.</span><span class="n">resolve_directory</span><span class="p">(</span>
                     <span class="n">config</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">step_name</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
                         <span class="s2">&quot;step_local_staging_dir&quot;</span><span class="p">,</span>
-                        <span class="sa">f</span><span class="s2">&quot;{self._project_local_staging_dir / self.step_name}&quot;</span><span class="p">,</span>
+                        <span class="sa">f</span><span class="s2">&quot;{config[&#39;project_local_staging_dir&#39;] / self.step_name}&quot;</span><span class="p">,</span>
                     <span class="p">),</span>
                     <span class="n">make</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                     <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_step_local_staging_dir</span> <span class="o">=</span> <span class="n">file_utils</span><span class="o">.</span><span class="n">resolve_directory</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;{self._project_local_staging_dir / self.step_name}&quot;</span><span class="p">,</span>
+                <span class="c1"># Step name wasn&#39;t in the config, add it as a key to a further dict</span>
+                <span class="n">config</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">step_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">config</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">step_name</span><span class="p">][</span>
+                    <span class="s2">&quot;step_local_staging_dir&quot;</span>
+                <span class="p">]</span> <span class="o">=</span> <span class="n">file_utils</span><span class="o">.</span><span class="n">resolve_directory</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;{config[&#39;project_local_staging_dir&#39;] / self.step_name}&quot;</span><span class="p">,</span>
                     <span class="n">make</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                     <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                 <span class="p">)</span>
 
             <span class="c1"># Get or default quilt package name</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_quilt_package_name</span> <span class="o">=</span> <span class="n">file_utils</span><span class="o">.</span><span class="n">_sanitize_name</span><span class="p">(</span>
+            <span class="n">config</span><span class="p">[</span><span class="s2">&quot;quilt_package_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">file_utils</span><span class="o">.</span><span class="n">_sanitize_name</span><span class="p">(</span>
                 <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;quilt_package_name&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__module__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
             <span class="p">)</span>
 
@@ -335,14 +342,12 @@
                 <span class="p">},</span>
             <span class="p">}</span>
 
-            <span class="c1"># Set object properties from config</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_storage_bucket</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;quilt_storage_bucket&quot;</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_quilt_package_owner</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;quilt_package_owner&quot;</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_quilt_package_name</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;quilt_package_name&quot;</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_project_local_staging_dir</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;project_local_staging_dir&quot;</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_step_local_staging_dir</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">step_name</span><span class="p">][</span>
-                <span class="s2">&quot;step_local_staging_dir&quot;</span>
-            <span class="p">]</span>
+        <span class="c1"># Set object properties from config</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_storage_bucket</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;quilt_storage_bucket&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_quilt_package_owner</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;quilt_package_owner&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_quilt_package_name</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;quilt_package_name&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_project_local_staging_dir</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;project_local_staging_dir&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_step_local_staging_dir</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">step_name</span><span class="p">][</span><span class="s2">&quot;step_local_staging_dir&quot;</span><span class="p">]</span>
 
         <span class="k">return</span> <span class="n">config</span>
 
@@ -372,10 +377,15 @@
 
         <span class="c1"># Prepare locals to be stored for data logging</span>
         <span class="n">params</span> <span class="o">=</span> <span class="nb">locals</span><span class="p">()</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;step_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step_name</span>
         <span class="n">params</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;self&quot;</span><span class="p">)</span>
+        <span class="n">params</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;__class__&quot;</span><span class="p">)</span>
 
         <span class="c1"># Unpack config into param log dict</span>
         <span class="n">params</span><span class="p">[</span><span class="s2">&quot;config&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unpack_config</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+
+        <span class="c1"># Store current version of datastep in initialization parameters</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;__version__&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_module_version</span><span class="p">()</span>
 
         <span class="c1"># Write out initialization params for data logging</span>
         <span class="n">parameter_store</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_local_staging_dir</span> <span class="o">/</span> <span class="s2">&quot;init_parameters.json&quot;</span>
@@ -396,6 +406,12 @@
 
         <span class="c1"># Set name for prefect task retrieval</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_name</span>
+
+        <span class="c1"># Prior to any operation log where we are operating</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{self.step_name}</span><span class="s2"> will use step local staging directory: &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{self.step_local_staging_dir}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">step_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
