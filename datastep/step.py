@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import getpass
 import inspect
 import json
 import logging
@@ -398,6 +399,29 @@ class Step(Task):
                 f"Check files: {all_changed_files}."
             )
 
+        # Check that current hash is the same as remote head hash
+        # Check that the current branch has even been pushed to origin
+        origin_branches = [b.name for b in repo.remotes.origin.refs]
+        if f"origin/{current_branch}" not in origin_branches:
+            raise exceptions.InvalidGitStatus(
+                f"Push to '{push_target}' was rejected because the current git "
+                f"branch was not found on the origin."
+            )
+        # Origin has current branch, check for matching commit hash
+        else:
+            # Find matching origin branch
+            for origin_branch in repo.remotes.origin.refs:
+                if origin_branch.name == f"origin/{current_branch}":
+                    matching_origin_branch = origin_branch
+                break
+
+            # Check git commit hash match
+            if matching_origin_branch.commit.hexsha != repo.head.object.hexsha:
+                raise exceptions.InvalidGitStatus(
+                    f"Push to '{push_target}' was rejected because the current git "
+                    f"commit has not been pushed to {matching_origin_branch.name}"
+                )
+
     @staticmethod
     def _create_data_commit_message() -> str:
         # This will throw an error if the current working directory is not a git repo
@@ -408,6 +432,27 @@ class Step(Task):
             f"data created from code repo {repo.remotes.origin.url} on branch "
             f"{current_branch} at commit {repo.head.object.hexsha}"
         )
+
+    @staticmethod
+    def _get_git_origin_url() -> str:
+        # This will throw an error if the current working directory is not a git repo
+        repo = git.Repo(Path(".").expanduser().resolve())
+
+        # Get origin info
+        origin = repo.remotes.origin
+
+        # If there is a @ character this was setup with ssh
+        if "@" in origin.url:
+            url = origin.url.split("@")[1].replace(":", "/").replace(".git", "")
+            return f"https://{url}"
+        else:
+            return origin.url.replace(".git", "")
+
+    @staticmethod
+    def _get_current_git_commit_hash() -> str:
+        # This will throw an error if the current working directory is not a git repo
+        repo = git.Repo(Path(".").expanduser().resolve())
+        return repo.head.object.hexsha
 
     def manifest_filepaths_rel2abs(self):
         """
@@ -473,6 +518,11 @@ class Step(Task):
         # Get current git branch
         current_branch = self._get_current_git_branch()
 
+        # Normalize branch name
+        # This is to stop quilt from making extra directories from names like:
+        # feature/some-feature
+        current_branch = current_branch.replace("/", ".")
+
         # Resolve push target
         quilt_loc = f"{self._quilt_package_owner}/{self._quilt_package_name}"
         push_target = f"{quilt_loc}/{current_branch}/{self.step_name}"
@@ -488,7 +538,7 @@ class Step(Task):
             metadata_columns=self.metadata_columns,
         )
 
-        # Add the relative manifest to the package
+        # Add the relative manifest and generated README to the package
         with TemporaryDirectory() as tempdir:
             # Store the relative manifest in a temporary directory
             m_path = Path(tempdir) / "manifest.csv"
@@ -499,6 +549,20 @@ class Step(Task):
             for param_file in ["run_parameters.json", "init_parameters.json"]:
                 param_file_path = self.step_local_staging_dir / param_file
                 step_pkg.set(param_file, param_file_path)
+
+            # Generate README
+            readme_path = Path(tempdir) / "README.md"
+            with open(readme_path, "w") as write_readme:
+                write_readme.write(
+                    constants.README_TEMPLATE.render(
+                        quilt_package_name=self._quilt_package_name,
+                        source_url=self._get_git_origin_url(),
+                        branch_name=self._get_current_git_branch(),
+                        commit_hash=self._get_current_git_commit_hash(),
+                        creator=getpass.getuser(),
+                    )
+                )
+            step_pkg.set("README.md", readme_path)
 
             # Browse top level project package and add / overwrite to it in step dir
             project_pkg = quilt3.Package.browse(quilt_loc, self._storage_bucket)
