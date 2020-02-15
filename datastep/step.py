@@ -12,6 +12,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Any, Dict, List, Optional, Union
 
+import botocore
 import git
 import pandas as pd
 import prefect
@@ -650,7 +651,24 @@ class Step(Task):
             step_pkg.set("README.md", readme_path)
 
             # Browse top level project package and add / overwrite to it in step dir
-            project_pkg = quilt3.Package.browse(quilt_loc, self._storage_bucket)
+            try:
+                project_pkg = quilt3.Package.browse(quilt_loc, self._storage_bucket)
+            except botocore.errorfactory.ClientError:
+                log.info(
+                    f"Could not find existing package: {quilt_loc} "
+                    f"in bucket: {self._storage_bucket}. "
+                    f"Creating a new package."
+                )
+                project_pkg = quilt3.Package()
+
+            # Remove the current step if it exists in the previous project package
+            if current_branch in project_pkg.keys():
+                if self.step_name in project_pkg[current_branch].keys():
+                    project_pkg = project_pkg.delete(
+                        f"{current_branch}/{self.step_name}"
+                    )
+
+            # Merge packages
             for (logical_key, pkg_entry) in step_pkg.walk():
                 project_pkg.set(
                     f"{current_branch}/{self.step_name}/{logical_key}", pkg_entry
