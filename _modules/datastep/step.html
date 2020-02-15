@@ -180,6 +180,7 @@
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
+<span class="kn">import</span> <span class="nn">getpass</span>
 <span class="kn">import</span> <span class="nn">inspect</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">logging</span>
@@ -577,6 +578,29 @@
                 <span class="sa">f</span><span class="s2">&quot;Check files: </span><span class="si">{all_changed_files}</span><span class="s2">.&quot;</span>
             <span class="p">)</span>
 
+        <span class="c1"># Check that current hash is the same as remote head hash</span>
+        <span class="c1"># Check that the current branch has even been pushed to origin</span>
+        <span class="n">origin_branches</span> <span class="o">=</span> <span class="p">[</span><span class="n">b</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">repo</span><span class="o">.</span><span class="n">remotes</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">refs</span><span class="p">]</span>
+        <span class="k">if</span> <span class="sa">f</span><span class="s2">&quot;origin/</span><span class="si">{current_branch}</span><span class="s2">&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">origin_branches</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">InvalidGitStatus</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Push to &#39;</span><span class="si">{push_target}</span><span class="s2">&#39; was rejected because the current git &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;branch was not found on the origin.&quot;</span>
+            <span class="p">)</span>
+        <span class="c1"># Origin has current branch, check for matching commit hash</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Find matching origin branch</span>
+            <span class="k">for</span> <span class="n">origin_branch</span> <span class="ow">in</span> <span class="n">repo</span><span class="o">.</span><span class="n">remotes</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">refs</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">origin_branch</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="sa">f</span><span class="s2">&quot;origin/</span><span class="si">{current_branch}</span><span class="s2">&quot;</span><span class="p">:</span>
+                    <span class="n">matching_origin_branch</span> <span class="o">=</span> <span class="n">origin_branch</span>
+                <span class="k">break</span>
+
+            <span class="c1"># Check git commit hash match</span>
+            <span class="k">if</span> <span class="n">matching_origin_branch</span><span class="o">.</span><span class="n">commit</span><span class="o">.</span><span class="n">hexsha</span> <span class="o">!=</span> <span class="n">repo</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">hexsha</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">InvalidGitStatus</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Push to &#39;</span><span class="si">{push_target}</span><span class="s2">&#39; was rejected because the current git &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;commit has not been pushed to </span><span class="si">{matching_origin_branch.name}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_create_data_commit_message</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="c1"># This will throw an error if the current working directory is not a git repo</span>
@@ -587,6 +611,27 @@
             <span class="sa">f</span><span class="s2">&quot;data created from code repo </span><span class="si">{repo.remotes.origin.url}</span><span class="s2"> on branch &quot;</span>
             <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{current_branch}</span><span class="s2"> at commit </span><span class="si">{repo.head.object.hexsha}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_get_git_origin_url</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="c1"># This will throw an error if the current working directory is not a git repo</span>
+        <span class="n">repo</span> <span class="o">=</span> <span class="n">git</span><span class="o">.</span><span class="n">Repo</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">())</span>
+
+        <span class="c1"># Get origin info</span>
+        <span class="n">origin</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">remotes</span><span class="o">.</span><span class="n">origin</span>
+
+        <span class="c1"># If there is a @ character this was setup with ssh</span>
+        <span class="k">if</span> <span class="s2">&quot;@&quot;</span> <span class="ow">in</span> <span class="n">origin</span><span class="o">.</span><span class="n">url</span><span class="p">:</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="n">origin</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;@&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="s2">&quot;/&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.git&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;https://</span><span class="si">{url}</span><span class="s2">&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">origin</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.git&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_get_current_git_commit_hash</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="c1"># This will throw an error if the current working directory is not a git repo</span>
+        <span class="n">repo</span> <span class="o">=</span> <span class="n">git</span><span class="o">.</span><span class="n">Repo</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">repo</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">hexsha</span>
 
 <div class="viewcode-block" id="Step.manifest_filepaths_rel2abs"><a class="viewcode-back" href="../../datastep.html#datastep.step.Step.manifest_filepaths_rel2abs">[docs]</a>    <span class="k">def</span> <span class="nf">manifest_filepaths_rel2abs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -652,6 +697,11 @@
         <span class="c1"># Get current git branch</span>
         <span class="n">current_branch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_current_git_branch</span><span class="p">()</span>
 
+        <span class="c1"># Normalize branch name</span>
+        <span class="c1"># This is to stop quilt from making extra directories from names like:</span>
+        <span class="c1"># feature/some-feature</span>
+        <span class="n">current_branch</span> <span class="o">=</span> <span class="n">current_branch</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">)</span>
+
         <span class="c1"># Resolve push target</span>
         <span class="n">quilt_loc</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{self._quilt_package_owner}</span><span class="s2">/</span><span class="si">{self._quilt_package_name}</span><span class="s2">&quot;</span>
         <span class="n">push_target</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{quilt_loc}</span><span class="s2">/</span><span class="si">{current_branch}</span><span class="s2">/</span><span class="si">{self.step_name}</span><span class="s2">&quot;</span>
@@ -667,7 +717,7 @@
             <span class="n">metadata_columns</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata_columns</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="c1"># Add the relative manifest to the package</span>
+        <span class="c1"># Add the relative manifest and generated README to the package</span>
         <span class="k">with</span> <span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">tempdir</span><span class="p">:</span>
             <span class="c1"># Store the relative manifest in a temporary directory</span>
             <span class="n">m_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">tempdir</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;manifest.csv&quot;</span>
@@ -678,6 +728,20 @@
             <span class="k">for</span> <span class="n">param_file</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;run_parameters.json&quot;</span><span class="p">,</span> <span class="s2">&quot;init_parameters.json&quot;</span><span class="p">]:</span>
                 <span class="n">param_file_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_local_staging_dir</span> <span class="o">/</span> <span class="n">param_file</span>
                 <span class="n">step_pkg</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">param_file</span><span class="p">,</span> <span class="n">param_file_path</span><span class="p">)</span>
+
+            <span class="c1"># Generate README</span>
+            <span class="n">readme_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">tempdir</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;README.md&quot;</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">readme_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">write_readme</span><span class="p">:</span>
+                <span class="n">write_readme</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                    <span class="n">constants</span><span class="o">.</span><span class="n">README_TEMPLATE</span><span class="o">.</span><span class="n">render</span><span class="p">(</span>
+                        <span class="n">quilt_package_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_quilt_package_name</span><span class="p">,</span>
+                        <span class="n">source_url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_git_origin_url</span><span class="p">(),</span>
+                        <span class="n">branch_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_current_git_branch</span><span class="p">(),</span>
+                        <span class="n">commit_hash</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_current_git_commit_hash</span><span class="p">(),</span>
+                        <span class="n">creator</span><span class="o">=</span><span class="n">getpass</span><span class="o">.</span><span class="n">getuser</span><span class="p">(),</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+            <span class="n">step_pkg</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;README.md&quot;</span><span class="p">,</span> <span class="n">readme_path</span><span class="p">)</span>
 
             <span class="c1"># Browse top level project package and add / overwrite to it in step dir</span>
             <span class="n">project_pkg</span> <span class="o">=</span> <span class="n">quilt3</span><span class="o">.</span><span class="n">Package</span><span class="o">.</span><span class="n">browse</span><span class="p">(</span><span class="n">quilt_loc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage_bucket</span><span class="p">)</span>
