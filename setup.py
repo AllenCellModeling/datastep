@@ -40,6 +40,7 @@ interactive_requirements = ["altair", "jupyterlab", "matplotlib"]
 
 requirements = [
     "boto3>=1.11.9",
+    "botocore>=1.15.0",
     "docutils<0.16",
     "gitpython>=3.0.5",
     "jinja2>=2.10.3",
