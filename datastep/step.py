@@ -468,7 +468,7 @@ class Step(Task):
             for origin_branch in repo.remotes.origin.refs:
                 if origin_branch.name == f"origin/{current_branch}":
                     matching_origin_branch = origin_branch
-                break
+                    break
 
             # Check git commit hash match
             if matching_origin_branch.commit.hexsha != repo.head.object.hexsha:
