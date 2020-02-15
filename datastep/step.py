@@ -216,10 +216,9 @@ class Step(Task):
         metadata_columns: List[str] = [],
         direct_upstream_tasks: List["Step"] = [],
         config: Optional[Union[str, Path, Dict[str, str]]] = None,
-        **kwargs,
     ):
         # Run super prefect Task init
-        super().__init__(**kwargs)
+        super().__init__()
 
         # Set step name as attributes if not None
         self._step_name = (
