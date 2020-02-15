@@ -9,8 +9,17 @@ data.
 
 ---
 
+This library should rarely be used by itself, it was developed in pair with
+[cookiecutter-stepworkflow](https://github.com/AllenCellModeling/cookiecutter-stepworkflow)
+and you should look there for more context rich documentation.
+
 ## Installation
+**Stable Release:**
+
+`pip install datastep`
+
 **Development Head:**
+
 `pip install git+https://github.com/AllenCellModeling/datastep.git`
 
 ## Documentation
