@@ -19,7 +19,8 @@ import prefect
 import quilt3
 from prefect import Flow, Task
 
-from . import constants, exceptions, file_utils, get_module_version, quilt_utils
+from . import (constants, exceptions, file_utils, get_module_version,
+               quilt_utils)
 
 ###############################################################################
 
@@ -660,6 +661,10 @@ class Step(Task):
                     f"Creating a new package."
                 )
                 project_pkg = quilt3.Package()
+
+            # Regardless of if we found a prior version of the package or starting from
+            # a new package, we "merge" them together to place this steps data in the
+            # correct location.
 
             # Remove the current step if it exists in the previous project package
             if current_branch in project_pkg.keys():
