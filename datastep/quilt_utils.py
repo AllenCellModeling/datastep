@@ -11,7 +11,7 @@ import pandas as pd
 from quilt3.packages import Package, PackageEntry
 from tqdm import tqdm
 
-from . import constants, file_utils
+from . import file_utils
 
 ###############################################################################
 
@@ -357,49 +357,3 @@ def create_package(
                 pkg[lk].set_meta({**pkg[lk].meta, **{"associates": associate_mapping}})
 
         return pkg, relative_manifest
-
-
-###############################################################################
-
-# CLI
-
-
-# Used in cookiecutter template to init quilt repo
-class QuiltCli:
-    def __init__(self, config_file="workflow_config.json", **kwargs):
-        # Get default package name
-        quilt_package_name = f"{self.__module__.split('.')[0]}"
-
-        # Start with defaults
-        self.config = {
-            "storage_bucket": constants.DEFAULT_QUILT_STORAGE,
-            "quilt_package_owner": constants.DEFAULT_QUILT_PACKAGE_OWNER,
-            "quilt_package_name": quilt_package_name,
-        }
-
-        # Load values from config file
-        config_file = Path(config_file)
-        if config_file.is_file():
-            with open(config_file) as json_file:
-                file_config = json.load(json_file)
-        else:
-            file_config = {}
-
-        # Put or overwrite values from config file into main config dict
-        for k, v in file_config.items():
-            self.config[k] = v
-
-        # Put or overwrite values in main dict with kwargs if passed
-        for k, v in kwargs.items():
-            self.config[k] = v
-
-    # This is named init for the cli to run as `proj_name quilt init`
-    def init(self):
-        # Create an empty quilt package
-        p = Package()
-
-        # Push it to quilt
-        quilt_loc = (
-            f"{self.config['quilt_package_owner']}/{self.config['quilt_package_name']}"
-        )
-        p.push(quilt_loc, registry=self.config["storage_bucket"])

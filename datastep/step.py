@@ -12,13 +12,15 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Any, Dict, List, Optional, Union
 
+import botocore
 import git
 import pandas as pd
 import prefect
 import quilt3
 from prefect import Flow, Task
 
-from . import constants, exceptions, file_utils, get_module_version, quilt_utils
+from . import (constants, exceptions, file_utils, get_module_version,
+               quilt_utils)
 
 ###############################################################################
 
@@ -216,10 +218,9 @@ class Step(Task):
         metadata_columns: List[str] = [],
         direct_upstream_tasks: List["Step"] = [],
         config: Optional[Union[str, Path, Dict[str, str]]] = None,
-        **kwargs,
     ):
         # Run super prefect Task init
-        super().__init__(**kwargs)
+        super().__init__()
 
         # Set step name as attributes if not None
         self._step_name = (
@@ -468,7 +469,7 @@ class Step(Task):
             for origin_branch in repo.remotes.origin.refs:
                 if origin_branch.name == f"origin/{current_branch}":
                     matching_origin_branch = origin_branch
-                break
+                    break
 
             # Check git commit hash match
             if matching_origin_branch.commit.hexsha != repo.head.object.hexsha:
@@ -651,7 +652,28 @@ class Step(Task):
             step_pkg.set("README.md", readme_path)
 
             # Browse top level project package and add / overwrite to it in step dir
-            project_pkg = quilt3.Package.browse(quilt_loc, self._storage_bucket)
+            try:
+                project_pkg = quilt3.Package.browse(quilt_loc, self._storage_bucket)
+            except botocore.errorfactory.ClientError:
+                log.info(
+                    f"Could not find existing package: {quilt_loc} "
+                    f"in bucket: {self._storage_bucket}. "
+                    f"Creating a new package."
+                )
+                project_pkg = quilt3.Package()
+
+            # Regardless of if we found a prior version of the package or starting from
+            # a new package, we "merge" them together to place this steps data in the
+            # correct location.
+
+            # Remove the current step if it exists in the previous project package
+            if current_branch in project_pkg.keys():
+                if self.step_name in project_pkg[current_branch].keys():
+                    project_pkg = project_pkg.delete(
+                        f"{current_branch}/{self.step_name}"
+                    )
+
+            # Merge packages
             for (logical_key, pkg_entry) in step_pkg.walk():
                 project_pkg.set(
                     f"{current_branch}/{self.step_name}/{logical_key}", pkg_entry
