@@ -190,7 +190,7 @@
 <span class="kn">from</span> <span class="nn">quilt3.packages</span> <span class="kn">import</span> <span class="n">Package</span><span class="p">,</span> <span class="n">PackageEntry</span>
 <span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
 
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">constants</span><span class="p">,</span> <span class="n">file_utils</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">file_utils</span>
 
 <span class="c1">###############################################################################</span>
 
@@ -536,52 +536,6 @@
                 <span class="n">pkg</span><span class="p">[</span><span class="n">lk</span><span class="p">]</span><span class="o">.</span><span class="n">set_meta</span><span class="p">({</span><span class="o">**</span><span class="n">pkg</span><span class="p">[</span><span class="n">lk</span><span class="p">]</span><span class="o">.</span><span class="n">meta</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="s2">&quot;associates&quot;</span><span class="p">:</span> <span class="n">associate_mapping</span><span class="p">}})</span>
 
         <span class="k">return</span> <span class="n">pkg</span><span class="p">,</span> <span class="n">relative_manifest</span></div>
-
-
-<span class="c1">###############################################################################</span>
-
-<span class="c1"># CLI</span>
-
-
-<span class="c1"># Used in cookiecutter template to init quilt repo</span>
-<div class="viewcode-block" id="QuiltCli"><a class="viewcode-back" href="../../datastep.html#datastep.quilt_utils.QuiltCli">[docs]</a><span class="k">class</span> <span class="nc">QuiltCli</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config_file</span><span class="o">=</span><span class="s2">&quot;workflow_config.json&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="c1"># Get default package name</span>
-        <span class="n">quilt_package_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;{self.__module__.split(&#39;.&#39;)[0]}&quot;</span>
-
-        <span class="c1"># Start with defaults</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;storage_bucket&quot;</span><span class="p">:</span> <span class="n">constants</span><span class="o">.</span><span class="n">DEFAULT_QUILT_STORAGE</span><span class="p">,</span>
-            <span class="s2">&quot;quilt_package_owner&quot;</span><span class="p">:</span> <span class="n">constants</span><span class="o">.</span><span class="n">DEFAULT_QUILT_PACKAGE_OWNER</span><span class="p">,</span>
-            <span class="s2">&quot;quilt_package_name&quot;</span><span class="p">:</span> <span class="n">quilt_package_name</span><span class="p">,</span>
-        <span class="p">}</span>
-
-        <span class="c1"># Load values from config file</span>
-        <span class="n">config_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">config_file</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">config_file</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_file</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
-                <span class="n">file_config</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">file_config</span> <span class="o">=</span> <span class="p">{}</span>
-
-        <span class="c1"># Put or overwrite values from config file into main config dict</span>
-        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">file_config</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
-
-        <span class="c1"># Put or overwrite values in main dict with kwargs if passed</span>
-        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
-
-    <span class="c1"># This is named init for the cli to run as `proj_name quilt init`</span>
-<div class="viewcode-block" id="QuiltCli.init"><a class="viewcode-back" href="../../datastep.html#datastep.quilt_utils.QuiltCli.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1"># Create an empty quilt package</span>
-        <span class="n">p</span> <span class="o">=</span> <span class="n">Package</span><span class="p">()</span>
-
-        <span class="c1"># Push it to quilt</span>
-        <span class="n">quilt_loc</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{self.config[&#39;quilt_package_owner&#39;]}</span><span class="s2">/</span><span class="si">{self.config[&#39;quilt_package_name&#39;]}</span><span class="s2">&quot;</span>
-        <span class="p">)</span>
-        <span class="n">p</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">quilt_loc</span><span class="p">,</span> <span class="n">registry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;storage_bucket&quot;</span><span class="p">])</span></div></div>
 </pre></div>
 
            </div>

@@ -267,17 +267,6 @@
 <div class="section" id="module-datastep.quilt_utils">
 <span id="datastep-quilt-utils-module"></span><h2>datastep.quilt_utils module<a class="headerlink" href="#module-datastep.quilt_utils" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="datastep.quilt_utils.QuiltCli">
-<em class="property">class </em><code class="sig-prename descclassname">datastep.quilt_utils.</code><code class="sig-name descname">QuiltCli</code><span class="sig-paren">(</span><em class="sig-param">config_file='workflow_config.json'</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datastep/quilt_utils.html#QuiltCli"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.quilt_utils.QuiltCli" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="method">
-<dt id="datastep.quilt_utils.QuiltCli.init">
-<code class="sig-name descname">init</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/datastep/quilt_utils.html#QuiltCli.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.quilt_utils.QuiltCli.init" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
 <dt id="datastep.quilt_utils.ValidationDetails">
 <em class="property">class </em><code class="sig-prename descclassname">datastep.quilt_utils.</code><code class="sig-name descname">ValidationDetails</code><span class="sig-paren">(</span><em class="sig-param">value</em>, <em class="sig-param">index</em>, <em class="sig-param">origin_column</em>, <em class="sig-param">details_type</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datastep/quilt_utils.html#ValidationDetails"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.quilt_utils.ValidationDetails" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
@@ -338,7 +327,7 @@
 <span id="datastep-step-module"></span><h2>datastep.step module<a class="headerlink" href="#module-datastep.step" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="datastep.step.Step">
-<em class="property">class </em><code class="sig-prename descclassname">datastep.step.</code><code class="sig-name descname">Step</code><span class="sig-paren">(</span><em class="sig-param">step_name: Optional[str] = None, filepath_columns: List[str] = ['filepath'], metadata_columns: List[str] = [], direct_upstream_tasks: List[Step] = [], config: Union[str, pathlib.Path, Dict[str, str], None] = None, **kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datastep/step.html#Step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.step.Step" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">datastep.step.</code><code class="sig-name descname">Step</code><span class="sig-paren">(</span><em class="sig-param">step_name: Optional[str] = None, filepath_columns: List[str] = ['filepath'], metadata_columns: List[str] = [], direct_upstream_tasks: List[Step] = [], config: Union[str, pathlib.Path, Dict[str, str], None] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/datastep/step.html#Step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#datastep.step.Step" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">prefect.core.task.Task</span></code></p>
 <p>A class for creating “pure function” steps in a DAG.</p>
 <p>This object’s sole purpose is to handle and enforce data logging tied to code using
