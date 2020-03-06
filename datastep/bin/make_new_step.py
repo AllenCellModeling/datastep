@@ -175,6 +175,7 @@ class {{ truecase_step_name }}(Step):
 
 ###############################################################################
 
+
 def _find_steps_dir():
     filters = [".git", ".egg", "docs", "localstaging", ".ipynb"]
 
@@ -189,6 +190,7 @@ def _find_steps_dir():
         f"Could not find 'steps' directory."
         f"This script must be run from the head of your repo."
     )
+
 
 ###############################################################################
 
