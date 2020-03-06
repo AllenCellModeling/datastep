@@ -13,7 +13,6 @@ import sys
 import traceback
 from pathlib import Path
 
-import git
 from jinja2 import Template
 
 from datastep import exceptions, file_utils, get_module_version
