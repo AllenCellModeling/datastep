@@ -176,32 +176,32 @@ class {{ truecase_step_name }}(Step):
 ###############################################################################
 
 
+def _find_steps_dir():
+    filters = [".git", ".egg", "docs", "localstaging", ".ipynb"]
+
+    for d in Path.cwd().iterdir():
+        if d.is_dir():
+            if not any(f in d.name for f in filters):
+                for subd in d.iterdir():
+                    if subd.name == "steps":
+                        return subd
+
+    return exceptions.DirectoryNotFoundError(
+        f"Could not find 'steps' directory."
+        f"This script must be run from the head of your repo."
+    )
+
+
+###############################################################################
+
+
 def main():
     try:
         args = Args()
         dbg = args.debug
 
-        # Check if the step already exists
-        cwd = Path(".").expanduser().resolve()
-
-        # Find steps subdirectory
-        steps_dir_finds = list(cwd.rglob("steps"))
-
-        # Catch no steps dir found
-        if len(steps_dir_finds) == 0:
-            raise exceptions.DirectoryNotFoundError(
-                "Could not find any subdirectory named 'steps' in the current working "
-                "directory."
-            )
-        # Catch multiple found
-        elif len(steps_dir_finds) > 1:
-            raise exceptions.DirectoryNotFoundError(
-                f"Found multiple subdirectories named 'steps' in the current working "
-                f"directory. Found: {steps_dir_finds}"
-            )
-
-        # Properly found
-        all_steps_dir = steps_dir_finds[0]
+        # Assume the python module is the same name as the repo
+        all_steps_dir = _find_steps_dir()
 
         # Normalize the provided name
         step_name = str(args.step_name).lower()
