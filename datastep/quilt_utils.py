@@ -242,31 +242,31 @@ def create_package(
                 # Fully resolve the path
                 physical_key = Path(val).expanduser().resolve()
 
-                # Allow physical keys to be absolute paths by
-                # merging column and filename
-                # Also remove any obvious "path" type words from column name
-                #
-                # Ex:
-                # physical_key = "/some/abs/path/some_file.tiff"
-                # column = "SourceReadPath"
-                # produced logical_key = "source/some_file.tiff"
-                if physical_key.is_absolute():
-                    stripped_col = col.lower().replace("read", "").replace("path", "")
-                    logical_key = f"{stripped_col}/{physical_key.name}"
-
-                # Otherwise, prefer creating a logical key from the relative of step
+                # Try creating a logical key from the relative of step
                 # local staging to the filepath
                 #
                 # Ex:
                 # step_pkg_root = "local_staging/raw"
                 # physical_key = "local_staging/raw/images/some_file.tiff"
                 # produced logical_key = "images/some_file.tiff"
-                else:
+                try:
                     logical_key = str(
                         file_utils._filepath_rel2abs(physical_key).relative_to(
                             file_utils._filepath_rel2abs(step_pkg_root)
                         )
                     )
+
+                except ValueError:
+                    # Create logical key from merging column and filename
+                    # Also remove any obvious "path" type words from column name
+                    #
+                    # Ex:
+                    # physical_key = "/some/abs/path/some_file.tiff"
+                    # column = "SourceReadPath"
+                    # produced logical_key = "source/some_file.tiff"
+                    stripped_col = col.lower().replace("read", "").replace("path", "")
+                    logical_key = f"{stripped_col}/{physical_key.name}"
+
                 if physical_key.is_file():
                     relative_manifest[col].values[i] = logical_key
 
