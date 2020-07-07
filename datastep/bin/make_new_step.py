@@ -187,8 +187,8 @@ def _find_steps_dir():
                         return subd
 
     return exceptions.DirectoryNotFoundError(
-        f"Could not find 'steps' directory."
-        f"This script must be run from the head of your repo."
+        "Could not find 'steps' directory."
+        "This script must be run from the head of your repo."
     )
 
 

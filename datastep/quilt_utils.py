@@ -266,7 +266,7 @@ def create_package(
                         file_utils._filepath_rel2abs(physical_key).relative_to(
                             file_utils._filepath_rel2abs(step_pkg_root)
                         )
-                )
+                    )
                 if physical_key.is_file():
                     relative_manifest[col].values[i] = logical_key
 
