@@ -242,23 +242,31 @@ def create_package(
                 # Fully resolve the path
                 physical_key = Path(val).expanduser().resolve()
 
-                # Just using val.name could result in files that shouldn't be grouped
-                # being grouped
-                # Example column:
-                # SourceReadpath
-                # a/0.tiff
-                # a/1.tiff
-                # b/0.tiff
-                # b/1.tiff
-                # Even though there are four files, this would result in both a/0.tiff
-                # and b/0.tiff, and, a/1.tiff and b/1.tiff being grouped together. To
-                # solve this we can prepend a the first couple of characters from a
-                # hash of the fully resolved path to the logical key.
-                logical_key = str(
-                    file_utils._filepath_rel2abs(physical_key).relative_to(
-                        file_utils._filepath_rel2abs(step_pkg_root)
+                # Try creating a logical key from the relative of step
+                # local staging to the filepath
+                #
+                # Ex:
+                # step_pkg_root = "local_staging/raw"
+                # physical_key = "local_staging/raw/images/some_file.tiff"
+                # produced logical_key = "images/some_file.tiff"
+                try:
+                    logical_key = str(
+                        file_utils._filepath_rel2abs(physical_key).relative_to(
+                            file_utils._filepath_rel2abs(step_pkg_root)
+                        )
                     )
-                )
+
+                except ValueError:
+                    # Create logical key from merging column and filename
+                    # Also remove any obvious "path" type words from column name
+                    #
+                    # Ex:
+                    # physical_key = "/some/abs/path/some_file.tiff"
+                    # column = "SourceReadPath"
+                    # produced logical_key = "source/some_file.tiff"
+                    stripped_col = col.lower().replace("read", "").replace("path", "")
+                    logical_key = f"{stripped_col}/{physical_key.name}"
+
                 if physical_key.is_file():
                     relative_manifest[col].values[i] = logical_key
 

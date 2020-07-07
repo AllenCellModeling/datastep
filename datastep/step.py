@@ -19,7 +19,8 @@ import prefect
 import quilt3
 from prefect import Flow, Task
 
-from . import constants, exceptions, file_utils, get_module_version, quilt_utils
+from . import (constants, exceptions, file_utils, get_module_version,
+               quilt_utils)
 
 ###############################################################################
 
@@ -178,7 +179,7 @@ class Step(Task):
 
         else:
             # Log debug message indicating using defaults
-            log.debug(f"Using default project and step configuration.")
+            log.debug("Using default project and step configuration.")
 
             # Construct config dictionary object
             config = {
