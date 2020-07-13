@@ -1,15 +1,18 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>datastep.quilt_utils &mdash; datastep 0.1.6 documentation</title>
+  <title>datastep.quilt_utils &mdash; datastep 0.1.7 documentation</title>
   
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
 
   
   
@@ -17,7 +20,9 @@
   
 
   
-  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -29,10 +34,6 @@
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
 </head>
@@ -48,7 +49,7 @@
           
 
           
-            <a href="../../index.html" class="icon icon-home"> datastep
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> datastep
           
 
           
@@ -58,7 +59,7 @@
             
             
               <div class="version">
-                0.1.6
+                0.1.7
               </div>
             
           
@@ -75,6 +76,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -117,6 +119,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -155,7 +158,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../index.html">Module code</a> &raquo;</li>
         
@@ -212,16 +215,16 @@
         <span class="p">)</span>
     <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Failed to find file: &#39;</span><span class="si">{details.value}</span><span class="s2">&#39;. &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;Source column: &#39;</span><span class="si">{details.origin_column}</span><span class="s2">&#39;, &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;at index: </span><span class="si">{details.index}</span><span class="s2">.&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Failed to find file: &#39;</span><span class="si">{</span><span class="n">details</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">&#39;. &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Source column: &#39;</span><span class="si">{</span><span class="n">details</span><span class="o">.</span><span class="n">origin_column</span><span class="si">}</span><span class="s2">&#39;, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;at index: </span><span class="si">{</span><span class="n">details</span><span class="o">.</span><span class="n">index</span><span class="si">}</span><span class="s2">.&quot;</span>
         <span class="p">)</span>
     <span class="k">except</span> <span class="ne">IsADirectoryError</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">IsADirectoryError</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;Paths to directories are not allowed. Please be explicit in which files &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;should be uploaded. Directory: &#39;</span><span class="si">{details.value}</span><span class="s2">&#39;, &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;source column: &#39;</span><span class="si">{details.origin_column}</span><span class="s2">&#39;, &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;at index: </span><span class="si">{details.index}</span><span class="s2">.&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;should be uploaded. Directory: &#39;</span><span class="si">{</span><span class="n">details</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">&#39;, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;source column: &#39;</span><span class="si">{</span><span class="n">details</span><span class="o">.</span><span class="n">origin_column</span><span class="si">}</span><span class="s2">&#39;, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;at index: </span><span class="si">{</span><span class="n">details</span><span class="o">.</span><span class="n">index</span><span class="si">}</span><span class="s2">.&quot;</span>
         <span class="p">)</span></div>
 
 
@@ -267,16 +270,16 @@
     <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">filepath_columns</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">manifest</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Could not find filepath column: &#39;</span><span class="si">{col}</span><span class="s2">&#39; &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;in manifest columns: </span><span class="si">{manifest.columns}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Could not find filepath column: &#39;</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2">&#39; &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;in manifest columns: </span><span class="si">{</span><span class="n">manifest</span><span class="o">.</span><span class="n">columns</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
 
     <span class="c1"># Check filepath columns exist in manifest</span>
     <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">metadata_columns</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">manifest</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Could not find metadata column: &#39;</span><span class="si">{col}</span><span class="s2">&#39; &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;in manifest columns: </span><span class="si">{manifest.columns}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Could not find metadata column: &#39;</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2">&#39; &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;in manifest columns: </span><span class="si">{</span><span class="n">manifest</span><span class="o">.</span><span class="n">columns</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
 
     <span class="c1"># Create large list of paths to validate and metadata to clean</span>
@@ -421,23 +424,31 @@
                 <span class="c1"># Fully resolve the path</span>
                 <span class="n">physical_key</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
 
-                <span class="c1"># Just using val.name could result in files that shouldn&#39;t be grouped</span>
-                <span class="c1"># being grouped</span>
-                <span class="c1"># Example column:</span>
-                <span class="c1"># SourceReadpath</span>
-                <span class="c1"># a/0.tiff</span>
-                <span class="c1"># a/1.tiff</span>
-                <span class="c1"># b/0.tiff</span>
-                <span class="c1"># b/1.tiff</span>
-                <span class="c1"># Even though there are four files, this would result in both a/0.tiff</span>
-                <span class="c1"># and b/0.tiff, and, a/1.tiff and b/1.tiff being grouped together. To</span>
-                <span class="c1"># solve this we can prepend a the first couple of characters from a</span>
-                <span class="c1"># hash of the fully resolved path to the logical key.</span>
-                <span class="n">logical_key</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span>
-                    <span class="n">file_utils</span><span class="o">.</span><span class="n">_filepath_rel2abs</span><span class="p">(</span><span class="n">physical_key</span><span class="p">)</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span>
-                        <span class="n">file_utils</span><span class="o">.</span><span class="n">_filepath_rel2abs</span><span class="p">(</span><span class="n">step_pkg_root</span><span class="p">)</span>
+                <span class="c1"># Try creating a logical key from the relative of step</span>
+                <span class="c1"># local staging to the filepath</span>
+                <span class="c1">#</span>
+                <span class="c1"># Ex:</span>
+                <span class="c1"># step_pkg_root = &quot;local_staging/raw&quot;</span>
+                <span class="c1"># physical_key = &quot;local_staging/raw/images/some_file.tiff&quot;</span>
+                <span class="c1"># produced logical_key = &quot;images/some_file.tiff&quot;</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">logical_key</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span>
+                        <span class="n">file_utils</span><span class="o">.</span><span class="n">_filepath_rel2abs</span><span class="p">(</span><span class="n">physical_key</span><span class="p">)</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span>
+                            <span class="n">file_utils</span><span class="o">.</span><span class="n">_filepath_rel2abs</span><span class="p">(</span><span class="n">step_pkg_root</span><span class="p">)</span>
+                        <span class="p">)</span>
                     <span class="p">)</span>
-                <span class="p">)</span>
+
+                <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                    <span class="c1"># Create logical key from merging column and filename</span>
+                    <span class="c1"># Also remove any obvious &quot;path&quot; type words from column name</span>
+                    <span class="c1">#</span>
+                    <span class="c1"># Ex:</span>
+                    <span class="c1"># physical_key = &quot;/some/abs/path/some_file.tiff&quot;</span>
+                    <span class="c1"># column = &quot;SourceReadPath&quot;</span>
+                    <span class="c1"># produced logical_key = &quot;source/some_file.tiff&quot;</span>
+                    <span class="n">stripped_col</span> <span class="o">=</span> <span class="n">col</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;read&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                    <span class="n">logical_key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">stripped_col</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">physical_key</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+
                 <span class="k">if</span> <span class="n">physical_key</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
                     <span class="n">relative_manifest</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">logical_key</span>
 
@@ -458,7 +469,7 @@
 
                         <span class="c1"># Cast to JSON serializable type</span>
                         <span class="n">v</span> <span class="o">=</span> <span class="n">file_utils</span><span class="o">.</span><span class="n">make_json_serializable</span><span class="p">(</span>
-                            <span class="n">v</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Value from column: </span><span class="si">{meta_col}</span><span class="s2">, index: </span><span class="si">{i}</span><span class="s2">&quot;</span>
+                            <span class="n">v</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Value from column: </span><span class="si">{</span><span class="n">meta_col</span><span class="si">}</span><span class="s2">, index: </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span>
                         <span class="p">)</span>
 
                         <span class="c1"># Update metadata with value</span>
@@ -548,11 +559,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2020, Jackson Maxfield Brown
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -563,7 +582,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

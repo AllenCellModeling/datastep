@@ -1,15 +1,18 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>datastep.bin.make_new_step &mdash; datastep 0.1.6 documentation</title>
+  <title>datastep.bin.make_new_step &mdash; datastep 0.1.7 documentation</title>
   
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
 
   
   
@@ -17,7 +20,9 @@
   
 
   
-  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -29,10 +34,6 @@
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
 </head>
@@ -48,7 +49,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home"> datastep
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> datastep
           
 
           
@@ -58,7 +59,7 @@
             
             
               <div class="version">
-                0.1.6
+                0.1.7
               </div>
             
           
@@ -75,6 +76,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -117,6 +119,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -155,7 +158,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
@@ -248,7 +251,7 @@
 
 <span class="c1"># insert the new class into the list set in __all__</span>
 <div class="viewcode-block" id="insert_new_class"><a class="viewcode-back" href="../../../datastep.bin.html#datastep.bin.make_new_step.insert_new_class">[docs]</a><span class="k">def</span> <span class="nf">insert_new_class</span><span class="p">(</span><span class="n">old_list_string</span><span class="p">,</span> <span class="n">new_class_name_string</span><span class="p">):</span>
-    <span class="n">new_list_string</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{old_list_string}</span><span class="s1">, &quot;</span><span class="si">{new_class_name_string}</span><span class="s1">&quot;&#39;</span>
+    <span class="n">new_list_string</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">old_list_string</span><span class="si">}</span><span class="s1">, &quot;</span><span class="si">{</span><span class="n">new_class_name_string</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
     <span class="k">return</span> <span class="n">new_list_string</span></div>
 
 
@@ -261,8 +264,8 @@
 <span class="c1"># append our new import to the last one</span>
 <div class="viewcode-block" id="insert_new_import"><a class="viewcode-back" href="../../../datastep.bin.html#datastep.bin.make_new_step.insert_new_import">[docs]</a><span class="k">def</span> <span class="nf">insert_new_import</span><span class="p">(</span><span class="n">last_old_line</span><span class="p">,</span> <span class="n">new_class_name_string</span><span class="p">,</span> <span class="n">new_class_dir_string</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{last_old_line}</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="sa">f</span><span class="s2">&quot;from .</span><span class="si">{new_class_dir_string}</span><span class="s2"> import </span><span class="si">{new_class_name_string}</span><span class="s2">&quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">last_old_line</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;from .</span><span class="si">{</span><span class="n">new_class_dir_string</span><span class="si">}</span><span class="s2"> import </span><span class="si">{</span><span class="n">new_class_name_string</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="p">)</span></div>
 
 
@@ -366,8 +369,8 @@
                         <span class="k">return</span> <span class="n">subd</span>
 
     <span class="k">return</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">DirectoryNotFoundError</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;Could not find &#39;steps&#39; directory.&quot;</span>
-        <span class="sa">f</span><span class="s2">&quot;This script must be run from the head of your repo.&quot;</span>
+        <span class="s2">&quot;Could not find &#39;steps&#39; directory.&quot;</span>
+        <span class="s2">&quot;This script must be run from the head of your repo.&quot;</span>
     <span class="p">)</span>
 
 
@@ -400,7 +403,7 @@
             <span class="p">)</span>
 
         <span class="c1"># Make the step file</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">this_step_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{step_name}</span><span class="s2">.py&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">write_step_file</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">this_step_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s2">.py&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">write_step_file</span><span class="p">:</span>
             <span class="n">write_step_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
                 <span class="n">STEP_TEMPLATE</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">truecase_step_name</span><span class="o">=</span><span class="n">truecase_step_name</span><span class="p">)</span>
             <span class="p">)</span>
@@ -436,7 +439,7 @@
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">all_steps_init</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">write_all_steps_init</span><span class="p">:</span>
             <span class="n">write_all_steps_init</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">new_all_steps_init_text</span><span class="p">)</span>
 
-        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Generated new step file at: </span><span class="si">{this_step_dir}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Generated new step file at: </span><span class="si">{</span><span class="n">this_step_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;=============================================&quot;</span><span class="p">)</span>
@@ -465,11 +468,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2020, Jackson Maxfield Brown
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -480,7 +491,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

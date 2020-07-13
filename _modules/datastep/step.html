@@ -1,15 +1,18 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>datastep.step &mdash; datastep 0.1.6 documentation</title>
+  <title>datastep.step &mdash; datastep 0.1.7 documentation</title>
   
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
 
   
   
@@ -17,7 +20,9 @@
   
 
   
-  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -29,10 +34,6 @@
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
 </head>
@@ -48,7 +49,7 @@
           
 
           
-            <a href="../../index.html" class="icon icon-home"> datastep
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> datastep
           
 
           
@@ -58,7 +59,7 @@
             
             
               <div class="version">
-                0.1.6
+                0.1.7
               </div>
             
           
@@ -75,6 +76,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -117,6 +119,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -155,7 +158,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../index.html">Module code</a> &raquo;</li>
         
@@ -198,7 +201,8 @@
 <span class="kn">import</span> <span class="nn">quilt3</span>
 <span class="kn">from</span> <span class="nn">prefect</span> <span class="kn">import</span> <span class="n">Flow</span><span class="p">,</span> <span class="n">Task</span>
 
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">constants</span><span class="p">,</span> <span class="n">exceptions</span><span class="p">,</span> <span class="n">file_utils</span><span class="p">,</span> <span class="n">get_module_version</span><span class="p">,</span> <span class="n">quilt_utils</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="p">(</span><span class="n">constants</span><span class="p">,</span> <span class="n">exceptions</span><span class="p">,</span> <span class="n">file_utils</span><span class="p">,</span> <span class="n">get_module_version</span><span class="p">,</span>
+               <span class="n">quilt_utils</span><span class="p">)</span>
 
 <span class="c1">###############################################################################</span>
 
@@ -223,18 +227,18 @@
         <span class="c1"># Dump run params</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">parameter_store</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">write_out</span><span class="p">:</span>
             <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">write_out</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
-            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Stored params for run at: </span><span class="si">{parameter_store}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Stored params for run at: </span><span class="si">{</span><span class="n">parameter_store</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="c1"># Check if we want to clean the step local staging prior to run</span>
         <span class="c1"># If the user has defined clean in their run function it will be in</span>
         <span class="c1"># top level params, if they haven&#39;t it will be in the kwargs</span>
         <span class="k">if</span> <span class="s2">&quot;clean&quot;</span> <span class="ow">in</span> <span class="n">params</span> <span class="ow">and</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;clean&quot;</span><span class="p">]:</span>
             <span class="n">file_utils</span><span class="o">.</span><span class="n">_clean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">step_local_staging_dir</span><span class="p">)</span>
-            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cleaned directory: </span><span class="si">{self.step_local_staging_dir}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cleaned directory: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">step_local_staging_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="s2">&quot;kwargs&quot;</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
             <span class="k">if</span> <span class="s2">&quot;clean&quot;</span> <span class="ow">in</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;kwargs&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;kwargs&quot;</span><span class="p">][</span><span class="s2">&quot;clean&quot;</span><span class="p">]:</span>
                 <span class="n">file_utils</span><span class="o">.</span><span class="n">_clean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">step_local_staging_dir</span><span class="p">)</span>
-                <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cleaned directory: </span><span class="si">{self.step_local_staging_dir}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cleaned directory: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">step_local_staging_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -249,8 +253,8 @@
 <span class="sd">    Quilt.</span>
 
 <span class="sd">    It manages to do this data logging through heavy utilization of a local staging</span>
-<span class="sd">    directory and supporting files such as initialization parameters, a manifest CSV</span>
-<span class="sd">    that you can use to store the files you will want to send to Quilt.</span>
+<span class="sd">    directory and supporting files such as initialization parameters, a manifest CSV /</span>
+<span class="sd">    Parquet that you can use to store the files you will want to send to Quilt.</span>
 
 <span class="sd">    However, as a part of the problem with stepwise workflows is their dependents on</span>
 <span class="sd">    upstream data is hard to manage, the more you rely on this object the easier those</span>
@@ -264,10 +268,10 @@
 <span class="sd">        A name for this step.</span>
 <span class="sd">        Default: the lowercased version of the inheriting object name</span>
 <span class="sd">    filepath_columns: List[str]</span>
-<span class="sd">        In the final manifest CSV you generate, which columns store filepaths.</span>
+<span class="sd">        In the final manifest CSV / Parquet you generate, which columns store filepaths.</span>
 <span class="sd">        Default: [&quot;filepath&quot;]</span>
 <span class="sd">    metadata_columns: List[str]</span>
-<span class="sd">        In the final manifest CSV you generate, which columns store metadata.</span>
+<span class="sd">        In the final manifest CSV / Parquet you generate, which columns store metadata.</span>
 <span class="sd">        Default: []</span>
 <span class="sd">    direct_upstream_tasks: List[Step]</span>
 <span class="sd">        If you need data for this task to run, and that data was generated by another</span>
@@ -332,7 +336,7 @@
                 <span class="p">]</span> <span class="o">=</span> <span class="n">file_utils</span><span class="o">.</span><span class="n">resolve_directory</span><span class="p">(</span>
                     <span class="n">config</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">step_name</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
                         <span class="s2">&quot;step_local_staging_dir&quot;</span><span class="p">,</span>
-                        <span class="sa">f</span><span class="s2">&quot;{config[&#39;project_local_staging_dir&#39;] / self.step_name}&quot;</span><span class="p">,</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;project_local_staging_dir&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
                     <span class="p">),</span>
                     <span class="n">make</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                     <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -343,7 +347,7 @@
                 <span class="n">config</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">step_name</span><span class="p">][</span>
                     <span class="s2">&quot;step_local_staging_dir&quot;</span>
                 <span class="p">]</span> <span class="o">=</span> <span class="n">file_utils</span><span class="o">.</span><span class="n">resolve_directory</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;{config[&#39;project_local_staging_dir&#39;] / self.step_name}&quot;</span><span class="p">,</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;project_local_staging_dir&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
                     <span class="n">make</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                     <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                 <span class="p">)</span>
@@ -353,11 +357,11 @@
                 <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;quilt_package_name&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__module__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
             <span class="p">)</span>
 
-            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unpacked config: </span><span class="si">{config}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unpacked config: </span><span class="si">{</span><span class="n">config</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Log debug message indicating using defaults</span>
-            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Using default project and step configuration.&quot;</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Using default project and step configuration.&quot;</span><span class="p">)</span>
 
             <span class="c1"># Construct config dictionary object</span>
             <span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
@@ -428,26 +432,31 @@
         <span class="n">parameter_store</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_local_staging_dir</span> <span class="o">/</span> <span class="s2">&quot;init_parameters.json&quot;</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">parameter_store</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">write_out</span><span class="p">:</span>
             <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">write_out</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
-            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Stored params for run at: </span><span class="si">{parameter_store}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Stored params for run at: </span><span class="si">{</span><span class="n">parameter_store</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="c1"># Attempt to read a previously written manifest produced by this step</span>
-        <span class="n">m_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">step_local_staging_dir</span> <span class="o">/</span> <span class="s2">&quot;manifest.csv&quot;</span><span class="p">)</span>
+        <span class="n">m_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">step_local_staging_dir</span><span class="p">)</span>
 
         <span class="c1"># Check if a prior manifest exists</span>
-        <span class="k">if</span> <span class="n">m_path</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">m_path</span> <span class="o">/</span> <span class="s2">&quot;manifest.parquet&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+            <span class="n">m_path</span> <span class="o">=</span> <span class="n">m_path</span> <span class="o">/</span> <span class="s2">&quot;manifest.parquet&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">manifest</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="n">m_path</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Read previously produced manifest from file: </span><span class="si">{</span><span class="n">m_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">m_path</span> <span class="o">/</span> <span class="s2">&quot;manifest.csv&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+            <span class="n">m_path</span> <span class="o">=</span> <span class="n">m_path</span> <span class="o">/</span> <span class="s2">&quot;manifest.csv&quot;</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">manifest</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">m_path</span><span class="p">)</span>
-            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Read previously produced manifest from file: </span><span class="si">{m_path}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Read previously produced manifest from file: </span><span class="si">{</span><span class="n">m_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">manifest</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No previous manifest found. Checked path: </span><span class="si">{m_path}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No previous manifest found. Checked path: </span><span class="si">{</span><span class="n">m_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="c1"># Set name for prefect task retrieval</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_name</span>
 
         <span class="c1"># Prior to any operation log where we are operating</span>
         <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{self.step_name}</span><span class="s2"> will use step local staging directory: &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{self.step_local_staging_dir}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">step_name</span><span class="si">}</span><span class="s2"> will use step local staging directory: &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">step_local_staging_dir</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
 
     <span class="nd">@property</span>
@@ -628,32 +637,32 @@
             <span class="n">dirty_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">b_path</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">repo</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="kc">None</span><span class="p">)]</span>
             <span class="n">all_changed_files</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">untracked_files</span> <span class="o">+</span> <span class="n">dirty_files</span>
             <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">InvalidGitStatus</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Push to &#39;</span><span class="si">{push_target}</span><span class="s2">&#39; was rejected because the current git &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;status of this branch (</span><span class="si">{current_branch}</span><span class="s2">) is not clean. &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;Check files: </span><span class="si">{all_changed_files}</span><span class="s2">.&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Push to &#39;</span><span class="si">{</span><span class="n">push_target</span><span class="si">}</span><span class="s2">&#39; was rejected because the current git &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;status of this branch (</span><span class="si">{</span><span class="n">current_branch</span><span class="si">}</span><span class="s2">) is not clean. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Check files: </span><span class="si">{</span><span class="n">all_changed_files</span><span class="si">}</span><span class="s2">.&quot;</span>
             <span class="p">)</span>
 
         <span class="c1"># Check that current hash is the same as remote head hash</span>
         <span class="c1"># Check that the current branch has even been pushed to origin</span>
         <span class="n">origin_branches</span> <span class="o">=</span> <span class="p">[</span><span class="n">b</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">repo</span><span class="o">.</span><span class="n">remotes</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">refs</span><span class="p">]</span>
-        <span class="k">if</span> <span class="sa">f</span><span class="s2">&quot;origin/</span><span class="si">{current_branch}</span><span class="s2">&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">origin_branches</span><span class="p">:</span>
+        <span class="k">if</span> <span class="sa">f</span><span class="s2">&quot;origin/</span><span class="si">{</span><span class="n">current_branch</span><span class="si">}</span><span class="s2">&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">origin_branches</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">InvalidGitStatus</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Push to &#39;</span><span class="si">{push_target}</span><span class="s2">&#39; was rejected because the current git &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Push to &#39;</span><span class="si">{</span><span class="n">push_target</span><span class="si">}</span><span class="s2">&#39; was rejected because the current git &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;branch was not found on the origin.&quot;</span>
             <span class="p">)</span>
         <span class="c1"># Origin has current branch, check for matching commit hash</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Find matching origin branch</span>
             <span class="k">for</span> <span class="n">origin_branch</span> <span class="ow">in</span> <span class="n">repo</span><span class="o">.</span><span class="n">remotes</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">refs</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">origin_branch</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="sa">f</span><span class="s2">&quot;origin/</span><span class="si">{current_branch}</span><span class="s2">&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">origin_branch</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="sa">f</span><span class="s2">&quot;origin/</span><span class="si">{</span><span class="n">current_branch</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">:</span>
                     <span class="n">matching_origin_branch</span> <span class="o">=</span> <span class="n">origin_branch</span>
                     <span class="k">break</span>
 
             <span class="c1"># Check git commit hash match</span>
             <span class="k">if</span> <span class="n">matching_origin_branch</span><span class="o">.</span><span class="n">commit</span><span class="o">.</span><span class="n">hexsha</span> <span class="o">!=</span> <span class="n">repo</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">hexsha</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">InvalidGitStatus</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Push to &#39;</span><span class="si">{push_target}</span><span class="s2">&#39; was rejected because the current git &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;commit has not been pushed to </span><span class="si">{matching_origin_branch.name}</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;Push to &#39;</span><span class="si">{</span><span class="n">push_target</span><span class="si">}</span><span class="s2">&#39; was rejected because the current git &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;commit has not been pushed to </span><span class="si">{</span><span class="n">matching_origin_branch</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
@@ -663,8 +672,8 @@
         <span class="n">current_branch</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">active_branch</span><span class="o">.</span><span class="n">name</span>
 
         <span class="k">return</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;data created from code repo </span><span class="si">{repo.remotes.origin.url}</span><span class="s2"> on branch &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{current_branch}</span><span class="s2"> at commit </span><span class="si">{repo.head.object.hexsha}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;data created from code repo </span><span class="si">{</span><span class="n">repo</span><span class="o">.</span><span class="n">remotes</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">url</span><span class="si">}</span><span class="s2"> on branch &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">current_branch</span><span class="si">}</span><span class="s2"> at commit </span><span class="si">{</span><span class="n">repo</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">hexsha</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
@@ -678,7 +687,7 @@
         <span class="c1"># If there is a @ character this was setup with ssh</span>
         <span class="k">if</span> <span class="s2">&quot;@&quot;</span> <span class="ow">in</span> <span class="n">origin</span><span class="o">.</span><span class="n">url</span><span class="p">:</span>
             <span class="n">url</span> <span class="o">=</span> <span class="n">origin</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;@&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="s2">&quot;/&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.git&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;https://</span><span class="si">{url}</span><span class="s2">&quot;</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;https://</span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">origin</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.git&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
 
@@ -739,17 +748,17 @@
         <span class="c1"># Check for files on this branch and default to master</span>
 
         <span class="c1"># Browse top level project package</span>
-        <span class="n">quilt_loc</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{self._quilt_package_owner}</span><span class="s2">/</span><span class="si">{self._quilt_package_name}</span><span class="s2">&quot;</span>
+        <span class="n">quilt_loc</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_quilt_package_owner</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_quilt_package_name</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="n">p</span> <span class="o">=</span> <span class="n">quilt3</span><span class="o">.</span><span class="n">Package</span><span class="o">.</span><span class="n">browse</span><span class="p">(</span><span class="n">quilt_loc</span><span class="p">,</span> <span class="n">bucket</span><span class="p">,</span> <span class="n">top_hash</span><span class="o">=</span><span class="n">data_version</span><span class="p">)</span>
 
         <span class="c1"># Check to see if step data exists on this branch in quilt</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">quilt_branch_step</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{current_branch}</span><span class="s2">/</span><span class="si">{self.step_name}</span><span class="s2">&quot;</span>
+            <span class="n">quilt_branch_step</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">current_branch</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">step_name</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="n">p</span><span class="p">[</span><span class="n">quilt_branch_step</span><span class="p">]</span>
 
         <span class="c1"># If not, use the version on master</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-            <span class="n">quilt_branch_step</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;master/</span><span class="si">{self.step_name}</span><span class="s2">&quot;</span>
+            <span class="n">quilt_branch_step</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;master/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">step_name</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="n">p</span><span class="p">[</span><span class="n">quilt_branch_step</span><span class="p">]</span>
 
         <span class="c1"># Fetch the data and save it to the local staging dir</span>
@@ -789,8 +798,8 @@
         <span class="n">current_branch</span> <span class="o">=</span> <span class="n">current_branch</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">)</span>
 
         <span class="c1"># Resolve push target</span>
-        <span class="n">quilt_loc</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{self._quilt_package_owner}</span><span class="s2">/</span><span class="si">{self._quilt_package_name}</span><span class="s2">&quot;</span>
-        <span class="n">push_target</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{quilt_loc}</span><span class="s2">/</span><span class="si">{current_branch}</span><span class="s2">/</span><span class="si">{self.step_name}</span><span class="s2">&quot;</span>
+        <span class="n">quilt_loc</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_quilt_package_owner</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_quilt_package_name</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">push_target</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">quilt_loc</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">current_branch</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">step_name</span><span class="si">}</span><span class="s2">&quot;</span>
 
         <span class="c1"># Check git status is clean</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_git_status_is_clean</span><span class="p">(</span><span class="n">push_target</span><span class="p">)</span>
@@ -806,9 +815,9 @@
         <span class="c1"># Add the relative manifest and generated README to the package</span>
         <span class="k">with</span> <span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">tempdir</span><span class="p">:</span>
             <span class="c1"># Store the relative manifest in a temporary directory</span>
-            <span class="n">m_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">tempdir</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;manifest.csv&quot;</span>
-            <span class="n">relative_manifest</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">m_path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-            <span class="n">step_pkg</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;manifest.csv&quot;</span><span class="p">,</span> <span class="n">m_path</span><span class="p">)</span>
+            <span class="n">m_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">tempdir</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;manifest.parquet&quot;</span>
+            <span class="n">relative_manifest</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">(</span><span class="n">m_path</span><span class="p">)</span>
+            <span class="n">step_pkg</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;manifest.parquet&quot;</span><span class="p">,</span> <span class="n">m_path</span><span class="p">)</span>
 
             <span class="c1"># Add the params files to the package</span>
             <span class="k">for</span> <span class="n">param_file</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;run_parameters.json&quot;</span><span class="p">,</span> <span class="s2">&quot;init_parameters.json&quot;</span><span class="p">]:</span>
@@ -834,8 +843,8 @@
                 <span class="n">project_pkg</span> <span class="o">=</span> <span class="n">quilt3</span><span class="o">.</span><span class="n">Package</span><span class="o">.</span><span class="n">browse</span><span class="p">(</span><span class="n">quilt_loc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage_bucket</span><span class="p">)</span>
             <span class="k">except</span> <span class="n">botocore</span><span class="o">.</span><span class="n">errorfactory</span><span class="o">.</span><span class="n">ClientError</span><span class="p">:</span>
                 <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Could not find existing package: </span><span class="si">{quilt_loc}</span><span class="s2"> &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;in bucket: </span><span class="si">{self._storage_bucket}</span><span class="s2">. &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;Could not find existing package: </span><span class="si">{</span><span class="n">quilt_loc</span><span class="si">}</span><span class="s2"> &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;in bucket: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage_bucket</span><span class="si">}</span><span class="s2">. &quot;</span>
                     <span class="sa">f</span><span class="s2">&quot;Creating a new package.&quot;</span>
                 <span class="p">)</span>
                 <span class="n">project_pkg</span> <span class="o">=</span> <span class="n">quilt3</span><span class="o">.</span><span class="n">Package</span><span class="p">()</span>
@@ -848,13 +857,13 @@
             <span class="k">if</span> <span class="n">current_branch</span> <span class="ow">in</span> <span class="n">project_pkg</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_name</span> <span class="ow">in</span> <span class="n">project_pkg</span><span class="p">[</span><span class="n">current_branch</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
                     <span class="n">project_pkg</span> <span class="o">=</span> <span class="n">project_pkg</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{current_branch}</span><span class="s2">/</span><span class="si">{self.step_name}</span><span class="s2">&quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">current_branch</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">step_name</span><span class="si">}</span><span class="s2">&quot;</span>
                     <span class="p">)</span>
 
             <span class="c1"># Merge packages</span>
             <span class="k">for</span> <span class="p">(</span><span class="n">logical_key</span><span class="p">,</span> <span class="n">pkg_entry</span><span class="p">)</span> <span class="ow">in</span> <span class="n">step_pkg</span><span class="o">.</span><span class="n">walk</span><span class="p">():</span>
                 <span class="n">project_pkg</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{current_branch}</span><span class="s2">/</span><span class="si">{self.step_name}</span><span class="s2">/</span><span class="si">{logical_key}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">pkg_entry</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">current_branch</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">step_name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">logical_key</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">pkg_entry</span>
                 <span class="p">)</span>
 
             <span class="c1"># Push the data</span>
@@ -873,11 +882,11 @@
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;&lt;</span><span class="si">{self.step_name}</span><span class="s2"> [ &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;upstream_tasks: </span><span class="si">{self._upstream_tasks}</span><span class="s2">, &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;storage_bucket: &#39;</span><span class="si">{self._storage_bucket}</span><span class="s2">&#39;, &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;project_local_staging_dir: &#39;</span><span class="si">{self._project_local_staging_dir}</span><span class="s2">&#39;, &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;step_local_staging_dir: &#39;</span><span class="si">{self.step_local_staging_dir}</span><span class="s2">&#39; &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;&lt;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">step_name</span><span class="si">}</span><span class="s2"> [ &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;upstream_tasks: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_upstream_tasks</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;storage_bucket: &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage_bucket</span><span class="si">}</span><span class="s2">&#39;, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;project_local_staging_dir: &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_project_local_staging_dir</span><span class="si">}</span><span class="s2">&#39;, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;step_local_staging_dir: &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">step_local_staging_dir</span><span class="si">}</span><span class="s2">&#39; &quot;</span>
             <span class="sa">f</span><span class="s2">&quot;]&gt;&quot;</span>
         <span class="p">)</span>
 
@@ -895,11 +904,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2020, Jackson Maxfield Brown
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -910,7 +927,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {
