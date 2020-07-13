@@ -19,8 +19,7 @@ import prefect
 import quilt3
 from prefect import Flow, Task
 
-from . import (constants, exceptions, file_utils, get_module_version,
-               quilt_utils)
+from . import constants, exceptions, file_utils, get_module_version, quilt_utils
 
 ###############################################################################
 
@@ -253,10 +252,15 @@ class Step(Task):
             log.debug(f"Stored params for run at: {parameter_store}")
 
         # Attempt to read a previously written manifest produced by this step
-        m_path = Path(self.step_local_staging_dir / "manifest.csv")
+        m_path = Path(self.step_local_staging_dir)
 
         # Check if a prior manifest exists
-        if m_path.is_file():
+        if (m_path / "manifest.parquet").is_file():
+            m_path = m_path / "manifest.parquet"
+            self.manifest = pd.read_parquet(m_path)
+            log.debug(f"Read previously produced manifest from file: {m_path}")
+        elif (m_path / "manifest.csv").is_file():
+            m_path = m_path / "manifest.csv"
             self.manifest = pd.read_csv(m_path)
             log.debug(f"Read previously produced manifest from file: {m_path}")
         else:
@@ -628,9 +632,9 @@ class Step(Task):
         # Add the relative manifest and generated README to the package
         with TemporaryDirectory() as tempdir:
             # Store the relative manifest in a temporary directory
-            m_path = Path(tempdir) / "manifest.csv"
-            relative_manifest.to_csv(m_path, index=False)
-            step_pkg.set("manifest.csv", m_path)
+            m_path = Path(tempdir) / "manifest.parquet"
+            relative_manifest.to_parquet(m_path)
+            step_pkg.set("manifest.parquet", m_path)
 
             # Add the params files to the package
             for param_file in ["run_parameters.json", "init_parameters.json"]:
