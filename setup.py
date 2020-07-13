@@ -46,6 +46,7 @@ requirements = [
     "jinja2>=2.10.3",
     "pandas",
     "prefect",
+    "pyarrow",
     "python-dateutil<=2.8.0",
     "quilt3>=3.1.10",
     "urllib3<1.25",  # quilt conflict
