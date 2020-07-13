@@ -19,8 +19,7 @@ import prefect
 import quilt3
 from prefect import Flow, Task
 
-from . import (constants, exceptions, file_utils, get_module_version,
-               quilt_utils)
+from . import constants, exceptions, file_utils, get_module_version, quilt_utils
 
 ###############################################################################
 
