@@ -241,6 +241,7 @@ def create_package(
             for i, val in enumerate(relative_manifest[col].values):
                 # Fully resolve the path
                 physical_key = Path(val).expanduser().resolve()
+                physical_key_hash = file_utils.create_hash_from_path(physical_key)
 
                 # Try creating a logical key from the relative of step
                 # local staging to the filepath
@@ -266,6 +267,17 @@ def create_package(
                     # produced logical_key = "source/some_file.tiff"
                     stripped_col = col.lower().replace("read", "").replace("path", "")
                     logical_key = f"{stripped_col}/{physical_key.name}"
+
+                # Prefix the file name with the physical key hash
+                logical_key_parts = logical_key.split("/")
+
+                # Update the last part (the file name) with a prefix on the name
+                logical_key_parts[-1] = f"{physical_key_hash}_{logical_key_parts[-1]}"
+
+                # Update logical_key as the join of the updated parts
+                # The produced key should now be
+                # "column_name/hash_some_file.tiff"
+                logical_key = "/".join(logical_key_parts)
 
                 if physical_key.is_file():
                     relative_manifest[col].values[i] = logical_key

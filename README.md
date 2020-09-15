@@ -1,5 +1,8 @@
 # datastep
 
+**This is a special release of datastep that prefixes pushed files with the hash of
+their absolute physical paths.**
+
 [![Build Status](https://github.com/AllenCellModeling/datastep/workflows/Build%20Master/badge.svg)](https://github.com/AllenCellModeling/datastep/actions)
 [![Documentation](https://github.com/AllenCellModeling/datastep/workflows/Documentation/badge.svg)](https://AllenCellModeling.github.io/datastep)
 [![Code Coverage](https://codecov.io/gh/AllenCellModeling/datastep/branch/master/graph/badge.svg)](https://codecov.io/gh/AllenCellModeling/datastep)

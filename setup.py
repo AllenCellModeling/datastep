@@ -97,6 +97,6 @@ setup(
     url="https://github.com/AllenCellModeling/datastep",
     # Do not edit this string manually, always use bumpversion
     # Details in CONTRIBUTING.rst
-    version="0.1.8",
+    version="0.0.1.special",
     zip_safe=False,
 )

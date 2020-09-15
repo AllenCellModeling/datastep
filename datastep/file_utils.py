@@ -60,15 +60,12 @@ def resolve_directory(
     return d
 
 
-def create_unique_logical_key(physical_key: Union[str, Path]) -> str:
+def create_hash_from_path(physical_key: Union[str, Path]) -> str:
     # Fully resolve the phyiscal key
     pk = Path(physical_key).expanduser().resolve(strict=True)
 
     # Creat short hash from fully resolved physical key
-    short_hash = hashlib.sha256(str(pk).encode("utf-8")).hexdigest()[:8]
-
-    # Return the unique logical key
-    return f"{short_hash}_{pk.name}"
+    return hashlib.sha256(str(pk).encode("utf-8")).hexdigest()[:8]
 
 
 def make_json_serializable(
