@@ -1,9 +1,9 @@
-name: Publish
+name: Publish Special Release
 
 on:
   push:
     branches:
-      - stable
+      - special-release
 
 jobs:
   publish:
