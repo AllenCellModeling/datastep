@@ -41,15 +41,15 @@ interactive_requirements = ["altair", "jupyterlab", "matplotlib"]
 requirements = [
     "boto3>=1.11.9",
     "botocore>=1.15.0",
-    "docutils<0.16",
+    "docutils",
     "gitpython>=3.0.5",
     "jinja2>=2.10.3",
     "pandas",
     "prefect",
     "pyarrow",
-    "python-dateutil<=2.8.0",
+    "python-dateutil",
     "quilt3>=3.1.10",
-    "urllib3<1.25",  # quilt conflict
+    "urllib3",
     "tqdm",
 ]
 
