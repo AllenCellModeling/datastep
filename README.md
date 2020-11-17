@@ -28,6 +28,6 @@ For full package documentation please visit
 
 ## Development
 See [CONTRIBUTING.md](CONTRIBUTING.md) for information related to developing the
-code.
+code (from getting started to e.g. using bumpversion to make a new release).
 
 ***Free software: Allen Institute Software License***
