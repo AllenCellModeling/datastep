@@ -4,14 +4,14 @@
 [![Documentation](https://github.com/AllenCellModeling/datastep/workflows/Documentation/badge.svg)](https://AllenCellModeling.github.io/datastep)
 [![Code Coverage](https://codecov.io/gh/AllenCellModeling/datastep/branch/master/graph/badge.svg)](https://codecov.io/gh/AllenCellModeling/datastep)
 
-A base class and utility functions for creating pure functions steps for DAGs that are heavily tied to large amounts of
+Base class and utility functions for creating data-centric steps for workflow DAGs, with the idea that each step is heavily tied to large amounts of
 data.
 
 ---
 
 This library should rarely be used by itself, it was developed in pair with
 [cookiecutter-stepworkflow](https://github.com/AllenCellModeling/cookiecutter-stepworkflow)
-and you should look there for more context rich documentation.
+and you should look there for more context-rich documentation.
 
 ## Installation
 **Stable Release:**
