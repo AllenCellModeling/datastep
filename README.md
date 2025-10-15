@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> We are no longer actively maintaining this repository. All active work by the Allen Institute for Cell Science is located under the **[AllenCell](https://github.com/AllenCell)** organization.
+
 # datastep
 
 [![Build Status](https://github.com/AllenCellModeling/datastep/workflows/Build%20Master/badge.svg)](https://github.com/AllenCellModeling/datastep/actions)
